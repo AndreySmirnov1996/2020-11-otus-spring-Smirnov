@@ -11,9 +11,11 @@
 
     <properties>
         <spring-context.version>5.3.1</spring-context.version>
+        <spring-boot-starter-test.version>2.4.0</spring-boot-starter-test.version>
         <lombok.version>1.18.16</lombok.version>
+
         <spring-boot-maven-plugin.version>2.4.0</spring-boot-maven-plugin.version>
-        <junit-jupiter.version>5.7.0</junit-jupiter.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
     
     <modules>
