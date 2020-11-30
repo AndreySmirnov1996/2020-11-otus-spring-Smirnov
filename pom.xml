@@ -13,6 +13,9 @@
         <spring-context.version>5.3.1</spring-context.version>
         <spring-boot-starter-test.version>2.4.0</spring-boot-starter-test.version>
         <lombok.version>1.18.16</lombok.version>
+        <mockito.version>3.6.28</mockito.version>
+        <slf4j.version>1.7.20</slf4j.version>
+        <junit.version>5.7.0</junit.version>
 
         <spring-boot-maven-plugin.version>2.4.0</spring-boot-maven-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>

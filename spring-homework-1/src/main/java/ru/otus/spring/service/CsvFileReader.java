@@ -3,6 +3,7 @@ package ru.otus.spring.service;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ru.otus.spring.dao.QuestionDao;
 import ru.otus.spring.domain.Question;
 
@@ -13,11 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @AllArgsConstructor
 public class CsvFileReader implements FileReader {
 
-    private QuestionDao questionDao;
-    private String fileName;
+    private final QuestionDao questionDao;
+    private final String fileName;
 
     public void readFile() {
         List<Question> questions = new ArrayList<>();
@@ -40,7 +42,9 @@ public class CsvFileReader implements FileReader {
                 questions.add(question);
             }
         } catch (CsvValidationException | IllegalArgumentException | IOException e) {
+            log.error("Something going wrong! Please check logs:");
             e.printStackTrace();
+            return;
         }
         questionDao.setQuestionList(questions);
     }
