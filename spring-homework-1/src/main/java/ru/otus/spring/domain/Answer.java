@@ -4,13 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
-
 @Builder
 @Getter
 @RequiredArgsConstructor
-public class Question {
-    private final String question;
-    private final List<Answer> answers;
+public class Answer {
+    private final String body;
+    private final Boolean value;
 }

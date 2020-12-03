@@ -4,30 +4,29 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="questionStorage"
-          class="ru.otus.spring.data.QuestionStorage">
-    </bean>
-
     <bean id="questionDao"
-          class="ru.otus.spring.dao.QuestionDao">
-        <constructor-arg ref="questionStorage"/>
+          class="ru.otus.spring.dao.QuestionCsvDao">
+        <constructor-arg ref="csvFileReader"/>
     </bean>
 
-    <bean id="questionOutputService"
-          class="ru.otus.spring.service.QuestionOutputService">
-        <constructor-arg name="questionDao" ref="questionDao"/>
+    <bean id="ioService"
+          class="ru.otus.spring.service.IOServiceImpl">
     </bean>
 
     <bean id="csvFileReader"
           class="ru.otus.spring.service.CsvFileReader">
-        <constructor-arg name="questionDao" ref="questionDao"/>
         <constructor-arg name="fileName" value="questions.csv"/>
     </bean>
 
-    <bean id="fileProcessingService"
-          class="ru.otus.spring.service.FileProcessingService">
-        <constructor-arg name="fileReader" ref="csvFileReader"/>
-        <constructor-arg name="questionOutputService" ref="questionOutputService"/>
+    <bean id="questionPrinter"
+          class="ru.otus.spring.service.QuestionPrinterImpl">
+    </bean>
+
+    <bean id="testingService"
+          class="ru.otus.spring.service.TestingServiceImpl">
+        <constructor-arg name="questionDao" ref="questionDao"/>
+        <constructor-arg name="ioService" ref="ioService"/>
+        <constructor-arg name="questionPrinter" ref="questionPrinter"/>
     </bean>
 
 </beans>
