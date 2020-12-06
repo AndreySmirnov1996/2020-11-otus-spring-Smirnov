@@ -12,10 +12,9 @@ import ru.otus.spring.domain.User;
 import ru.otus.spring.ustil.TestObjectFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,11 +36,10 @@ class OutputFormatterImplTest {
 
     @Test
     void formatResult() {
-        when(questionDao.findAll()).thenReturn(TestObjectFactory.createQuestionList(5));
+        when(questionDao.findAll()).thenReturn(TestObjectFactory.createQuestionList(5, 2));
         User user = new User("name", "surName");
         user.setTestResult(5);
         assertEquals("Dear name surName, your result is 5 right answers from 5 questions.",
                 outputFormatter.formatResult(user));
-
     }
 }

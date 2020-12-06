@@ -27,10 +27,10 @@ public class TestObjectFactory {
         return new Question(question, answers);
     }
 
-    public List<Question> createQuestionList(int size) {
+    public List<Question> createQuestionList(int questionListSize, int answerListSize) {
         List<Question> questionList = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            questionList.add(createQuestion("question" + i, createAnswerList(2)));
+        for (int i = 0; i < questionListSize; i++) {
+            questionList.add(createQuestion("question" + i, createAnswerList(answerListSize)));
         }
 
         return questionList;
