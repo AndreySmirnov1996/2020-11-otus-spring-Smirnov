@@ -12,7 +12,7 @@ import ru.otus.spring.service.TestingServiceImpl;
 public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
-        TestingService testingService = context.getBean(TestingServiceImpl.class);
+        TestingService testingService = context.getBean(TestingService.class);
         testingService.processing();
     }
 }

@@ -4,6 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.QuestionDao;
+import ru.otus.spring.domain.Question;
+import ru.otus.spring.domain.TestResult;
+import ru.otus.spring.domain.User;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -15,9 +20,10 @@ public class TestingServiceImpl implements TestingService {
 
 
     public void processing() {
-        userHandler.startInteraction();
-        testUserService.testing(questionDao.findAll());
-        userHandler.endInteraction();
+        User user = userHandler.readUserData();
+        List<Question> questions = questionDao.findAll();
+        int testResult = testUserService.testing(questions);
+        userHandler.showTestResult(new TestResult(user, questions.size(), testResult));
     }
 
 }
