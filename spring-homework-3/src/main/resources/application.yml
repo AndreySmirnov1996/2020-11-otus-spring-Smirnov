@@ -1,1 +1,3 @@
-file-name: questions.csv
+application:
+  filename: questions.csv
+  locale: ru_RU

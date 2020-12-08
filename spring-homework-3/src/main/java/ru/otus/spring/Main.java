@@ -1,17 +1,18 @@
 package ru.otus.spring;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import ru.otus.spring.config.AppProps;
 import ru.otus.spring.service.TestingService;
 import ru.otus.spring.service.TestingServiceImpl;
 
-@Configuration
-@ComponentScan
+@SpringBootApplication
+@EnableConfigurationProperties(AppProps.class)
 public class Main {
+
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
+        var context = SpringApplication.run(Main.class, args);
         TestingService testingService = context.getBean(TestingServiceImpl.class);
         testingService.processing();
     }

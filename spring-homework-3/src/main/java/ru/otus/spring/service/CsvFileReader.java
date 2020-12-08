@@ -2,10 +2,10 @@ package ru.otus.spring.service;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.config.AppProps;
 import ru.otus.spring.domain.Answer;
 import ru.otus.spring.domain.Question;
 
@@ -18,14 +18,10 @@ import java.util.Objects;
 
 @Service
 @Slf4j
-@PropertySource("classpath:application.yml")
+@RequiredArgsConstructor
 public class CsvFileReader implements FileReader {
 
-    private final String fileName;
-
-    CsvFileReader(@Value("${file-name}") String fileName) {
-        this.fileName = fileName;
-    }
+    private final AppProps props;
 
     @Override
     public List<Question> readFile() {
@@ -33,7 +29,7 @@ public class CsvFileReader implements FileReader {
 
         try (CSVReader csvReader = new CSVReader(new InputStreamReader(
                 Objects.requireNonNull(
-                        getClass().getClassLoader().getResourceAsStream(fileName))))) {
+                        getClass().getClassLoader().getResourceAsStream(props.getFileName()))))) {
             String[] values;
             while ((values = csvReader.readNext()) != null) {
                 List<Answer> answersList = new ArrayList<>();
