@@ -1,17 +1,12 @@
 package ru.otus.spring.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.dao.QuestionDao;
 import ru.otus.spring.domain.Answer;
 import ru.otus.spring.domain.Question;
-import ru.otus.spring.domain.User;
+import ru.otus.spring.domain.TestResult;
 
 @Service
-@RequiredArgsConstructor
 public class OutputFormatterImpl implements OutputFormatter {
-
-    private final QuestionDao questionDao;
 
     @Override
     public String formatQuestion(Question question) {
@@ -31,9 +26,9 @@ public class OutputFormatterImpl implements OutputFormatter {
     }
 
     @Override
-    public String formatResult(User user) {
-        return "Dear " + user.getName() + " " + user.getSurName() +
-                ", your result is " + user.getTestResult() + " right answers from " +
-                questionDao.findAll().size() + " questions.";
+    public String formatResult(TestResult restResult) {
+        return "Dear " + restResult.getUser().getName() + " " + restResult.getUser().getSurName() +
+                ", your result is " + restResult.getTestResult() + " right answers from " +
+                restResult.getQuestionsNumber() + " questions.";
     }
 }

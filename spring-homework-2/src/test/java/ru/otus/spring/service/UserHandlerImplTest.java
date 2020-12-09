@@ -4,20 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 import ru.otus.spring.domain.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
+import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_NAME;
+import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_SURNAME;
 
 @ExtendWith(MockitoExtension.class)
 class UserHandlerImplTest {
-
-    private static final String NAME = "name";
-    private static final String SURNAME = "surName";
 
     @InjectMocks
     private UserHandlerImpl userHandler;
@@ -25,24 +21,11 @@ class UserHandlerImplTest {
     private IOService ioService;
 
     @Test
-    void startInteraction() {
+    void readUserData() {
+        when(ioService.readString()).thenReturn(DEFAULT_USER_NAME).thenReturn(DEFAULT_USER_SURNAME);
+        User user = userHandler.readUserData();
 
-        when(ioService.readString()).thenAnswer(new Answer() {
-            private int count = 0;
-
-            public Object answer(InvocationOnMock invocation) {
-                if (count++ == 1) {
-                    return SURNAME;
-                }
-                return NAME;
-            }
-        });
-
-        userHandler.startInteraction();
-        User user = userHandler.getUser();
-
-        assertEquals(NAME, user.getName());
-        assertEquals(SURNAME, user.getSurName());
-        assertNull(user.getTestResult());
+        assertEquals(DEFAULT_USER_NAME, user.getName());
+        assertEquals(DEFAULT_USER_SURNAME, user.getSurName());
     }
 }

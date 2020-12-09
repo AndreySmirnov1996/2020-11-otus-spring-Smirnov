@@ -5,5 +5,5 @@ import ru.otus.spring.domain.Question;
 import java.util.List;
 
 public interface TestUserService {
-    void testing(List<Question> questions);
+    int testing(List<Question> questions);
 }
