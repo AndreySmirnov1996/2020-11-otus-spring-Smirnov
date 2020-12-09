@@ -5,13 +5,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.otus.spring.domain.User;
+import org.springframework.context.MessageSource;
+import ru.otus.spring.config.AppProps;
 import ru.otus.spring.util.TestObjectFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_NAME;
-import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_SURNAME;
 
 @ExtendWith(MockitoExtension.class)
 class TestUserServiceImplTest {
@@ -25,6 +24,10 @@ class TestUserServiceImplTest {
     private IOService ioService;
     @Mock
     private OutputFormatter outputFormatter;
+    @Mock
+    private MessageSource messageSource;
+    @Mock
+    private AppProps props;
 
 
     @Test

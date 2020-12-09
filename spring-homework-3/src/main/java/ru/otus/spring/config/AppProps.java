@@ -10,7 +10,5 @@ import java.util.Locale;
 @Getter
 @Setter
 public class AppProps {
-
-    private String fileName;
     private Locale locale;
 }
