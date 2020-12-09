@@ -5,6 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
+import ru.otus.spring.config.AppProps;
 import ru.otus.spring.domain.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,6 +21,10 @@ class UserHandlerImplTest {
     private UserHandlerImpl userHandler;
     @Mock
     private IOService ioService;
+    @Mock
+    private MessageSource messageSource;
+    @Mock
+    private AppProps props;
 
     @Test
     void readUserData() {

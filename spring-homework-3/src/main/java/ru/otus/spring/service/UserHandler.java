@@ -6,5 +6,5 @@ import ru.otus.spring.domain.User;
 public interface UserHandler {
     User readUserData();
 
-    void showTestResult(TestResult restResult);
+    void showUserTestResult(TestResult restResult);
 }

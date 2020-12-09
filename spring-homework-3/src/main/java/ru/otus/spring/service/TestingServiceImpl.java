@@ -23,7 +23,7 @@ public class TestingServiceImpl implements TestingService {
         User user = userHandler.readUserData();
         List<Question> questions = questionDao.findAll();
         int testResult = testUserService.testing(questions);
-        userHandler.showTestResult(new TestResult(user, questions.size(), testResult));
+        userHandler.showUserTestResult(new TestResult(user, questions.size(), testResult));
     }
 
 }

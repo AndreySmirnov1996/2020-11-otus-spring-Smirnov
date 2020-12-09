@@ -1,4 +1,4 @@
-package ru.otus.spring.ustil;
+package ru.otus.spring.util;
 
 import lombok.experimental.UtilityClass;
 import ru.otus.spring.domain.Answer;
