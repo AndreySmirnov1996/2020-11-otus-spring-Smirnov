@@ -1,10 +1,10 @@
 package ru.otus.spring.service;
 
 import ru.otus.spring.domain.Question;
-import ru.otus.spring.domain.User;
+import ru.otus.spring.domain.TestResult;
 
 public interface OutputFormatter {
     String formatQuestion(Question question);
 
-    String formatResult(User user);
+    String formatResult(TestResult restResult);
 }

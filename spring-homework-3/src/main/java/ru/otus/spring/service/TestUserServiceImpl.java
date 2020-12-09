@@ -13,10 +13,9 @@ public class TestUserServiceImpl implements TestUserService {
 
     private final IOService ioService;
     private final OutputFormatter outputFormatter;
-    private final UserHandler userHandler;
 
     @Override
-    public void testing(List<Question> questions) {
+    public int testing(List<Question> questions) {
         int result = 0;
 
         for (Question question : questions) {
@@ -34,6 +33,6 @@ public class TestUserServiceImpl implements TestUserService {
                 }
             } while (index == -1);
         }
-        userHandler.getUser().setTestResult(result);
+        return result;
     }
 }

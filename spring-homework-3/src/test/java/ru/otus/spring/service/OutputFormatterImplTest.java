@@ -8,22 +8,23 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.spring.dao.QuestionDao;
 import ru.otus.spring.domain.Answer;
 import ru.otus.spring.domain.Question;
+import ru.otus.spring.domain.TestResult;
 import ru.otus.spring.domain.User;
-import ru.otus.spring.ustil.TestObjectFactory;
+import ru.otus.spring.util.TestObjectFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static ru.otus.spring.base.DefaultConstant.DEFAULT_QUESTIONS_NUMBER;
+import static ru.otus.spring.base.DefaultConstant.DEFAULT_TEST_RESULT;
 
 @ExtendWith(MockitoExtension.class)
 class OutputFormatterImplTest {
 
     @InjectMocks
     private OutputFormatterImpl outputFormatter;
-    @Mock
-    private QuestionDao questionDao;
 
     @Test
     void formatQuestion() {
@@ -36,10 +37,13 @@ class OutputFormatterImplTest {
 
     @Test
     void formatResult() {
-        when(questionDao.findAll()).thenReturn(TestObjectFactory.createQuestionList(5, 2));
-        User user = new User("name", "surName");
-        user.setTestResult(5);
+        TestResult testResult = TestResult.builder()
+                .user(new User("name", "surName"))
+                .questionsNumber(DEFAULT_QUESTIONS_NUMBER)
+                .testResult(DEFAULT_TEST_RESULT)
+                .build();
+
         assertEquals("Dear name surName, your result is 5 right answers from 5 questions.",
-                outputFormatter.formatResult(user));
+                outputFormatter.formatResult(testResult));
     }
 }
