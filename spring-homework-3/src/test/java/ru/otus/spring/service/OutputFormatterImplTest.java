@@ -22,6 +22,9 @@ import static ru.otus.spring.base.DefaultConstant.DEFAULT_TEST_RESULT;
 
 @ExtendWith(MockitoExtension.class)
 class OutputFormatterImplTest {
+    private static final String DEFAULT_ANSWER_VALUE_1 = "value1";
+    private static final String DEFAULT_ANSWER_VALUE_2 = "value2";
+    private static final Boolean DEFAULT_ANSWER_IS_RIGHT = true;
 
     @InjectMocks
     private OutputFormatterImpl outputFormatter;
@@ -29,8 +32,8 @@ class OutputFormatterImplTest {
     @Test
     void formatQuestion() {
         List<Answer> answerList = new ArrayList<>();
-        answerList.add(new Answer("value1", true));
-        answerList.add(new Answer("value2", false));
+        answerList.add(new Answer(DEFAULT_ANSWER_VALUE_1, DEFAULT_ANSWER_IS_RIGHT));
+        answerList.add(new Answer(DEFAULT_ANSWER_VALUE_2, !DEFAULT_ANSWER_IS_RIGHT));
         Question question = new Question("question", answerList);
         assertEquals("question\n1)value1  2)value2  ", outputFormatter.formatQuestion(question));
     }

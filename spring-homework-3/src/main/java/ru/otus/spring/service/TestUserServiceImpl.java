@@ -10,7 +10,7 @@ import ru.otus.spring.domain.Question;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class TestUserServiceImpl implements TestUserService {
 
     private final IOService ioService;

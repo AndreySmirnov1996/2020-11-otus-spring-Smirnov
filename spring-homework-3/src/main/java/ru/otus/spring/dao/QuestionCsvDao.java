@@ -1,13 +1,13 @@
 package ru.otus.spring.dao;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.Question;
 import ru.otus.spring.service.FileReader;
 
 import java.util.List;
 
-@Service
+@Repository
 @RequiredArgsConstructor
 public class QuestionCsvDao implements QuestionDao {
 

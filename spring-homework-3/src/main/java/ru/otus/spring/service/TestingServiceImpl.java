@@ -11,7 +11,7 @@ import ru.otus.spring.domain.User;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class TestingServiceImpl implements TestingService {
 
     private final QuestionDao questionDao;

@@ -9,7 +9,7 @@ import ru.otus.spring.domain.TestResult;
 import ru.otus.spring.domain.User;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class UserHandlerImpl implements UserHandler {
 
     private final MessageSource messageSource;
