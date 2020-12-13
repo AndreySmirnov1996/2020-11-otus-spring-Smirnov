@@ -14,6 +14,11 @@ import static org.mockito.Mockito.when;
 import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_NAME;
 import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_SURNAME;
 
+/**
+ * Данные тест использует заглушку на ввод,
+ * поэтому не получается его перевести на @SpringBootTest
+ */
+
 @ExtendWith(MockitoExtension.class)
 class UserHandlerImplTest {
 

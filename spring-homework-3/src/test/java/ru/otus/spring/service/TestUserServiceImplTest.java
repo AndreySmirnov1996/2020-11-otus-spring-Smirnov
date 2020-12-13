@@ -12,6 +12,10 @@ import ru.otus.spring.util.TestObjectFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+/**
+ * Данные тест использует заглушку на ввод,
+ * поэтому не получается его перевести на @SpringBootTest
+ */
 @ExtendWith(MockitoExtension.class)
 class TestUserServiceImplTest {
 

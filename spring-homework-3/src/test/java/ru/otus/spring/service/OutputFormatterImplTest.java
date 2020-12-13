@@ -1,32 +1,27 @@
 package ru.otus.spring.service;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import ru.otus.spring.dao.QuestionDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.spring.domain.Answer;
 import ru.otus.spring.domain.Question;
 import ru.otus.spring.domain.TestResult;
 import ru.otus.spring.domain.User;
-import ru.otus.spring.util.TestObjectFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 import static ru.otus.spring.base.DefaultConstant.DEFAULT_QUESTIONS_NUMBER;
 import static ru.otus.spring.base.DefaultConstant.DEFAULT_TEST_RESULT;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class OutputFormatterImplTest {
     private static final String DEFAULT_ANSWER_VALUE_1 = "value1";
     private static final String DEFAULT_ANSWER_VALUE_2 = "value2";
     private static final Boolean DEFAULT_ANSWER_IS_RIGHT = true;
 
-    @InjectMocks
+    @Autowired
     private OutputFormatterImpl outputFormatter;
 
     @Test
