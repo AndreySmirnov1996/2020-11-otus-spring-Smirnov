@@ -17,12 +17,16 @@
         <slf4j.version>1.7.20</slf4j.version>
         <junit.version>5.7.0</junit.version>
 
+        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
+        <minimal.maven.version>3.3.9</minimal.maven.version>
+        <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <spring-boot-maven-plugin.version>2.4.0</spring-boot-maven-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
     
     <modules>
         <module>spring-homework-1</module>
+        <module>spring-homework-2</module>
     </modules>
 
 </project>
