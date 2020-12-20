@@ -1,10 +1,7 @@
 package ru.otus.spring.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.config.AppProps;
 import ru.otus.spring.domain.Question;
 
 import java.util.List;
@@ -15,8 +12,7 @@ public class TestUserServiceImpl implements TestUserService {
 
     private final IOService ioService;
     private final OutputFormatter outputFormatter;
-    private final MessageSource messageSource;
-    private final AppProps props;
+    private final LocalizationService localizationService;
 
     @Override
     public int testing(List<Question> questions) {
@@ -27,13 +23,12 @@ public class TestUserServiceImpl implements TestUserService {
             do {
                 try {
                     ioService.printStringNewLine(outputFormatter.formatQuestion(question));
-                    ioService.printString(messageSource.getMessage("input.question", null,  props.getLocale()));
+                    ioService.printString(localizationService.getLocalMessage("input.question", null));
                     index = Integer.parseInt(ioService.readString());
                     index--;
                     result += question.getAnswers().get(index).getIsRight() ? 1 : 0;
                 } catch (NumberFormatException | IndexOutOfBoundsException ex) {
-                    ioService.printStringNewLine(messageSource.getMessage("input.question.wrong", null,
-                            props.getLocale()));
+                    ioService.printStringNewLine(localizationService.getLocalMessage("input.question.wrong", null));
                     index = -1;
                 }
             } while (index == -1);

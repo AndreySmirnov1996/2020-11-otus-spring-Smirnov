@@ -18,7 +18,6 @@ public class TestingServiceImpl implements TestingService {
     private final TestUserService testUserService;
     private final UserHandler userHandler;
 
-
     public void processing() {
         User user = userHandler.readUserData();
         List<Question> questions = questionDao.findAll();
