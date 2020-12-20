@@ -1,12 +1,10 @@
 package ru.otus.spring.service;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.MessageSource;
-import ru.otus.spring.config.AppProps;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.spring.domain.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,23 +12,16 @@ import static org.mockito.Mockito.when;
 import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_NAME;
 import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_SURNAME;
 
-/**
- * Данные тест использует заглушку на ввод,
- * поэтому не получается его перевести на @SpringBootTest
- */
+@DisplayName("Cервис UserHandler должен")
+@SpringBootTest
+class UserHandlerTest {
 
-@ExtendWith(MockitoExtension.class)
-class UserHandlerImplTest {
-
-    @InjectMocks
-    private UserHandlerImpl userHandler;
-    @Mock
+    @Autowired
+    private UserHandler userHandler;
+    @MockBean
     private IOService ioService;
-    @Mock
-    private MessageSource messageSource;
-    @Mock
-    private AppProps props;
 
+    @DisplayName("считать имя и фамилию пользователя.")
     @Test
     void readUserData() {
         when(ioService.readString()).thenReturn(DEFAULT_USER_NAME).thenReturn(DEFAULT_USER_SURNAME);
