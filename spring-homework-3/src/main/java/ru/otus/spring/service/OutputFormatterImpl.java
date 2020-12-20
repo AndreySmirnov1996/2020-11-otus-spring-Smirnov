@@ -24,11 +24,4 @@ public class OutputFormatterImpl implements OutputFormatter {
         }
         return sbAnswers.toString();
     }
-
-    @Override
-    public String formatResult(TestResult restResult) {
-        return "Dear " + restResult.getUser().getName() + " " + restResult.getUser().getSurName() +
-                ", your result is " + restResult.getTestResult() + " right answers from " +
-                restResult.getQuestionsNumber() + " questions.";
-    }
 }

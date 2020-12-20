@@ -35,17 +35,4 @@ class OutputFormatterTest {
         Question question = new Question("question", answerList);
         assertEquals("question\n1)value1  2)value2  ", outputFormatter.formatQuestion(question));
     }
-
-    @DisplayName("форматировать результат.")
-    @Test
-    void formatResult() {
-        TestResult testResult = TestResult.builder()
-                .user(new User("name", "surName"))
-                .questionsNumber(DEFAULT_QUESTIONS_NUMBER)
-                .testResult(DEFAULT_TEST_RESULT)
-                .build();
-
-        assertEquals("Dear name surName, your result is 5 right answers from 5 questions.",
-                outputFormatter.formatResult(testResult));
-    }
 }
