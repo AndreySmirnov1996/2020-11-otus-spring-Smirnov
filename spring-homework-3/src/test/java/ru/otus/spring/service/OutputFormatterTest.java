@@ -36,7 +36,7 @@ class OutputFormatterTest {
         assertEquals("question\n1)value1  2)value2  ", outputFormatter.formatQuestion(question));
     }
 
-    @DisplayName("форматировать результат")
+    @DisplayName("форматировать результат.")
     @Test
     void formatResult() {
         TestResult testResult = TestResult.builder()

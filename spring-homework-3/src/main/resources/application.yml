@@ -1,2 +1,7 @@
+spring:
+  messages:
+    basename: i18n/bundle
+    fallback-to-system-locale: false
+
 application:
   locale: ru_RU
