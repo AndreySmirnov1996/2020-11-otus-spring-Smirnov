@@ -1,24 +1,28 @@
 package ru.otus.spring.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
-@Service
-@Slf4j
 public class IOServiceImpl implements IOService {
 
-    private static final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+    private PrintStream printStream;
+
+    public IOServiceImpl(InputStream inputStream, OutputStream outputStream) {
+        this.scanner = new Scanner(inputStream);
+        this.printStream = (PrintStream) outputStream;
+    }
 
     @Override
     public final void printStringNewLine(String s) {
-        System.out.println(s);
+        printStream.println(s);
     }
 
     @Override
     public final void printString(String s) {
-        System.out.print(s);
+        printStream.print(s);
     }
 
     @Override
