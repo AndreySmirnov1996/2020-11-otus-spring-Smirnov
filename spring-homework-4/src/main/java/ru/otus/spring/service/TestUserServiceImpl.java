@@ -10,6 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TestUserServiceImpl implements TestUserService {
 
+    //TODO сделать новый сервис обертку IOService + LocalizationService
     private final IOService ioService;
     private final OutputFormatter outputFormatter;
     private final LocalizationService localizationService;
@@ -23,12 +24,12 @@ public class TestUserServiceImpl implements TestUserService {
             do {
                 try {
                     ioService.printStringNewLine(outputFormatter.formatQuestion(question));
-                    ioService.printString(localizationService.getLocalMessage("input.question", null));
+                    ioService.printString(localizationService.getLocalMessage("input.question"));
                     index = Integer.parseInt(ioService.readString());
                     index--;
                     result += question.getAnswers().get(index).getIsRight() ? 1 : 0;
                 } catch (NumberFormatException | IndexOutOfBoundsException ex) {
-                    ioService.printStringNewLine(localizationService.getLocalMessage("input.question.wrong", null));
+                    ioService.printStringNewLine(localizationService.getLocalMessage("input.question.wrong"));
                     index = -1;
                 }
             } while (index == -1);

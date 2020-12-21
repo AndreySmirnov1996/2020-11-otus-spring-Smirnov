@@ -7,8 +7,8 @@ import java.util.Scanner;
 
 public class IOServiceImpl implements IOService {
 
-    private Scanner scanner;
-    private PrintStream printStream;
+    private final Scanner scanner;
+    private final PrintStream printStream;
 
     public IOServiceImpl(InputStream inputStream, OutputStream outputStream) {
         this.scanner = new Scanner(inputStream);

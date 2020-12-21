@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otus.spring.domain.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,10 +13,7 @@ import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_NAME;
 import static ru.otus.spring.base.DefaultConstant.DEFAULT_USER_SURNAME;
 
 @DisplayName("Cервис UserHandler должен")
-@SpringBootTest(properties = {
-        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
+@SpringBootTest
 class UserHandlerTest {
 
     @Autowired

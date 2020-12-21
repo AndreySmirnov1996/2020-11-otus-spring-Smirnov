@@ -22,13 +22,11 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CsvFileReader implements FileReader {
 
-    private static final String FILENAME_TEMPLATE = "questions_%s.csv";
-
     private final AppProps props;
 
     @Override
     public List<Question> readFile() {
-        String fileName = String.format(FILENAME_TEMPLATE, props.getLocale());
+        String fileName = props.getFileName();
         List<Question> questions = new ArrayList<>();
 
         try (CSVReader csvReader = new CSVReader(new InputStreamReader(
