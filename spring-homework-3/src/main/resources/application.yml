@@ -5,3 +5,4 @@ spring:
 
 application:
   locale: ru_RU
+  filenametemplate: questions_%s.csv
