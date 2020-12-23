@@ -12,7 +12,5 @@ public class Main {
 
     public static void main(String[] args) {
         var context = SpringApplication.run(Main.class, args);
-        TestingService testingService = context.getBean(TestingService.class);
-        testingService.processing();
     }
 }

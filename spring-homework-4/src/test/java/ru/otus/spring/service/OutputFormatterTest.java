@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.shell.jline.InteractiveShellApplicationRunner;
+import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otus.spring.domain.Answer;
 import ru.otus.spring.domain.Question;
 import ru.otus.spring.domain.TestResult;
@@ -17,7 +19,10 @@ import static ru.otus.spring.base.DefaultConstant.DEFAULT_QUESTIONS_NUMBER;
 import static ru.otus.spring.base.DefaultConstant.DEFAULT_TEST_RESULT;
 
 @DisplayName("Сервис OutputFormatter должен")
-@SpringBootTest
+@SpringBootTest(properties = {
+        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
+        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
+})
 class OutputFormatterTest {
     private static final String DEFAULT_ANSWER_VALUE_1 = "value1";
     private static final String DEFAULT_ANSWER_VALUE_2 = "value2";
