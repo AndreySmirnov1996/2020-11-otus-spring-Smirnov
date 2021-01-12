@@ -63,7 +63,7 @@ public class BookRepositoryImpl implements BookRepository {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
 
-        return Optional.of(jdbc.queryForObject("select * from books b join genres g on b.genre_id=g.id where id=:id",
+        return Optional.of(jdbc.queryForObject("select * from books b join genres g on b.genre_id=g.id where b.id=:id",
                 sqlParameterSource, new BookRowMapper()));
     }
 
@@ -112,7 +112,7 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
 
-    private static class BookRowMapper implements RowMapper<Book> {
+    public static class BookRowMapper implements RowMapper<Book> {
         @Override
         public Book mapRow(ResultSet rs, int i) throws SQLException {
             return new Book(rs.getLong(1), rs.getString(2), rs.getString(3),

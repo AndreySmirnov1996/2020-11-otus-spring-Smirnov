@@ -37,7 +37,6 @@ public class BookCrudCommands {
             String[] keyValue = str.split("=");
             bookParams.put(keyValue[0], "'" + keyValue[1] + "'");
         }
-
         bookRepository.update(bookId, bookParams);
     }
 
