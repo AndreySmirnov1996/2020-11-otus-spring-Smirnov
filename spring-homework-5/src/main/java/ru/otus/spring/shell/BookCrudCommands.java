@@ -4,16 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Genre;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.service.IOService;
+import ru.otus.spring.service.ObjectFactory;
 import ru.otus.spring.service.OutputFormatter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @ShellComponent
@@ -23,6 +19,7 @@ public class BookCrudCommands {
     private final IOService ioService;
     private final OutputFormatter outputFormatter;
     private final BookRepository bookRepository;
+    private final ObjectFactory objectFactory;
 
     @ShellMethod(value = "Delete book by id (example: db 1)", key = {"db", "delete book"})
     public void deleteBook(@ShellOption long bookId) {
@@ -31,12 +28,7 @@ public class BookCrudCommands {
 
     @ShellMethod(value = "Update book by id (example: ub 1 cost=123.12;title=new_title)", key = {"ub", "update book"})
     public void updateBook(@ShellOption long bookId, @ShellOption String params) {
-        Map<String, String> bookParams = new HashMap<>();
-        String[] paramsArray = params.split(";");
-        for (String str : paramsArray) {
-            String[] keyValue = str.split("=");
-            bookParams.put(keyValue[0], "'" + keyValue[1] + "'");
-        }
+        Map<String, String> bookParams = objectFactory.createBookParamsMap(params);
         bookRepository.update(bookId, bookParams);
     }
 
@@ -50,35 +42,7 @@ public class BookCrudCommands {
     public void saveBook(@ShellOption long bookId, @ShellOption String title, @ShellOption String cost,
                          @ShellOption long genreId, @ShellOption(defaultValue = "NONE") String genreName,
                          @ShellOption(defaultValue = "NONE") String authors) {
-        List<Author> authorsList = new ArrayList<>();
-        if (!authors.equals("NONE")) {
-            String[] authorsArray = authors.split(";");
-            for (String str : authorsArray) {
-                String[] data = str.split(",");
-                Author author;
-                if (data.length == 4) {
-                    author = Author.builder()
-                            .id(Long.parseLong(data[0]))
-                            .name(data[1])
-                            .surname(data[2])
-                            .phone(data[3])
-                            .build();
-                } else {
-                    author = Author.builder()
-                            .id(Long.parseLong(data[0]))
-                            .build();
-                }
-                authorsList.add(author);
-            }
-        }
-        Genre genre = genreName.equals("NONE") ? new Genre(genreId) : new Genre(genreId, genreName);
-        Book book = Book.builder()
-                .id(bookId)
-                .title(title)
-                .cost(cost)
-                .genre(genre)
-                .authors(authorsList)
-                .build();
+        Book book = objectFactory.createBook(bookId, title, cost, genreId, genreName, authors);
         bookRepository.save(book);
     }
 

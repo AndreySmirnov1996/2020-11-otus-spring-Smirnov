@@ -18,6 +18,7 @@ import ru.otus.spring.repositories.AuthorRepositoryImpl;
 import ru.otus.spring.repositories.BookRepositoryImpl;
 import ru.otus.spring.repositories.BookRepositoryImpl.BookRowMapper;
 import ru.otus.spring.repositories.GenreRepositoryImpl;
+import ru.otus.spring.service.ObjectFactoryImpl;
 import ru.otus.spring.service.OutputFormatterImpl;
 
 import java.util.List;
@@ -32,7 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 })
 @Import({BookRepositoryImpl.class, GenreRepositoryImpl.class,
         AuthorRepositoryImpl.class, AuthorBookRelationRepositoryImpl.class,
-        BookCrudCommands.class, BeansConfig.class, OutputFormatterImpl.class})
+        BookCrudCommands.class, BeansConfig.class, OutputFormatterImpl.class,
+        ObjectFactoryImpl.class})
 class BookCrudCommandsTest {
 
     private static final String FIND_BOOK_BY_ID = "select * from books b join genres g on b.genre_id=g.id where b.id=:id";
