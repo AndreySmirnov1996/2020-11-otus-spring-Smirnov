@@ -5,7 +5,6 @@ import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ObjectFactory {
 
@@ -14,6 +13,4 @@ public interface ObjectFactory {
     List<Author> createAuthors(String authors);
 
     Genre createGenre(long genreId, String genreName);
-
-    Map<String, String> createBookParamsMap(String bookParams);
 }

@@ -6,9 +6,7 @@ import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ObjectFactoryImpl implements ObjectFactory {
@@ -53,16 +51,5 @@ public class ObjectFactoryImpl implements ObjectFactory {
     @Override
     public Genre createGenre(long genreId, String genreName) {
         return genreName.equals("NONE") ? new Genre(genreId) : new Genre(genreId, genreName);
-    }
-
-    @Override
-    public Map<String, String> createBookParamsMap(String bookParams) {
-        Map<String, String> bookParamsMap = new HashMap<>();
-        String[] paramsArray = bookParams.split(";");
-        for (String str : paramsArray) {
-            String[] keyValue = str.split("=");
-            bookParamsMap.put(keyValue[0], "'" + keyValue[1] + "'");
-        }
-        return bookParamsMap;
     }
 }
