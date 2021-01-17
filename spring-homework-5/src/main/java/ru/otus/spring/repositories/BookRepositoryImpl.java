@@ -17,7 +17,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.SELECT_RELATIONS_BY_BOOK_ID;
@@ -110,24 +109,11 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public void update(long bookId, Map<String, String> bookParams) {
+    public void updateTitle(long bookId, String newTitle) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", bookId);
-
-        StringBuilder sb = new StringBuilder();
-
-        for (Map.Entry<String, String> param : bookParams.entrySet()) {
-            sb.append(param.getKey());
-            sb.append("=");
-            sb.append(param.getValue());
-            sb.append(",");
-        }
-
-        sb.deleteCharAt(sb.length() - 1);
-
-        String sql = "update books set " + sb + " where id=:id";
-
-        jdbc.update(sql, sqlParameterSource);
+        String updateTitleSql = "update books set title='" + newTitle + "' where id=:id";
+        jdbc.update(updateTitleSql, sqlParameterSource);
     }
 
 
