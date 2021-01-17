@@ -47,8 +47,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     private static class AuthorRowMapper implements RowMapper<Author> {
         @Override
         public Author mapRow(ResultSet rs, int i) throws SQLException {
-            return new Author(rs.getLong(1), rs.getString(2),
-                    rs.getString(3), new ArrayList<>());
+            return new Author(rs.getLong(1), rs.getString(2), rs.getString(3));
         }
     }
 

@@ -40,7 +40,7 @@ class BookRepositoryImplTest {
     @Test
     void findById() {
         Genre genre = new Genre(99, "new_genre_name");
-        Author author = new Author(89, "author_name", "author_surname", new ArrayList<>());
+        Author author = new Author(89, "author_name", "author_surname");
         Book book = new Book(512, "book_title", genre, new ArrayList<>());
         AuthorBookRelation authorBookRelation = new AuthorBookRelation(author.getId(), book.getId());
         book.getAuthors().add(author);
