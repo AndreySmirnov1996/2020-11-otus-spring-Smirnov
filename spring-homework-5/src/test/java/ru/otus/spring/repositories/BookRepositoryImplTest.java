@@ -28,7 +28,7 @@ class BookRepositoryImplTest {
 
     private static final String INSERT_BOOK = "insert into books (id, title, cost, genre_id) values (:id, :title, :cost, :genre_id)";
     private static final String INSERT_GENRE = "insert into genres (`id`, `name`) values (:id, :name)";
-    private static final String INSERT_AUTHOR = "insert into authors (id, `name`, surname, phone) values (:id, :name, :surname, :phone)";
+    private static final String INSERT_AUTHOR = "insert into authors (id, `name`, surname) values (:id, :name, :surname)";
     private static final String INSERT_AUTHOR_BOOK_RELATION = "insert into authors_books (author_id, book_id) values (:author_id, :book_id);";
 
     @Autowired
@@ -40,7 +40,7 @@ class BookRepositoryImplTest {
     @Test
     void findById() {
         Genre genre = new Genre(99, "new_genre_name");
-        Author author = new Author(89, "author_name", "author_surname", "88005553535", new ArrayList<>());
+        Author author = new Author(89, "author_name", "author_surname", new ArrayList<>());
         Book book = new Book(512, "book_title", "99.99", genre, new ArrayList<>());
         AuthorBookRelation authorBookRelation = new AuthorBookRelation(author.getId(), book.getId());
         book.getAuthors().add(author);

@@ -48,7 +48,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         @Override
         public Author mapRow(ResultSet rs, int i) throws SQLException {
             return new Author(rs.getLong(1), rs.getString(2),
-                    rs.getString(3), rs.getString(4), new ArrayList<>());
+                    rs.getString(3), new ArrayList<>());
         }
     }
 
@@ -56,8 +56,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         return new MapSqlParameterSource()
                 .addValue("id", author.getId())
                 .addValue("name", author.getName())
-                .addValue("surname", author.getSurname())
-                .addValue("phone", author.getPhone());
+                .addValue("surname", author.getSurname());
     }
 
 }

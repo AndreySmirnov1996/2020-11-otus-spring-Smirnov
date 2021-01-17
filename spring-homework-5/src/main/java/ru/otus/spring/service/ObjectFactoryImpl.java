@@ -39,7 +39,6 @@ public class ObjectFactoryImpl implements ObjectFactory {
                             .id(Long.parseLong(data[0]))
                             .name(data[1])
                             .surname(data[2])
-                            .phone(data[3])
                             .build();
                 } else {
                     author = Author.builder()
