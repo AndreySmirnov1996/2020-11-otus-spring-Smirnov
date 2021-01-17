@@ -37,7 +37,7 @@ public class BookCrudCommands {
         bookRepository.findAll().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
-    @ShellMethod(value = "Save book (example: sb 3 book_name_3 2 genre_name_2 1;5,Name1,Surname1,8802131233)",
+    @ShellMethod(value = "Save book (example: sb 3 book_name_3 2 genre_name_2 1;5,Name1,Surname1)",
             key = {"sb", "save book"})
     public void saveBook(@ShellOption long bookId, @ShellOption String title, @ShellOption long genreId,
                          @ShellOption(defaultValue = "NONE") String genreName,

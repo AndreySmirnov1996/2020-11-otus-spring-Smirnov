@@ -22,7 +22,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public void save(Author author) {
-        jdbc.update("insert into authors (id, `name`, surname, phone) values (:id, :name, :surname, :phone)",
+        jdbc.update("insert into authors (id, `name`, surname) values (:id, :name, :surname)",
                 getFullSqlParamsAuthor(author));
     }
 

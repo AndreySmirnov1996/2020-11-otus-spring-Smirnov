@@ -15,7 +15,6 @@ import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otus.spring.config.BeansConfig;
 import ru.otus.spring.domain.Book;
-import ru.otus.spring.repositories.AuthorBookRelationRepositoryImpl;
 import ru.otus.spring.repositories.AuthorRepositoryImpl;
 import ru.otus.spring.repositories.BookRepositoryImpl;
 import ru.otus.spring.repositories.BookRepositoryImpl.BookRowMapper;
@@ -33,11 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
 })
 @Import({BookRepositoryImpl.class, BookCrudCommands.class,
-        BeansConfig.class, ObjectFactoryImpl.class})
+        BeansConfig.class, ObjectFactoryImpl.class, AuthorRepositoryImpl.class})
 @MockBeans({
-        @MockBean(AuthorBookRelationRepositoryImpl.class),
         @MockBean(OutputFormatterImpl.class),
-        @MockBean(AuthorRepositoryImpl.class),
         @MockBean(GenreRepositoryImpl.class)
 })
 class BookCrudCommandsTest {
@@ -55,7 +52,7 @@ class BookCrudCommandsTest {
         val bookId = 7L;
         val bookTitle = "book_title_new";
 
-        bookCrudCommands.saveBook(bookId, bookTitle,1, "NONE", "1;5,Name1,Surname1,8802131233");
+        bookCrudCommands.saveBook(bookId, bookTitle,1, "NONE", "1;5,Name1,Surname1");
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", bookId);

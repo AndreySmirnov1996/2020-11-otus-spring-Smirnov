@@ -1,5 +1,6 @@
 package ru.otus.spring.repositories;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,9 +9,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.AuthorBookRelation;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
+import ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.AuthorBookRelationRowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.SELECT_RELATIONS_BY_BOOK_ID;
+import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.getFullSqlParamsAuthorBookRelation;
+
 @Repository
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
@@ -26,14 +30,16 @@ public class BookRepositoryImpl implements BookRepository {
     private final NamedParameterJdbcOperations jdbc;
     private final GenreRepository genreRepository;
     private final AuthorRepository authorRepository;
-    private final AuthorBookRelationRepository authorBookRelationRepository;
 
     @Override
     public void delete(long bookId) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+        SqlParameterSource sqlParameterSourceBook = new MapSqlParameterSource()
                 .addValue("id", bookId);
-        authorBookRelationRepository.deleteRelationsByBookId(bookId);
-        jdbc.update("delete from books where id=:id", sqlParameterSource);
+        SqlParameterSource sqlParameterSourceRelation = new MapSqlParameterSource()
+                .addValue("book_id", bookId);
+
+        jdbc.update("delete from authors_books where book_id=:book_id", sqlParameterSourceRelation);
+        jdbc.update("delete from books where id=:id", sqlParameterSourceBook);
     }
 
 
@@ -49,8 +55,11 @@ public class BookRepositoryImpl implements BookRepository {
 
         jdbc.update("insert into books (id, title, genre_id) values (:id, :title, :genre_id)",
                 getFullSqlParamsBook(book));
-        book.getAuthors().forEach(f ->
-                authorBookRelationRepository.save(new AuthorBookRelation(f.getId(), book.getId())));
+        book.getAuthors().forEach(author -> {
+            SqlParameterSource sqlParameterSource =
+                    getFullSqlParamsAuthorBookRelation(new AuthorBookRelation(author.getId(), book.getId()));
+            jdbc.update("insert into authors_books (author_id, book_id) values (:author_id, :book_id)", sqlParameterSource);
+        });
     }
 
     @Override
@@ -61,7 +70,10 @@ public class BookRepositoryImpl implements BookRepository {
                 sqlParameterSource, new BookRowMapper());
 
         if (book != null) {
-            var authorBookRelationList = authorBookRelationRepository.findAuthorBookRelationsByBookId(id);
+            SqlParameterSource sqlParameterSourceRelation = new MapSqlParameterSource()
+                    .addValue("book_id", book.getId());
+            var authorBookRelationList = jdbc.query(SELECT_RELATIONS_BY_BOOK_ID, sqlParameterSourceRelation,
+                    new AuthorBookRelationRowMapper());
             List<Author> authors = new ArrayList<>();
             authorBookRelationList.forEach(relation -> {
                         val authorOpt = authorRepository.findById(relation.getAuthorId());
@@ -81,9 +93,10 @@ public class BookRepositoryImpl implements BookRepository {
                 new BookRowMapper());
 
         books.forEach(book -> {
+            SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                    .addValue("book_id", book.getId());
             List<AuthorBookRelation> authorBookRelationList =
-                    authorBookRelationRepository.findAuthorBookRelationsByBookId(book.getId());
-
+                    jdbc.query(SELECT_RELATIONS_BY_BOOK_ID, sqlParameterSource, new AuthorBookRelationRowMapper());
             List<Author> authors = new ArrayList<>();
             authorBookRelationList.forEach(relation -> {
                 var authorOpt = authorRepository.findById(relation.getAuthorId());
@@ -131,7 +144,30 @@ public class BookRepositoryImpl implements BookRepository {
                 .addValue("id", book.getId())
                 .addValue("title", book.getTitle())
                 .addValue("genre_id", book.getGenre().getId())
-                .addValue("name",  book.getGenre().getName());
+                .addValue("name", book.getGenre().getName());
+    }
+
+    @RequiredArgsConstructor
+    @Data
+    public static class AuthorBookRelation {
+        public static final String SELECT_RELATIONS_BY_BOOK_ID = "select * from authors_books where book_id=:book_id";
+        public static final String SELECT_RELATIONS_BY_AUTHOR_ID = "select * from authors_books where author_id=:author_id";
+
+        private final long authorId;
+        private final long bookId;
+
+        static SqlParameterSource getFullSqlParamsAuthorBookRelation(AuthorBookRelation authorBookRelation) {
+            return new MapSqlParameterSource()
+                    .addValue("author_id", authorBookRelation.getAuthorId())
+                    .addValue("book_id", authorBookRelation.getBookId());
+        }
+
+        public static class AuthorBookRelationRowMapper implements RowMapper<AuthorBookRelation> {
+            @Override
+            public AuthorBookRelation mapRow(ResultSet rs, int i) throws SQLException {
+                return new AuthorBookRelation(rs.getLong(1), rs.getLong(2));
+            }
+        }
     }
 
 }

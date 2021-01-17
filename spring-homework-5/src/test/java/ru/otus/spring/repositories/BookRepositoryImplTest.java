@@ -8,22 +8,21 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.AuthorBookRelation;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
+import ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation;
 
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static ru.otus.spring.repositories.AuthorBookRelationRepositoryImpl.getFullSqlParamsAuthorBookRelation;
 import static ru.otus.spring.repositories.AuthorRepositoryImpl.getFullSqlParamsAuthor;
+import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.getFullSqlParamsAuthorBookRelation;
 import static ru.otus.spring.repositories.BookRepositoryImpl.getFullSqlParamsBook;
 import static ru.otus.spring.repositories.GenreRepositoryImpl.getFullSqlParamsGenre;
 
 @DisplayName("Репозиторий на основе Jdbc для работы со студентами ")
 @JdbcTest
-@Import({BookRepositoryImpl.class, GenreRepositoryImpl.class,
-        AuthorRepositoryImpl.class, AuthorBookRelationRepositoryImpl.class})
+@Import({BookRepositoryImpl.class, GenreRepositoryImpl.class, AuthorRepositoryImpl.class})
 class BookRepositoryImplTest {
 
     private static final String INSERT_BOOK = "insert into books (id, title, genre_id) values (:id, :title, :genre_id)";
