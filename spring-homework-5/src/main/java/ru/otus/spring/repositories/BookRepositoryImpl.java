@@ -1,6 +1,7 @@
 package ru.otus.spring.repositories;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -38,12 +39,6 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void save(Book book) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", book.getId())
-                .addValue("title", book.getTitle())
-                .addValue("cost", book.getCost())
-                .addValue("genre_id", book.getGenre().getId());
-
         if (book.getGenre().getName() != null) {
             genreRepository.save(book.getGenre());
         }
@@ -53,7 +48,7 @@ public class BookRepositoryImpl implements BookRepository {
         }
 
         jdbc.update("insert into books (id, title, cost, genre_id) values (:id, :title, :cost, :genre_id)",
-                sqlParameterSource);
+                getFullSqlParamsBook(book));
         book.getAuthors().forEach(f ->
                 authorBookRelationRepository.save(new AuthorBookRelation(f.getId(), book.getId())));
     }
@@ -62,14 +57,27 @@ public class BookRepositoryImpl implements BookRepository {
     public Optional<Book> findById(long id) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
+        Book book = jdbc.queryForObject("select b.id, b.title, b.cost, g.id, g.`name` from books b join genres g on b.genre_id=g.id where b.id=:id",
+                sqlParameterSource, new BookRowMapper());
 
-        return Optional.of(jdbc.queryForObject("select * from books b join genres g on b.genre_id=g.id where b.id=:id",
-                sqlParameterSource, new BookRowMapper()));
+        if (book != null) {
+            var authorBookRelationList = authorBookRelationRepository.findAuthorBookRelationsByBookId(id);
+            List<Author> authors = new ArrayList<>();
+            authorBookRelationList.forEach(relation -> {
+                        val authorOpt = authorRepository.findById(relation.getAuthorId());
+                        authorOpt.ifPresent(authors::add);
+                    }
+            );
+            book.getAuthors().addAll(authors);
+            return Optional.of(book);
+        }
+
+        return Optional.empty();
     }
 
     @Override
     public List<Book> findAll() {
-        List<Book> books = jdbc.query("select * from books b join genres g on b.genre_id=g.id order by g.id",
+        List<Book> books = jdbc.query("select b.id, b.title, b.cost, g.id, g.`name` from books b join genres g on b.genre_id=g.id order by g.id",
                 new BookRowMapper());
 
         books.forEach(f -> {
@@ -118,6 +126,15 @@ public class BookRepositoryImpl implements BookRepository {
             return new Book(rs.getLong(1), rs.getString(2), rs.getString(3),
                     new Genre(rs.getLong(4), rs.getString(5)), new ArrayList<>());
         }
+    }
+
+    static SqlParameterSource getFullSqlParamsBook(Book book) {
+        return new MapSqlParameterSource()
+                .addValue("id", book.getId())
+                .addValue("title", book.getTitle())
+                .addValue("cost", book.getCost())
+                .addValue("genre_id", book.getGenre().getId())
+                .addValue("name",  book.getGenre().getName());
     }
 
 }

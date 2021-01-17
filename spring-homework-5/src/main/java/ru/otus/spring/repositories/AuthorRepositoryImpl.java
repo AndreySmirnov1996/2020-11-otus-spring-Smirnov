@@ -22,13 +22,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public void save(Author author) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", author.getId())
-                .addValue("`name`", author.getName())
-                .addValue("surname", author.getSurname())
-                .addValue("phone", author.getPhone());
-
-        jdbc.update("insert into authors (id, `name`, surname, phone) values (:id, :`name`, :surname, :phone)", sqlParameterSource);
+        jdbc.update("insert into authors (id, `name`, surname, phone) values (:id, :name, :surname, :phone)",
+                getFullSqlParamsAuthor(author));
     }
 
     @Override
@@ -45,7 +40,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
 
-        return Optional.of(jdbc.queryForObject("select * from authors where id=:id",
+        return Optional.ofNullable(jdbc.queryForObject("select * from authors where id=:id",
                 sqlParameterSource, new AuthorRowMapper()));
     }
 
@@ -55,6 +50,14 @@ public class AuthorRepositoryImpl implements AuthorRepository {
             return new Author(rs.getLong(1), rs.getString(2),
                     rs.getString(3), rs.getString(4), new ArrayList<>());
         }
+    }
+
+    static SqlParameterSource getFullSqlParamsAuthor(Author author){
+        return new MapSqlParameterSource()
+                .addValue("id", author.getId())
+                .addValue("name", author.getName())
+                .addValue("surname", author.getSurname())
+                .addValue("phone", author.getPhone());
     }
 
 }

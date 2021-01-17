@@ -20,11 +20,8 @@ public class AuthorBookRelationRepositoryImpl implements AuthorBookRelationRepos
 
     @Override
     public void save(AuthorBookRelation authorBookRelation) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("author_id", authorBookRelation.getAuthorId())
-                .addValue("book_id", authorBookRelation.getBookId());
-
-        jdbc.update("insert into authors_books (author_id, book_id) values (:author_id, :book_id)", sqlParameterSource);
+        jdbc.update("insert into authors_books (author_id, book_id) values (:author_id, :book_id)",
+                getFullSqlParamsAuthorBookRelation(authorBookRelation));
     }
 
     @Override
@@ -60,6 +57,12 @@ public class AuthorBookRelationRepositoryImpl implements AuthorBookRelationRepos
         public AuthorBookRelation mapRow(ResultSet rs, int i) throws SQLException {
             return new AuthorBookRelation(rs.getLong(1), rs.getLong(2));
         }
+    }
+
+    static SqlParameterSource getFullSqlParamsAuthorBookRelation(AuthorBookRelation authorBookRelation){
+        return new MapSqlParameterSource()
+                .addValue("author_id", authorBookRelation.getAuthorId())
+                .addValue("book_id", authorBookRelation.getBookId());
     }
 
 }
