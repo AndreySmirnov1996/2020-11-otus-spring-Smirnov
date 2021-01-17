@@ -47,7 +47,7 @@ public class BookRepositoryImpl implements BookRepository {
             authorRepository.saveAll(book.getAuthors());
         }
 
-        jdbc.update("insert into books (id, title, cost, genre_id) values (:id, :title, :cost, :genre_id)",
+        jdbc.update("insert into books (id, title, genre_id) values (:id, :title, :genre_id)",
                 getFullSqlParamsBook(book));
         book.getAuthors().forEach(f ->
                 authorBookRelationRepository.save(new AuthorBookRelation(f.getId(), book.getId())));
@@ -57,7 +57,7 @@ public class BookRepositoryImpl implements BookRepository {
     public Optional<Book> findById(long id) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        Book book = jdbc.queryForObject("select b.id, b.title, b.cost, g.id, g.`name` from books b join genres g on b.genre_id=g.id where b.id=:id",
+        Book book = jdbc.queryForObject("select b.id, b.title, g.id, g.`name` from books b join genres g on b.genre_id=g.id where b.id=:id",
                 sqlParameterSource, new BookRowMapper());
 
         if (book != null) {
@@ -77,7 +77,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> findAll() {
-        List<Book> books = jdbc.query("select b.id, b.title, b.cost, g.id, g.`name` from books b join genres g on b.genre_id=g.id order by g.id",
+        List<Book> books = jdbc.query("select b.id, b.title, g.id, g.`name` from books b join genres g on b.genre_id=g.id order by g.id",
                 new BookRowMapper());
 
         books.forEach(book -> {
@@ -121,8 +121,8 @@ public class BookRepositoryImpl implements BookRepository {
     public static class BookRowMapper implements RowMapper<Book> {
         @Override
         public Book mapRow(ResultSet rs, int i) throws SQLException {
-            return new Book(rs.getLong(1), rs.getString(2), rs.getString(3),
-                    new Genre(rs.getLong(4), rs.getString(5)), new ArrayList<>());
+            return new Book(rs.getLong(1), rs.getString(2),
+                    new Genre(rs.getLong(3), rs.getString(4)), new ArrayList<>());
         }
     }
 
@@ -130,7 +130,6 @@ public class BookRepositoryImpl implements BookRepository {
         return new MapSqlParameterSource()
                 .addValue("id", book.getId())
                 .addValue("title", book.getTitle())
-                .addValue("cost", book.getCost())
                 .addValue("genre_id", book.getGenre().getId())
                 .addValue("name",  book.getGenre().getName());
     }

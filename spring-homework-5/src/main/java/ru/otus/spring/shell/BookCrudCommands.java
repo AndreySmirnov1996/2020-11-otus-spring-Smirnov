@@ -26,7 +26,7 @@ public class BookCrudCommands {
         bookRepository.delete(bookId);
     }
 
-    @ShellMethod(value = "Update book by id (example: ub 1 cost=123.12;title=new_title)", key = {"ub", "update book"})
+    @ShellMethod(value = "Update book by id (example: ub 1 title=new_title)", key = {"ub", "update book"})
     public void updateBook(@ShellOption long bookId, @ShellOption String params) {
         Map<String, String> bookParams = objectFactory.createBookParamsMap(params);
         bookRepository.update(bookId, bookParams);
@@ -37,12 +37,12 @@ public class BookCrudCommands {
         bookRepository.findAll().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
-    @ShellMethod(value = "Save book (example: sb 3 book_name_3 3.33 2 genre_name_2 1;5,Name1,Surname1,8802131233)",
+    @ShellMethod(value = "Save book (example: sb 3 book_name_3 2 genre_name_2 1;5,Name1,Surname1,8802131233)",
             key = {"sb", "save book"})
-    public void saveBook(@ShellOption long bookId, @ShellOption String title, @ShellOption String cost,
-                         @ShellOption long genreId, @ShellOption(defaultValue = "NONE") String genreName,
+    public void saveBook(@ShellOption long bookId, @ShellOption String title, @ShellOption long genreId,
+                         @ShellOption(defaultValue = "NONE") String genreName,
                          @ShellOption(defaultValue = "NONE") String authors) {
-        Book book = objectFactory.createBook(bookId, title, cost, genreId, genreName, authors);
+        Book book = objectFactory.createBook(bookId, title, genreId, genreName, authors);
         bookRepository.save(book);
     }
 

@@ -13,14 +13,13 @@ import java.util.Map;
 @Service
 public class ObjectFactoryImpl implements ObjectFactory {
     @Override
-    public Book createBook(long bookId, String title, String cost, long genreId, String genreName, String authors) {
+    public Book createBook(long bookId, String title, long genreId, String genreName, String authors) {
         List<Author> authorsList = createAuthors(authors);
         Genre genre = createGenre(genreId, genreName);
 
         return Book.builder()
                 .id(bookId)
                 .title(title)
-                .cost(cost)
                 .genre(genre)
                 .authors(authorsList)
                 .build();
@@ -34,7 +33,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
             for (String str : authorsArray) {
                 String[] data = str.split(",");
                 Author author;
-                if (data.length == 4) {
+                if (data.length == 3) {
                     author = Author.builder()
                             .id(Long.parseLong(data[0]))
                             .name(data[1])

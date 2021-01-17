@@ -54,9 +54,8 @@ class BookCrudCommandsTest {
     void saveBookTest() {
         val bookId = 7L;
         val bookTitle = "book_title_new";
-        val cost = "22.8";
 
-        bookCrudCommands.saveBook(bookId, bookTitle, cost, 1, "NONE", "1;5,Name1,Surname1,8802131233");
+        bookCrudCommands.saveBook(bookId, bookTitle,1, "NONE", "1;5,Name1,Surname1,8802131233");
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", bookId);
@@ -66,7 +65,6 @@ class BookCrudCommandsTest {
         books.forEach(f -> {
             assertEquals(bookId, f.getId());
             assertEquals(bookTitle, f.getTitle());
-            assertEquals(cost, f.getCost());
             assertEquals(1, f.getGenre().getId());
             //Чтобы достать авторов нужно делать еще запросы через таблицу связей, поэтому нет проверки на авторов.
         });

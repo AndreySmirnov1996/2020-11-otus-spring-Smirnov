@@ -13,7 +13,6 @@ public class Book {
     private final long id;
 
     private final String title;
-    private final String cost;
     private final Genre genre;
     private final List<Author> authors;
 }
