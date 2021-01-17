@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -24,17 +26,20 @@ import ru.otus.spring.service.OutputFormatterImpl;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DisplayName("Shell команды на основе Jdbc для работы с книгами  ")
 @JdbcTest(properties = {
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
 })
-@Import({BookRepositoryImpl.class, GenreRepositoryImpl.class,
-        AuthorRepositoryImpl.class, AuthorBookRelationRepositoryImpl.class,
-        BookCrudCommands.class, BeansConfig.class, OutputFormatterImpl.class,
-        ObjectFactoryImpl.class})
+@Import({BookRepositoryImpl.class, BookCrudCommands.class,
+        BeansConfig.class, ObjectFactoryImpl.class})
+@MockBeans({
+        @MockBean(AuthorBookRelationRepositoryImpl.class),
+        @MockBean(OutputFormatterImpl.class),
+        @MockBean(AuthorRepositoryImpl.class),
+        @MockBean(GenreRepositoryImpl.class)
+})
 class BookCrudCommandsTest {
 
     private static final String FIND_BOOK_BY_ID = "select * from books b join genres g on b.genre_id=g.id where b.id=:id";
