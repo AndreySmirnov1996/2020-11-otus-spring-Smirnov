@@ -80,18 +80,16 @@ public class BookRepositoryImpl implements BookRepository {
         List<Book> books = jdbc.query("select b.id, b.title, b.cost, g.id, g.`name` from books b join genres g on b.genre_id=g.id order by g.id",
                 new BookRowMapper());
 
-        books.forEach(f -> {
+        books.forEach(book -> {
             List<AuthorBookRelation> authorBookRelationList =
-                    authorBookRelationRepository.findAuthorBookRelationsByBookId(f.getId());
+                    authorBookRelationRepository.findAuthorBookRelationsByBookId(book.getId());
 
             List<Author> authors = new ArrayList<>();
-            authorBookRelationList.forEach(v -> {
-                var authorOpt = authorRepository.findById(v.getAuthorId());
+            authorBookRelationList.forEach(relation -> {
+                var authorOpt = authorRepository.findById(relation.getAuthorId());
                 authorOpt.ifPresent(authors::add);
             });
-
-            f.getAuthors().addAll(authors);
-
+            book.getAuthors().addAll(authors);
         });
 
 
