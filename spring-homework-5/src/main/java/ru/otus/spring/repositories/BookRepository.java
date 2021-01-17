@@ -14,7 +14,7 @@ public interface BookRepository {
 
     List<Book> findAll();
 
-    void update(long bookId, Map<String, String> bookParams);
+    void updateTitle(long bookId, String newTitle);
 
     void delete(long bookId);
 }

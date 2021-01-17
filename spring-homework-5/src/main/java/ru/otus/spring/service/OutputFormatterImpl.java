@@ -16,7 +16,6 @@ public class OutputFormatterImpl implements OutputFormatter {
         StringBuilder sb = new StringBuilder();
         sb.append("id: ").append(book.getId());
         sb.append("\ttitle: ").append(book.getTitle());
-        sb.append("\tcost: ").append(book.getCost());
         sb.append("\tgenre_id: ").append(book.getGenre().getId());
         sb.append("\tauthors: ");
 
