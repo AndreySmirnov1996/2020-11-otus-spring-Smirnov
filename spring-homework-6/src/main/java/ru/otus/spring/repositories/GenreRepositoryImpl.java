@@ -22,10 +22,7 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public void save(Genre genre) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", genre.getId())
-                .addValue("name", genre.getName());
-        jdbc.update("insert into genres (`id`, `name`) values (:id, :name);", sqlParameterSource);
+        jdbc.update("insert into genres (`id`, `name`) values (:id, :name);", getFullSqlParamsGenre(genre));
     }
 
     @Override
@@ -42,4 +39,10 @@ public class GenreRepositoryImpl implements GenreRepository {
         }
     }
 
+
+    static SqlParameterSource getFullSqlParamsGenre(Genre genre) {
+        return new MapSqlParameterSource()
+                .addValue("id", genre.getId())
+                .addValue("name", genre.getName());
+    }
 }

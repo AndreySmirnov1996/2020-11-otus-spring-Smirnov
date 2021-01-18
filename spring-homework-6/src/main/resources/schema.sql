@@ -21,7 +21,6 @@ create table books
 (
     id       bigint primary key,
     title    varchar2(255),
-    cost     varchar2(255),
     genre_id bigint references genres (id)
 );
 
