@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.BookEntity;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.ObjectFactory;
@@ -39,7 +39,7 @@ public class BookCrudCommands {
     public void saveBook(@ShellOption long bookId, @ShellOption String title, @ShellOption long genreId,
                          @ShellOption(defaultValue = "NONE") String genreName,
                          @ShellOption(defaultValue = "NONE") String authors) {
-        Book book = objectFactory.createBook(bookId, title, genreId, genreName, authors);
+        BookEntity book = objectFactory.createBookEntity(bookId, title, genreId, genreName, authors);
         bookRepository.save(book);
     }
 

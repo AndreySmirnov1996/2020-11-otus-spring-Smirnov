@@ -1,11 +1,11 @@
 package ru.otus.spring.repositories;
 
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.GenreEntity;
 
 import java.util.List;
 
 public interface GenreRepository {
-    void save(Genre genre);
+    void save(GenreEntity genre);
 
-    List<Genre> findAll();
+    List<GenreEntity> findAll();
 }

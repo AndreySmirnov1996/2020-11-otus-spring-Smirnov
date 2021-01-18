@@ -1,16 +1,14 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.*;
 
 import java.util.List;
 
 public interface ObjectFactory {
 
-    Book createBook(long bookId, String title, long genreId, String genreName, String authors);
+    BookEntity createBookEntity(long bookId, String title, long genreId, String genreName, String authors);
 
-    List<Author> createAuthors(String authors);
+    List<AuthorEntity> createAuthors(String authors);
 
-    Genre createGenre(long genreId, String genreName);
+    GenreEntity createGenreEntity(long genreId, String genreName);
 }

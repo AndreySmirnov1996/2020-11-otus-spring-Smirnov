@@ -1,9 +1,7 @@
 package ru.otus.spring.service;
 
 import org.springframework.stereotype.Service;
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +9,11 @@ import java.util.List;
 @Service
 public class ObjectFactoryImpl implements ObjectFactory {
     @Override
-    public Book createBook(long bookId, String title, long genreId, String genreName, String authors) {
-        List<Author> authorsList = createAuthors(authors);
-        Genre genre = createGenre(genreId, genreName);
+    public BookEntity createBookEntity(long bookId, String title, long genreId, String genreName, String authors) {
+        List<AuthorEntity> authorsList = createAuthors(authors);
+        GenreEntity genre = createGenreEntity(genreId, genreName);
 
-        return Book.builder()
+        return BookEntity.builder()
                 .id(bookId)
                 .title(title)
                 .genre(genre)
@@ -24,21 +22,21 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     @Override
-    public List<Author> createAuthors(String authors) {
-        List<Author> authorsList = new ArrayList<>();
+    public List<AuthorEntity> createAuthors(String authors) {
+        List<AuthorEntity> authorsList = new ArrayList<>();
         if (!authors.equals("NONE")) {
             String[] authorsArray = authors.split(";");
             for (String str : authorsArray) {
                 String[] data = str.split(",");
-                Author author;
+                AuthorEntity author;
                 if (data.length == 3) {
-                    author = Author.builder()
+                    author = AuthorEntity.builder()
                             .id(Long.parseLong(data[0]))
                             .name(data[1])
                             .surname(data[2])
                             .build();
                 } else {
-                    author = Author.builder()
+                    author = AuthorEntity.builder()
                             .id(Long.parseLong(data[0]))
                             .build();
                 }
@@ -49,7 +47,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     @Override
-    public Genre createGenre(long genreId, String genreName) {
-        return genreName.equals("NONE") ? new Genre(genreId) : new Genre(genreId, genreName);
+    public GenreEntity createGenreEntity(long genreId, String genreName) {
+        return genreName.equals("NONE") ? new GenreEntity(genreId) : new GenreEntity(genreId, genreName);
     }
 }

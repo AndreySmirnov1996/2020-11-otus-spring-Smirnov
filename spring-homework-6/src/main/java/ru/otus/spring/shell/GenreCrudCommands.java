@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.GenreEntity;
 import ru.otus.spring.repositories.GenreRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.OutputFormatter;
@@ -37,6 +37,6 @@ public class GenreCrudCommands {
 
     @ShellMethod(value = "Save genre", key = {"sg", "save genre"})
     public void saveGenre(@ShellOption long id, @ShellOption String name) {
-        genreRepository.save(new Genre(id, name));
+        genreRepository.save(new GenreEntity(id, name));
     }
 }

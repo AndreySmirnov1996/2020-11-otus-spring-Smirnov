@@ -1,18 +1,17 @@
 package ru.otus.spring.repositories;
 
-import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.BookEntity;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface BookRepository {
 
-    void save(Book book);
+    void save(BookEntity book);
 
-    Optional<Book> findById(long id);
+    Optional<BookEntity> findById(long id);
 
-    List<Book> findAll();
+    List<BookEntity> findAll();
 
     void updateTitle(long bookId, String newTitle);
 

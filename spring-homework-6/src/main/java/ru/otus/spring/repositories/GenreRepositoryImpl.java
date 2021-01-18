@@ -1,48 +1,25 @@
 package ru.otus.spring.repositories;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.GenreEntity;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
 public class GenreRepositoryImpl implements GenreRepository {
 
-    @Autowired
-    private final NamedParameterJdbcOperations jdbc;
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
-    public void save(Genre genre) {
-        jdbc.update("insert into genres (`id`, `name`) values (:id, :name);", getFullSqlParamsGenre(genre));
+    public void save(GenreEntity genre) {
+        em.persist(genre);
     }
 
     @Override
-    public List<Genre> findAll() {
-        return jdbc.query("select `id`, `name` " +
-                "from genres " +
-                "order by id", new GenreRowMapper());
-    }
-
-    private static class GenreRowMapper implements RowMapper<Genre> {
-        @Override
-        public Genre mapRow(ResultSet rs, int i) throws SQLException {
-            return new Genre(rs.getLong(1), rs.getString(2));
-        }
-    }
-
-
-    static SqlParameterSource getFullSqlParamsGenre(Genre genre) {
-        return new MapSqlParameterSource()
-                .addValue("id", genre.getId())
-                .addValue("name", genre.getName());
+    public List<GenreEntity> findAll() {
+        return em.createQuery("select e from GenreEntity e", GenreEntity.class).getResultList();
     }
 }
