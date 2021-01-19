@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.SELECT_RELATIONS_BY_BOOK_ID;
-import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.getFullSqlParamsAuthorBookRelation;
 
 @Repository
 @RequiredArgsConstructor
@@ -50,11 +49,9 @@ public class BookRepositoryImpl implements BookRepository {
 
         jdbc.update("insert into books (id, title, genre_id) values (:id, :title, :genre_id)",
                 getFullSqlParamsBook(book));
-        book.getAuthors().forEach(author -> {
-            SqlParameterSource sqlParameterSource =
-                    getFullSqlParamsAuthorBookRelation(new AuthorBookRelation(author.getId(), book.getId()));
-            jdbc.update("insert into authors_books (author_id, book_id) values (:author_id, :book_id)", sqlParameterSource);
-        });
+        book.getAuthors().forEach(author ->
+                jdbc.update("insert into authors_books (author_id, book_id) values (:author_id, :book_id)",
+                        Map.of("author_id", author.getId(), "book_id", book.getId())));
     }
 
     @Override
