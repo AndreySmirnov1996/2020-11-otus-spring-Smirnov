@@ -15,10 +15,7 @@ import ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.AuthorB
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.SELECT_RELATIONS_BY_BOOK_ID;
 
@@ -42,16 +39,18 @@ public class BookRepositoryImpl implements BookRepository {
         if (book.getGenre().getName() != null) {
             genreRepository.save(book.getGenre());
         }
-
         if (!book.getAuthors().isEmpty()) {
             authorRepository.saveAll(book.getAuthors());
         }
-
         jdbc.update("insert into books (id, title, genre_id) values (:id, :title, :genre_id)",
                 getFullSqlParamsBook(book));
-        book.getAuthors().forEach(author ->
-                jdbc.update("insert into authors_books (author_id, book_id) values (:author_id, :book_id)",
-                        Map.of("author_id", author.getId(), "book_id", book.getId())));
+
+        List<Map<String, Object>> mapsParamList = new ArrayList<>();
+        book.getAuthors().forEach(author -> mapsParamList
+                .add( Map.of("author_id", author.getId(), "book_id" , book.getId())));
+
+        jdbc.batchUpdate("insert into authors_books (author_id, book_id) values (:author_id, :book_id)",
+                mapsParamList.toArray(new Map[book.getAuthors().size()]));
     }
 
     @Override
