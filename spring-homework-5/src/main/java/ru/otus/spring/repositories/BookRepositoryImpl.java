@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.SELECT_RELATIONS_BY_BOOK_ID;
@@ -32,13 +33,8 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void delete(long bookId) {
-        SqlParameterSource sqlParameterSourceBook = new MapSqlParameterSource()
-                .addValue("id", bookId);
-        SqlParameterSource sqlParameterSourceRelation = new MapSqlParameterSource()
-                .addValue("book_id", bookId);
-
-        jdbc.update("delete from authors_books where book_id=:book_id", sqlParameterSourceRelation);
-        jdbc.update("delete from books where id=:id", sqlParameterSourceBook);
+        jdbc.update("delete from authors_books where book_id=:book_id", Map.of("book_id", bookId));
+        jdbc.update("delete from books where id=:id", Map.of("id", bookId));
     }
 
 
@@ -63,15 +59,11 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Optional<Book> findById(long id) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", id);
         Book book = jdbc.queryForObject("select b.id, b.title, g.id, g.`name` from books b join genres g on b.genre_id=g.id where b.id=:id",
-                sqlParameterSource, new BookRowMapper());
+                Map.of("id", id), new BookRowMapper());
 
         if (book != null) {
-            SqlParameterSource sqlParameterSourceRelation = new MapSqlParameterSource()
-                    .addValue("book_id", book.getId());
-            var authorBookRelationList = jdbc.query(SELECT_RELATIONS_BY_BOOK_ID, sqlParameterSourceRelation,
+            var authorBookRelationList = jdbc.query(SELECT_RELATIONS_BY_BOOK_ID, Map.of("book_id", book.getId()),
                     new AuthorBookRelationRowMapper());
             List<Author> authors = new ArrayList<>();
             authorBookRelationList.forEach(relation -> {
@@ -92,10 +84,8 @@ public class BookRepositoryImpl implements BookRepository {
                 new BookRowMapper());
 
         books.forEach(book -> {
-            SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                    .addValue("book_id", book.getId());
             List<AuthorBookRelation> authorBookRelationList =
-                    jdbc.query(SELECT_RELATIONS_BY_BOOK_ID, sqlParameterSource, new AuthorBookRelationRowMapper());
+                    jdbc.query(SELECT_RELATIONS_BY_BOOK_ID, Map.of("book_id", book.getId()), new AuthorBookRelationRowMapper());
             List<Author> authors = new ArrayList<>();
             authorBookRelationList.forEach(relation -> {
                 var authorOpt = authorRepository.findById(relation.getAuthorId());
@@ -110,10 +100,8 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void updateTitle(long bookId, String newTitle) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", bookId);
         String updateTitleSql = "update books set title='" + newTitle + "' where id=:id";
-        jdbc.update(updateTitleSql, sqlParameterSource);
+        jdbc.update(updateTitleSql, Map.of("id", bookId));
     }
 
 

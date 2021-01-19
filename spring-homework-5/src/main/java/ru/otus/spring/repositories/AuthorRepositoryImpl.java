@@ -10,8 +10,8 @@ import ru.otus.spring.domain.Author;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -37,11 +37,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public Optional<Author> findById(long id) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", id);
-
         return Optional.ofNullable(jdbc.queryForObject("select * from authors where id=:id",
-                sqlParameterSource, new AuthorRowMapper()));
+                Map.of("id", id), new AuthorRowMapper()));
     }
 
     private static class AuthorRowMapper implements RowMapper<Author> {
@@ -51,7 +48,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         }
     }
 
-    static SqlParameterSource getFullSqlParamsAuthor(Author author){
+    static SqlParameterSource getFullSqlParamsAuthor(Author author) {
         return new MapSqlParameterSource()
                 .addValue("id", author.getId())
                 .addValue("name", author.getName())
