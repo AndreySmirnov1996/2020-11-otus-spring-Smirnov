@@ -24,14 +24,14 @@ public class BookCrudCommands {
         bookRepository.delete(bookId);
     }
 
-    @ShellMethod(value = "Update title book by id (example: ub 1 new_title)", key = {"ubt", "update book title"})
+    @ShellMethod(value = "Update title book by id (example: ubt 1 new_title)", key = {"ubt", "update book title"})
     public void updateTitleBook(@ShellOption long bookId, @ShellOption String newTitle) {
         bookRepository.updateTitle(bookId, newTitle);
     }
 
     @ShellMethod(value = "Show all books (example: sab)", key = {"sab", "show all books"})
     public void showAllBooks() {
-        bookRepository.findAll().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
+        bookRepository.findAllWithAllInfo().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
     @ShellMethod(value = "Save book (example: sb 3 book_name_3 2 genre_name_2 1;5,Name1,Surname1)",

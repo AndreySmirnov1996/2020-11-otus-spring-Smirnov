@@ -45,6 +45,14 @@ public class AuthorRepositoryImpl implements AuthorRepository {
                 Map.of("id", id), new AuthorRowMapper()));
     }
 
+    @Override
+    public List<Author> findAllUsed() {
+        return jdbc.query("select a.id, a.name, a.surname " +
+                "from authors a inner join authors_books ab on a.id = ab.author_id " +
+                "group by a.id, a.name " +
+                "order by a.id", new AuthorRowMapper());
+    }
+
     private static class AuthorRowMapper implements RowMapper<Author> {
         @Override
         public Author mapRow(ResultSet rs, int i) throws SQLException {

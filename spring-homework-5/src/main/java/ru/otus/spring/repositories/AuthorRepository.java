@@ -12,4 +12,6 @@ public interface AuthorRepository {
     void saveAll(List<Author> authorList);
 
     Optional<Author> findById(long id);
+
+    List<Author> findAllUsed();
 }

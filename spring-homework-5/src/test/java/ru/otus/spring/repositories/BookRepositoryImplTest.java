@@ -10,15 +10,15 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
-import ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation;
+import ru.otus.spring.repositories.ext.AuthorBookRelation;
 
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.otus.spring.repositories.AuthorRepositoryImpl.getFullSqlParamsAuthor;
-import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.getFullSqlParamsAuthorBookRelation;
 import static ru.otus.spring.repositories.BookRepositoryImpl.getFullSqlParamsBook;
 import static ru.otus.spring.repositories.GenreRepositoryImpl.getFullSqlParamsGenre;
+import static ru.otus.spring.repositories.ext.AuthorBookRelation.getFullSqlParamsAuthorBookRelation;
 
 @DisplayName("Репозиторий на основе Jdbc для работы со студентами ")
 @JdbcTest

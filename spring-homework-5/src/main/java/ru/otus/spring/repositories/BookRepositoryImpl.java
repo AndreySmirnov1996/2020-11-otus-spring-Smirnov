@@ -1,6 +1,5 @@
 package ru.otus.spring.repositories;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,13 +10,16 @@ import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
-import ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.AuthorBookRelationRowMapper;
+import ru.otus.spring.repositories.ext.AuthorBookRelation;
+import ru.otus.spring.repositories.ext.AuthorBookRelation.AuthorBookRelationRowMapper;
+import ru.otus.spring.repositories.ext.BookResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static ru.otus.spring.repositories.BookRepositoryImpl.AuthorBookRelation.SELECT_RELATIONS_BY_BOOK_ID;
+import static ru.otus.spring.repositories.ext.AuthorBookRelation.SELECT_RELATIONS_BY_BOOK_ID;
 
 @Repository
 @RequiredArgsConstructor
@@ -47,7 +49,7 @@ public class BookRepositoryImpl implements BookRepository {
 
         List<Map<String, Object>> mapsParamList = new ArrayList<>();
         book.getAuthors().forEach(author -> mapsParamList
-                .add( Map.of("author_id", author.getId(), "book_id" , book.getId())));
+                .add(Map.of("author_id", author.getId(), "book_id", book.getId())));
 
         jdbc.batchUpdate("insert into authors_books (author_id, book_id) values (:author_id, :book_id)",
                 mapsParamList.toArray(new Map[book.getAuthors().size()]));
@@ -75,29 +77,37 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> findAll() {
-        List<Book> books = jdbc.query("select b.id, b.title, g.id, g.`name` from books b join genres g on b.genre_id=g.id order by g.id",
-                new BookRowMapper());
+    public List<Book> findAllWithAllInfo() {
+        List<Author> authors = authorRepository.findAllUsed();
+        List<AuthorBookRelation> relations = getAllRelations();
+        Map<Long, Book> books =
+                jdbc.query("select b.id, b.title, b.genre_id, g.`name` " +
+                                "from books b left join genres g on b.genre_id = g.id",
+                        new BookResultSetExtractor());
 
-        books.forEach(book -> {
-            List<AuthorBookRelation> authorBookRelationList =
-                    jdbc.query(SELECT_RELATIONS_BY_BOOK_ID, Map.of("book_id", book.getId()), new AuthorBookRelationRowMapper());
-            List<Author> authors = new ArrayList<>();
-            authorBookRelationList.forEach(relation -> {
-                var authorOpt = authorRepository.findById(relation.getAuthorId());
-                authorOpt.ifPresent(authors::add);
-            });
-            book.getAuthors().addAll(authors);
-        });
-
-
-        return books;
+        mergeBooksInfo(books, authors, relations);
+        return new ArrayList<>(Objects.requireNonNull(books).values());
     }
 
     @Override
     public void updateTitle(long bookId, String newTitle) {
         String updateTitleSql = "update books set title='" + newTitle + "' where id=:id";
         jdbc.update(updateTitleSql, Map.of("id", bookId));
+    }
+
+    private List<AuthorBookRelation> getAllRelations() {
+        return jdbc.query("select author_id, book_id from authors_books ab order by author_id, book_id",
+                (rs, i) -> new AuthorBookRelation(rs.getLong(1), rs.getLong(2)));
+    }
+
+    private void mergeBooksInfo(Map<Long, Book> books, List<Author> authors, List<AuthorBookRelation> relations) {
+        Map<Long, Author> authorsMap = authors.stream().collect(Collectors.toMap(Author::getId, c -> c));
+
+        relations.forEach(r -> {
+            if (books.containsKey(r.getBookId()) && authorsMap.containsKey(r.getAuthorId())) {
+                books.get(r.getBookId()).getAuthors().add(authorsMap.get(r.getAuthorId()));
+            }
+        });
     }
 
 
@@ -115,29 +125,6 @@ public class BookRepositoryImpl implements BookRepository {
                 .addValue("title", book.getTitle())
                 .addValue("genre_id", book.getGenre().getId())
                 .addValue("name", book.getGenre().getName());
-    }
-
-    @RequiredArgsConstructor
-    @Data
-    public static class AuthorBookRelation {
-        public static final String SELECT_RELATIONS_BY_BOOK_ID = "select * from authors_books where book_id=:book_id";
-        public static final String SELECT_RELATIONS_BY_AUTHOR_ID = "select * from authors_books where author_id=:author_id";
-
-        private final long authorId;
-        private final long bookId;
-
-        static SqlParameterSource getFullSqlParamsAuthorBookRelation(AuthorBookRelation authorBookRelation) {
-            return new MapSqlParameterSource()
-                    .addValue("author_id", authorBookRelation.getAuthorId())
-                    .addValue("book_id", authorBookRelation.getBookId());
-        }
-
-        public static class AuthorBookRelationRowMapper implements RowMapper<AuthorBookRelation> {
-            @Override
-            public AuthorBookRelation mapRow(ResultSet rs, int i) throws SQLException {
-                return new AuthorBookRelation(rs.getLong(1), rs.getLong(2));
-            }
-        }
     }
 
 }

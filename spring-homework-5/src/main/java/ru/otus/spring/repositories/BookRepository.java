@@ -12,7 +12,7 @@ public interface BookRepository {
 
     Optional<Book> findById(long id);
 
-    List<Book> findAll();
+    List<Book> findAllWithAllInfo();
 
     void updateTitle(long bookId, String newTitle);
 
