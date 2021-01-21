@@ -14,4 +14,6 @@ public interface AuthorRepository {
     Optional<Author> findById(long id);
 
     List<Author> findAllUsed();
+
+    List<Author> findAllByBookId(long id);
 }

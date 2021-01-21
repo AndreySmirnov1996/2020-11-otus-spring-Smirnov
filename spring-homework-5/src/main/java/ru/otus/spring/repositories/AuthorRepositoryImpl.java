@@ -53,6 +53,13 @@ public class AuthorRepositoryImpl implements AuthorRepository {
                 "order by a.id", new AuthorRowMapper());
     }
 
+    @Override
+    public List<Author> findAllByBookId(long bookId) {
+        return jdbc.query("select a.id, a.name, a.surname from authors a inner join authors_books ab " +
+                        "on a.id=ab.author_id where book_id=:book_id", Map.of("book_id", bookId),
+                new AuthorRowMapper());
+    }
+
     private static class AuthorRowMapper implements RowMapper<Author> {
         @Override
         public Author mapRow(ResultSet rs, int i) throws SQLException {
@@ -60,7 +67,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         }
     }
 
-    static SqlParameterSource getFullSqlParamsAuthor(Author author) {
+    private static SqlParameterSource getFullSqlParamsAuthor(Author author) {
         return new MapSqlParameterSource()
                 .addValue("id", author.getId())
                 .addValue("name", author.getName())

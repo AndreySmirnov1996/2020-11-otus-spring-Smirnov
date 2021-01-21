@@ -52,7 +52,7 @@ class BookCrudCommandsTest {
         val bookId = 7L;
         val bookTitle = "book_title_new";
 
-        bookCrudCommands.saveBook(bookId, bookTitle,1, "NONE", "1;5,Name1,Surname1");
+        bookCrudCommands.createBook(bookId, bookTitle,1, "NONE", "1;5,Name1,Surname1");
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", bookId);

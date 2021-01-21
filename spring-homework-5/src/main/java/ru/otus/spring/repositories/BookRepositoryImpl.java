@@ -1,7 +1,6 @@
 package ru.otus.spring.repositories;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -11,15 +10,12 @@ import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
 import ru.otus.spring.repositories.ext.AuthorBookRelation;
-import ru.otus.spring.repositories.ext.AuthorBookRelation.AuthorBookRelationRowMapper;
 import ru.otus.spring.repositories.ext.BookResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static ru.otus.spring.repositories.ext.AuthorBookRelation.SELECT_RELATIONS_BY_BOOK_ID;
 
 @Repository
 @RequiredArgsConstructor
@@ -61,14 +57,8 @@ public class BookRepositoryImpl implements BookRepository {
                 Map.of("id", id), new BookRowMapper());
 
         if (book != null) {
-            var authorBookRelationList = jdbc.query(SELECT_RELATIONS_BY_BOOK_ID, Map.of("book_id", book.getId()),
-                    new AuthorBookRelationRowMapper());
-            List<Author> authors = new ArrayList<>();
-            authorBookRelationList.forEach(relation -> {
-                        val authorOpt = authorRepository.findById(relation.getAuthorId());
-                        authorOpt.ifPresent(authors::add);
-                    }
-            );
+            List<Author> authors = authorRepository.findAllByBookId(book.getId());
+
             book.getAuthors().addAll(authors);
             return Optional.of(book);
         }

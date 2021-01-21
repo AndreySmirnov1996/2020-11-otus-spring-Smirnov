@@ -29,14 +29,14 @@ public class BookCrudCommands {
         bookRepository.updateTitle(bookId, newTitle);
     }
 
-    @ShellMethod(value = "Show all books (example: sab)", key = {"sab", "show all books"})
-    public void showAllBooks() {
+    @ShellMethod(value = "Read all books (example: rab)", key = {"rab", "read all books"})
+    public void readBooks() {
         bookRepository.findAllWithAllInfo().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
-    @ShellMethod(value = "Save book (example: sb 3 book_name_3 2 genre_name_2 1;5,Name1,Surname1)",
-            key = {"sb", "save book"})
-    public void saveBook(@ShellOption long bookId, @ShellOption String title, @ShellOption long genreId,
+    @ShellMethod(value = "Create book (example: cb 3 book_name_3 2 genre_name_2 1;5,Name1,Surname1)",
+            key = {"cb", "create book"})
+    public void createBook(@ShellOption long bookId, @ShellOption String title, @ShellOption long genreId,
                          @ShellOption(defaultValue = "NONE") String genreName,
                          @ShellOption(defaultValue = "NONE") String authors) {
         Book book = objectFactory.createBook(bookId, title, genreId, genreName, authors);
