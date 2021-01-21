@@ -7,8 +7,8 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.service.IOService;
-import ru.otus.spring.service.ObjectFactory;
 import ru.otus.spring.service.OutputFormatter;
+import ru.otus.spring.utils.ObjectFactory;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -17,7 +17,6 @@ public class BookCrudCommands {
     private final IOService ioService;
     private final OutputFormatter outputFormatter;
     private final BookRepository bookRepository;
-    private final ObjectFactory objectFactory;
 
     @ShellMethod(value = "Delete book by id (example: db 1)", key = {"db", "delete book"})
     public void deleteBook(@ShellOption long bookId) {
@@ -39,7 +38,7 @@ public class BookCrudCommands {
     public void createBook(@ShellOption long bookId, @ShellOption String title, @ShellOption long genreId,
                          @ShellOption(defaultValue = "NONE") String genreName,
                          @ShellOption(defaultValue = "NONE") String authors) {
-        Book book = objectFactory.createBook(bookId, title, genreId, genreName, authors);
+        Book book = ObjectFactory.createBook(bookId, title, genreId, genreName, authors);
         bookRepository.save(book);
     }
 

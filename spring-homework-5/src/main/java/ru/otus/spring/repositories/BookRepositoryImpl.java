@@ -101,7 +101,7 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
 
-    public static class BookRowMapper implements RowMapper<Book> {
+    private static class BookRowMapper implements RowMapper<Book> {
         @Override
         public Book mapRow(ResultSet rs, int i) throws SQLException {
             return new Book(rs.getLong(1), rs.getString(2),
@@ -109,7 +109,7 @@ public class BookRepositoryImpl implements BookRepository {
         }
     }
 
-    static SqlParameterSource getFullSqlParamsBook(Book book) {
+    private static SqlParameterSource getFullSqlParamsBook(Book book) {
         return new MapSqlParameterSource()
                 .addValue("id", book.getId())
                 .addValue("title", book.getTitle())

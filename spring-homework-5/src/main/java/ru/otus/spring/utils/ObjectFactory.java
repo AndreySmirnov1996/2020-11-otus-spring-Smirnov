@@ -1,6 +1,6 @@
-package ru.otus.spring.service;
+package ru.otus.spring.utils;
 
-import org.springframework.stereotype.Service;
+import lombok.experimental.UtilityClass;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
@@ -8,9 +8,9 @@ import ru.otus.spring.domain.Genre;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class ObjectFactoryImpl implements ObjectFactory {
-    @Override
+@UtilityClass
+public class ObjectFactory {
+
     public Book createBook(long bookId, String title, long genreId, String genreName, String authors) {
         List<Author> authorsList = createAuthors(authors);
         Genre genre = createGenre(genreId, genreName);
@@ -23,8 +23,8 @@ public class ObjectFactoryImpl implements ObjectFactory {
                 .build();
     }
 
-    @Override
-    public List<Author> createAuthors(String authors) {
+
+    private List<Author> createAuthors(String authors) {
         List<Author> authorsList = new ArrayList<>();
         if (!authors.equals("NONE")) {
             String[] authorsArray = authors.split(";");
@@ -48,8 +48,8 @@ public class ObjectFactoryImpl implements ObjectFactory {
         return authorsList;
     }
 
-    @Override
-    public Genre createGenre(long genreId, String genreName) {
+
+    private Genre createGenre(long genreId, String genreName) {
         return genreName.equals("NONE") ? new Genre(genreId) : new Genre(genreId, genreName);
     }
 }
