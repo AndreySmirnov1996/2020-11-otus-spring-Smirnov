@@ -1,6 +1,6 @@
-package ru.otus.spring.service;
+package ru.otus.spring.utils;
 
-import org.springframework.stereotype.Service;
+import lombok.experimental.UtilityClass;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
@@ -8,34 +8,32 @@ import ru.otus.spring.domain.Genre;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class ObjectFactoryImpl implements ObjectFactory {
-    @Override
-    public Book createBook(long bookId, String title, long genreId, String genreName, String authors) {
+@UtilityClass
+public class ObjectFactory {
+
+    public Book createBook(String title, String genreIdOrName, String authors) {
         List<Author> authorsList = createAuthors(authors);
-        Genre genre = createGenre(genreId, genreName);
+        Genre genre = createGenre(genreIdOrName);
 
         return Book.builder()
-                .id(bookId)
                 .title(title)
                 .genre(genre)
                 .authors(authorsList)
                 .build();
     }
 
-    @Override
-    public List<Author> createAuthors(String authors) {
+
+    private List<Author> createAuthors(String authors) {
         List<Author> authorsList = new ArrayList<>();
         if (!authors.equals("NONE")) {
             String[] authorsArray = authors.split(";");
             for (String str : authorsArray) {
                 String[] data = str.split(",");
                 Author author;
-                if (data.length == 3) {
+                if (data.length == 2) {
                     author = Author.builder()
-                            .id(Long.parseLong(data[0]))
-                            .name(data[1])
-                            .surname(data[2])
+                            .name(data[0])
+                            .surname(data[1])
                             .build();
                 } else {
                     author = Author.builder()
@@ -48,8 +46,13 @@ public class ObjectFactoryImpl implements ObjectFactory {
         return authorsList;
     }
 
-    @Override
-    public Genre createGenre(long genreId, String genreName) {
-        return genreName.equals("NONE") ? new Genre(genreId) : new Genre(genreId, genreName);
+
+    private Genre createGenre(String genreIdOrName) {
+        try {
+            long genreId = Long.parseLong(genreIdOrName);
+            return new Genre(genreId);
+        } catch (NumberFormatException ex) {
+            return new Genre(genreIdOrName);
+        }
     }
 }

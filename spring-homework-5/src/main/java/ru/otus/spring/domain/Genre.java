@@ -1,9 +1,12 @@
 package ru.otus.spring.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 public class Genre {
 
@@ -12,6 +15,7 @@ public class Genre {
         this.name = null;
     }
 
-    private final long id;
+    @Setter
+    private long id;
     private final String name;
 }

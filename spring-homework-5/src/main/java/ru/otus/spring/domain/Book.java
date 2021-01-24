@@ -1,16 +1,15 @@
 package ru.otus.spring.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
 public class Book {
-    private final long id;
+    @Setter
+    private long id;
 
     private final String title;
     private final Genre genre;
