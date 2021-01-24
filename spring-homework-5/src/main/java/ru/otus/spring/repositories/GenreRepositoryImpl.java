@@ -25,11 +25,7 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     private static final String INSERT_GENRE_QUERY = "insert into genres (`name`) values (?)";
 
-
-    @Autowired
     private final NamedParameterJdbcOperations jdbc;
-
-    @Autowired
     private final JdbcTemplate jdbcTemplate;
 
     @Override

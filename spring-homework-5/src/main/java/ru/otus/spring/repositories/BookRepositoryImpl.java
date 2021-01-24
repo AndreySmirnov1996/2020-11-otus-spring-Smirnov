@@ -1,10 +1,13 @@
 package ru.otus.spring.repositories;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
@@ -12,16 +15,20 @@ import ru.otus.spring.domain.Genre;
 import ru.otus.spring.repositories.ext.AuthorBookRelation;
 import ru.otus.spring.repositories.ext.BookResultSetExtractor;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
+    private static final String INSERT_BOOK_QUERY = "insert into books (title, genre_id) values (?, ?)";
 
     private final NamedParameterJdbcOperations jdbc;
+    private final JdbcTemplate jdbcTemplate;
     private final GenreRepository genreRepository;
     private final AuthorRepository authorRepository;
 
@@ -40,8 +47,16 @@ public class BookRepositoryImpl implements BookRepository {
             authorRepository.saveAll(book.getAuthors());
         }
 
-        jdbc.update("insert into books (title, genre_id) values (:title, :genre_id)",
-                getFullSqlParamsBook(book));
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(INSERT_BOOK_QUERY,
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, book.getTitle());
+            ps.setLong(2, book.getGenre().getId());
+            return ps;
+        }, keyHolder);
+
+        book.setId(Objects.requireNonNull(keyHolder.getKey()).longValue());
 
         List<Map<String, Object>> mapsParamList = new ArrayList<>();
         book.getAuthors().forEach(author -> mapsParamList
