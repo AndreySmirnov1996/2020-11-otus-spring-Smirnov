@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.BookEntity;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.service.IOService;
@@ -30,8 +31,15 @@ public class BookCrudCommands {
     }
 
     @ShellMethod(value = "Show all books (example: sab)", key = {"sab", "show all books"})
+    @Transactional(readOnly = true)
     public void showAllBooks() {
         bookRepository.findAll().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
+    }
+
+    @ShellMethod(value = "Read book by id (example: rb)", key = {"rb", "read book"})
+    @Transactional(readOnly = true)
+    public void findBookById(@ShellOption long bookId) {
+        bookRepository.findById(bookId).ifPresent(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
     @ShellMethod(value = "Save book (example: sb 3 book_name_3 2 genre_name_2 1;5,Name1,Surname1)",

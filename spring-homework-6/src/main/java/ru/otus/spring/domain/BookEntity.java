@@ -15,9 +15,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedEntityGraph(name = "BookWithGenreAndAuthors",
-        attributeNodes = {@NamedAttributeNode(value = "genre"),
-                @NamedAttributeNode(value = "authors")})
 public class BookEntity {
 
     @Id
@@ -31,6 +28,7 @@ public class BookEntity {
     @JoinColumn(name = "genre_id")
     private GenreEntity genre;
 
+    @BatchSize(size = 10)
     @ManyToMany(targetEntity = AuthorEntity.class, fetch = FetchType.LAZY)
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))

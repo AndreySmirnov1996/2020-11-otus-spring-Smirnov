@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringJdbcDemoApplication {
+public class SpringOrmDemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringJdbcDemoApplication.class, args);
+        SpringApplication.run(SpringOrmDemoApplication.class, args);
     }
 }

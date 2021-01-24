@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.BookEntity;
 
-import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -32,17 +32,21 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Optional<BookEntity> findById(long id) {
-        return Optional.ofNullable(em.find(BookEntity.class, id));
+        TypedQuery<BookEntity> query = em.createQuery(
+                "select e from BookEntity e where e.id = :id"
+                , BookEntity.class);
+        query.setParameter("id", id);
+        try {
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<BookEntity> findAll() {
-        EntityGraph<?> entityGraph = em.getEntityGraph("BookWithGenreAndAuthors");
         TypedQuery<BookEntity> query = em.createQuery("select s from BookEntity s", BookEntity.class);
-        query.setHint("javax.persistence.fetchgraph", entityGraph);
         return query.getResultList();
-
-        //return em.createQuery("select b from BookEntity b", BookEntity.class).getResultList();
     }
 
     @Override
