@@ -11,12 +11,11 @@ import java.util.List;
 @UtilityClass
 public class ObjectFactory {
 
-    public Book createBook(long bookId, String title, long genreId, String genreName, String authors) {
+    public Book createBook(String title, String genreIdOrName, String authors) {
         List<Author> authorsList = createAuthors(authors);
-        Genre genre = createGenre(genreId, genreName);
+        Genre genre = createGenre(genreIdOrName);
 
         return Book.builder()
-                .id(bookId)
                 .title(title)
                 .genre(genre)
                 .authors(authorsList)
@@ -31,11 +30,10 @@ public class ObjectFactory {
             for (String str : authorsArray) {
                 String[] data = str.split(",");
                 Author author;
-                if (data.length == 3) {
+                if (data.length == 2) {
                     author = Author.builder()
-                            .id(Long.parseLong(data[0]))
-                            .name(data[1])
-                            .surname(data[2])
+                            .name(data[0])
+                            .surname(data[1])
                             .build();
                 } else {
                     author = Author.builder()
@@ -49,7 +47,12 @@ public class ObjectFactory {
     }
 
 
-    private Genre createGenre(long genreId, String genreName) {
-        return genreName.equals("NONE") ? new Genre(genreId) : new Genre(genreId, genreName);
+    private Genre createGenre(String genreIdOrName) {
+        try {
+            long genreId = Long.parseLong(genreIdOrName);
+            return new Genre(genreId);
+        } catch (NumberFormatException ex) {
+            return new Genre(genreIdOrName);
+        }
     }
 }

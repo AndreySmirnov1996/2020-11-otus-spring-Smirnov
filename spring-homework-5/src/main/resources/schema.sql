@@ -1,7 +1,7 @@
 drop table if exists authors;
 create table authors
 (
-    id      bigint primary key,
+    id      bigint IDENTITY primary key,
     name    varchar2(255),
     surname varchar2(255),
     phone   varchar2(20)
@@ -11,7 +11,7 @@ create table authors
 drop table if exists genres;
 create table genres
 (
-    id   bigint primary key,
+    id   bigint IDENTITY primary key,
     name varchar2(255)
 );
 
@@ -19,7 +19,7 @@ create table genres
 drop table if exists books;
 create table books
 (
-    id       bigint primary key,
+    id       bigint IDENTITY primary key,
     title    varchar2(255),
     genre_id bigint references genres (id)
 );

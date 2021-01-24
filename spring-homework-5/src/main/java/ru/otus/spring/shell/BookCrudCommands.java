@@ -33,12 +33,11 @@ public class BookCrudCommands {
         bookRepository.findAllWithAllInfo().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
-    @ShellMethod(value = "Create book (example: cb 3 book_name_3 2 genre_name_2 1;5,Name1,Surname1)",
+    @ShellMethod(value = "Create book (example: cb book_name_3 genre_name_2 1;Name1,Surname1)",
             key = {"cb", "create book"})
-    public void createBook(@ShellOption long bookId, @ShellOption String title, @ShellOption long genreId,
-                         @ShellOption(defaultValue = "NONE") String genreName,
+    public void createBook(@ShellOption String title, @ShellOption(defaultValue = "NONE") String genreIdOrName,
                          @ShellOption(defaultValue = "NONE") String authors) {
-        Book book = ObjectFactory.createBook(bookId, title, genreId, genreName, authors);
+        Book book = ObjectFactory.createBook(title, genreIdOrName, authors);
         bookRepository.save(book);
     }
 

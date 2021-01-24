@@ -39,7 +39,8 @@ public class BookRepositoryImpl implements BookRepository {
         if (!book.getAuthors().isEmpty()) {
             authorRepository.saveAll(book.getAuthors());
         }
-        jdbc.update("insert into books (id, title, genre_id) values (:id, :title, :genre_id)",
+
+        jdbc.update("insert into books (title, genre_id) values (:title, :genre_id)",
                 getFullSqlParamsBook(book));
 
         List<Map<String, Object>> mapsParamList = new ArrayList<>();
@@ -110,7 +111,6 @@ public class BookRepositoryImpl implements BookRepository {
 
     private static SqlParameterSource getFullSqlParamsBook(Book book) {
         return new MapSqlParameterSource()
-                .addValue("id", book.getId())
                 .addValue("title", book.getTitle())
                 .addValue("genre_id", book.getGenre().getId())
                 .addValue("name", book.getGenre().getName());

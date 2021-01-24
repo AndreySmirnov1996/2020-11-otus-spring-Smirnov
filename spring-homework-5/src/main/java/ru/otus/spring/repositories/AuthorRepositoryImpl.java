@@ -29,14 +29,16 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public void saveAll(List<Author> authorList) {
+
         List<Map<String, Object>> mapsParamList = new ArrayList<>();
         authorList.stream().filter(author -> author.getName() != null && author.getSurname() != null)
                 .forEach(author ->
-                        mapsParamList.add(Map.of("id", author.getId(), "name", author.getName(),
+                        mapsParamList.add(Map.of("name", author.getName(),
                                 "surname", author.getSurname())));
 
-        jdbc.batchUpdate("insert into authors (id, `name`, surname) values (:id, :name, :surname)",
+        jdbc.batchUpdate("insert into authors (`name`, surname) values (:name, :surname)",
                 mapsParamList.toArray(new Map[mapsParamList.size()]));
+
     }
 
     @Override

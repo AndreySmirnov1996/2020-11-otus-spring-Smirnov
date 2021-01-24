@@ -36,16 +36,14 @@ class BookCrudCommandsTest {
     @DisplayName("должен сохранять книгу")
     @Test
     void saveBookTest() {
-        val bookId = 7L;
         val bookTitle = "book_title_new";
         val genre = new Genre(1);
         val authorsListSize = 2;
-        bookCrudCommands.createBook(bookId, bookTitle, genre.getId(), "NONE", "1;5,Name1,Surname1");
+        bookCrudCommands.createBook(bookTitle, "1", "1;5,Name1,Surname1");
 
         Mockito.verify(bookRepository).save(bookCaptor.capture());
         Book bookCaptureValue = bookCaptor.getValue();
 
-        assertEquals(bookId, bookCaptureValue.getId());
         assertEquals(bookTitle, bookCaptureValue.getTitle());
         assertEquals(genre, bookCaptureValue.getGenre());
         assertEquals(authorsListSize, bookCaptureValue.getAuthors().size());
