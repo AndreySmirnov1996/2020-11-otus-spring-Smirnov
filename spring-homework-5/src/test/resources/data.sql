@@ -1,3 +1,7 @@
+delete from books;
+delete from authors;
+delete from genres;
+
 insert into genres (id, `name`) values (11, 'genre_1');
 
 insert into authors (id, `name`, surname) values (11, 'author_name_1', 'author_surname_1');

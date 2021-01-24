@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DisplayName("Репозиторий на основе Jdbc для работы со студентами ")
 @JdbcTest
+@ActiveProfiles("test")
 @Import({BookRepositoryImpl.class, GenreRepositoryImpl.class, AuthorRepositoryImpl.class})
 class BookRepositoryImplTest {
 
@@ -32,7 +34,7 @@ class BookRepositoryImplTest {
         val bookId = 111;
         Author author1 = new Author(11, "author_name_1", "author_surname_1");
         Author author2 = new Author(22, "author_name_2", "author_surname_2");
-        Book book = createBook(bookId, "book_title", new Genre(11, "genre_1"),
+        Book book = createBook(bookId, "book_name_1", new Genre(11, "genre_1"),
                 Arrays.asList(author1, author2));
 
         val bookOpt = bookRepository.findById(bookId);
@@ -53,7 +55,7 @@ class BookRepositoryImplTest {
     @DisplayName("должен находить все книги со всей информацией")
     @Test
     void findAllWithAllInfoTest() {
-        val expectedBooks = 3;
+        val expectedBooks = 1;
         List<Book> books = bookRepository.findAllWithAllInfo();
         assertEquals(expectedBooks, books.size());
         books.forEach(book -> {

@@ -27,7 +27,6 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void delete(long bookId) {
-        jdbc.update("delete from authors_books where book_id=:book_id", Map.of("book_id", bookId));
         jdbc.update("delete from books where id=:id", Map.of("id", bookId));
     }
 
@@ -81,8 +80,8 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void updateTitle(long bookId, String newTitle) {
-        String updateTitleSql = "update books set title='" + newTitle + "' where id=:id";
-        jdbc.update(updateTitleSql, Map.of("id", bookId));
+        String updateTitleSql = "update books set title=:title where id=:id";
+        jdbc.update(updateTitleSql, Map.of("id", bookId, "title", newTitle));
     }
 
     private List<AuthorBookRelation> getAllRelations() {
