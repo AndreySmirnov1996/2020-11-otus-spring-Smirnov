@@ -15,7 +15,9 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public void save(GenreEntity genre) {
-        em.persist(genre);
+        if (genre.getId() <= 0) {
+            em.persist(genre);
+        }
     }
 
     @Override

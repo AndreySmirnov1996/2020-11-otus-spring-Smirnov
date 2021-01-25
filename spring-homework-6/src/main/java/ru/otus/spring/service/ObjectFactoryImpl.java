@@ -9,12 +9,11 @@ import java.util.List;
 @Service
 public class ObjectFactoryImpl implements ObjectFactory {
     @Override
-    public BookEntity createBookEntity(long bookId, String title, long genreId, String genreName, String authors) {
+    public BookEntity createBookEntity(String title, String genreName, String authors) {
         List<AuthorEntity> authorsList = createAuthors(authors);
-        GenreEntity genre = createGenreEntity(genreId, genreName);
+        GenreEntity genre = createGenreEntity(genreName);
 
         return BookEntity.builder()
-                .id(bookId)
                 .title(title)
                 .genre(genre)
                 .authors(authorsList)
@@ -47,7 +46,15 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     @Override
-    public GenreEntity createGenreEntity(long genreId, String genreName) {
-        return genreName.equals("NONE") ? new GenreEntity(genreId) : new GenreEntity(genreId, genreName);
+    public GenreEntity createGenreEntity(String genreIdOrName) {
+        GenreEntity genreEntity = new GenreEntity();
+        try {
+            long genreId = Long.parseLong(genreIdOrName);
+            genreEntity.setId(genreId);
+            return genreEntity;
+        } catch (NumberFormatException ex) {
+            genreEntity.setName(genreIdOrName);
+        }
+        return genreEntity;
     }
 }

@@ -1,7 +1,5 @@
 package ru.otus.spring.repositories;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.AuthorEntity;
 
@@ -20,7 +18,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public void save(AuthorEntity author) {
-        em.persist(author);
+        if (author.getId() <= 0) {
+            em.persist(author);
+        } else {
+            em.merge(author);
+        }
     }
 
     @Override

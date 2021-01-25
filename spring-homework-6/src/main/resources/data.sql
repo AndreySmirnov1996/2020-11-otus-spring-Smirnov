@@ -13,3 +13,7 @@ insert into authors_books (author_id, book_id) values (2, 1);
 insert into authors_books (author_id, book_id) values (2, 2);
 insert into authors_books (author_id, book_id) values (3, 2);
 insert into authors_books (author_id, book_id) values (4, 2);
+
+insert into comments (id, text, book_id) values (1, 'text1', 1);
+insert into comments (id, text, book_id) values (2, 'text2', 1);
+insert into comments (id, text, book_id) values (3, 'text3', 2);

@@ -24,7 +24,8 @@ public class BookEntity {
     @Column(name = "title")
     private String title;
 
-    @OneToOne(targetEntity = GenreEntity.class, cascade = CascadeType.ALL)
+    //@OneToOne(targetEntity = GenreEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = GenreEntity.class, fetch = FetchType.EAGER/*, cascade = CascadeType.ALL*/)
     @JoinColumn(name = "genre_id")
     private GenreEntity genre;
 

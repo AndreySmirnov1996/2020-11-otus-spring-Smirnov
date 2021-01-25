@@ -21,13 +21,14 @@ public class BookCrudCommands {
     private final ObjectFactory objectFactory;
 
     @ShellMethod(value = "Delete book by id (example: db 1)", key = {"db", "delete book"})
-    public void deleteBook(@ShellOption long bookId) {
+    public void deleteBookById(@ShellOption long bookId) {
         bookRepository.delete(bookId);
     }
 
-    @ShellMethod(value = "Update title book by id (example: ub 1 new_title)", key = {"ubt", "update book title"})
-    public void updateTitleBook(@ShellOption long bookId, @ShellOption String newTitle) {
-        bookRepository.updateTitle(bookId, newTitle);
+    @ShellMethod(value = "Update title book by id (example: ubt 1 new_title)", key = {"ubt", "update book title"})
+    @Transactional
+    public void updateBookTitleById(@ShellOption long bookId, @ShellOption String newTitle) {
+        bookRepository.updateTitleById(bookId, newTitle);
     }
 
     @ShellMethod(value = "Show all books (example: sab)", key = {"sab", "show all books"})
@@ -36,18 +37,23 @@ public class BookCrudCommands {
         bookRepository.findAll().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
-    @ShellMethod(value = "Read book by id (example: rb)", key = {"rb", "read book"})
+    @ShellMethod(value = "Show book by id (example: sbid 1)", key = {"sbid", "show book"})
     @Transactional(readOnly = true)
-    public void findBookById(@ShellOption long bookId) {
+    public void showBookById(@ShellOption long bookId) {
         bookRepository.findById(bookId).ifPresent(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
-    @ShellMethod(value = "Save book (example: sb 3 book_name_3 2 genre_name_2 1;5,Name1,Surname1)",
+    //For example:
+    //sb book_name_3 genre_name_2 1;5,Name1,Surname1
+    //sb book_name_3 1 1;5,Name1,Surname1
+    //sb book_name_228 1 3
+    @ShellMethod(value = "Save book (example: sb book_name_3 genre_name_2 1;5,Name1,Surname1)",
             key = {"sb", "save book"})
-    public void saveBook(@ShellOption long bookId, @ShellOption String title, @ShellOption long genreId,
+    @Transactional
+    public void saveBook(@ShellOption String title,
                          @ShellOption(defaultValue = "NONE") String genreName,
                          @ShellOption(defaultValue = "NONE") String authors) {
-        BookEntity book = objectFactory.createBookEntity(bookId, title, genreId, genreName, authors);
+        BookEntity book = objectFactory.createBookEntity(title, genreName, authors);
         bookRepository.save(book);
     }
 
