@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DisplayName("Репозиторий на основе Jdbc для работы со студентами ")
 @JdbcTest
-@ActiveProfiles("test")
 @Import({BookRepositoryImpl.class, GenreRepositoryImpl.class, AuthorRepositoryImpl.class})
 class BookRepositoryImplTest {
 
