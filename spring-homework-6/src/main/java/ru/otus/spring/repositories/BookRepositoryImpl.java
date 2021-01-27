@@ -23,17 +23,14 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void delete(long bookId) {
-        //TODO
-        log.info("MOCK delete");
+        Query query = em.createQuery("delete from BookEntity b where b.id = :id");
+        query.setParameter("id", bookId);
+        query.executeUpdate();
     }
 
 
     @Override
     public void save(BookEntity book) {
-//        if(book.getGenre().getName() == null){
-//
-//        }
-
         authorRepository.saveAll(book.getAuthors());
         genreRepository.save(book.getGenre());
         if (book.getId() <= 0) {

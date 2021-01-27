@@ -20,4 +20,8 @@ public class CommentEntity {
 
     @Column(name = "text")
     private String text;
+
+    @ManyToOne(targetEntity = BookEntity.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private BookEntity book;
 }

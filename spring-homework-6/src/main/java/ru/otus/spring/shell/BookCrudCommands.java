@@ -21,6 +21,7 @@ public class BookCrudCommands {
     private final ObjectFactory objectFactory;
 
     @ShellMethod(value = "Delete book by id (example: db 1)", key = {"db", "delete book"})
+    @Transactional
     public void deleteBookById(@ShellOption long bookId) {
         bookRepository.delete(bookId);
     }

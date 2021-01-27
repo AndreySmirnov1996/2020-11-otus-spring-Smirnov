@@ -5,6 +5,7 @@ import ru.otus.spring.domain.CommentEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,9 @@ public class CommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public void delete(long bookId) {
-
+    public void delete(long id) {
+//        Query query = em.createQuery("delete from CommentEntity c where c.book.bookId = :bookId");
+//        query.setParameter("bookId", bookId);
+//        query.executeUpdate();
     }
 }
