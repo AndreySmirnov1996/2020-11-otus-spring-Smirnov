@@ -1,8 +1,6 @@
 package ru.otus.spring.repositories;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.BookEntity;
 
@@ -11,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Slf4j
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
 
@@ -43,7 +40,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Optional<BookEntity> findById(long id) {
         TypedQuery<BookEntity> query = em.createQuery(
-                "select e from BookEntity e where e.id = :id", BookEntity.class);
+                "select b from BookEntity b where b.id = :id", BookEntity.class);
         query.setParameter("id", id);
         try {
             return Optional.of(query.getSingleResult());

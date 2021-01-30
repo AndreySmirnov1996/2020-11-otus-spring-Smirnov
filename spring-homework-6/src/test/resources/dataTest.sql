@@ -7,3 +7,5 @@ insert into books (id, title, genre_id) values (111, 'book_name_1', 11);
 
 insert into authors_books (author_id, book_id) values (11, 111);
 insert into authors_books (author_id, book_id) values (22, 111);
+
+insert into comments (id, text, book_id) values (7, 'Good book!', 111);

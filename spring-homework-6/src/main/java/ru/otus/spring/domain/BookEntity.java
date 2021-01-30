@@ -24,12 +24,11 @@ public class BookEntity {
     @Column(name = "title")
     private String title;
 
-    //@OneToOne(targetEntity = GenreEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ManyToOne(targetEntity = GenreEntity.class, fetch = FetchType.EAGER/*, cascade = CascadeType.ALL*/)
     @JoinColumn(name = "genre_id")
     private GenreEntity genre;
 
-    @BatchSize(size = 10)
+    @BatchSize(size = 5)
     @ManyToMany(targetEntity = AuthorEntity.class, fetch = FetchType.LAZY)
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
