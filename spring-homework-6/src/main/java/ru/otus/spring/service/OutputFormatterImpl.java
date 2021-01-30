@@ -4,6 +4,7 @@ package ru.otus.spring.service;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.domain.AuthorEntity;
 import ru.otus.spring.domain.BookEntity;
+import ru.otus.spring.domain.CommentEntity;
 import ru.otus.spring.domain.GenreEntity;
 
 import java.util.List;
@@ -29,5 +30,10 @@ public class OutputFormatterImpl implements OutputFormatter {
     @Override
     public String formatGenre(GenreEntity genre) {
         return "Id: " + genre.getId() + "\tName: " + genre.getName() + "\n";
+    }
+
+    @Override
+    public String formatComment(CommentEntity comment) {
+        return "Id: " + comment.getId() + "\tText: " + comment.getText() + "\tBookId: " + comment.getBook().getId() + "\n" ;
     }
 }

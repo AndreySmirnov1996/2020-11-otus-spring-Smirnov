@@ -57,4 +57,12 @@ public class ObjectFactoryImpl implements ObjectFactory {
         }
         return genreEntity;
     }
+
+    @Override
+    public CommentEntity createCommentEntity(String text, long bookId) {
+        return CommentEntity.builder()
+                .text(text)
+                .book(BookEntity.builder().id(bookId).build())
+                .build();
+    }
 }

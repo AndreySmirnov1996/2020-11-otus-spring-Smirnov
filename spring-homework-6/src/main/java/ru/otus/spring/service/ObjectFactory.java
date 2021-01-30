@@ -11,4 +11,6 @@ public interface ObjectFactory {
     List<AuthorEntity> createAuthors(String authors);
 
     GenreEntity createGenreEntity(String genreName);
+
+    CommentEntity createCommentEntity(String text, long bookId);
 }
