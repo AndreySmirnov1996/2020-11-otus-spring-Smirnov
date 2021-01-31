@@ -1,7 +1,7 @@
 package ru.otus.spring.repositories;
 
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.domain.CommentEntity;
+import ru.otus.spring.domain.Comment;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +14,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     private EntityManager em;
 
     @Override
-    public void save(CommentEntity comment) {
+    public void save(Comment comment) {
         if (comment.getId() <= 0) {
             em.persist(comment);
         } else {
@@ -23,9 +23,9 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public Optional<CommentEntity> findById(long id) {
-        TypedQuery<CommentEntity> query = em.createQuery(
-                "select c from CommentEntity c where c.id = :id", CommentEntity.class);
+    public Optional<Comment> findById(long id) {
+        TypedQuery<Comment> query = em.createQuery(
+                "select c from Comment c where c.id = :id", Comment.class);
         query.setParameter("id", id);
         try {
             return Optional.of(query.getSingleResult());
@@ -35,22 +35,22 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<CommentEntity> findAllByBookId(long bookId) {
-        TypedQuery<CommentEntity> query = em.createQuery(
-                "select c from CommentEntity c where c.book.id = :book_id", CommentEntity.class);
+    public List<Comment> findAllByBookId(long bookId) {
+        TypedQuery<Comment> query = em.createQuery(
+                "select c from Comment c where c.book.id = :book_id", Comment.class);
         query.setParameter("book_id", bookId);
         return query.getResultList();
     }
 
     @Override
-    public List<CommentEntity> findAll() {
-        TypedQuery<CommentEntity> query = em.createQuery("select c from CommentEntity c", CommentEntity.class);
+    public List<Comment> findAll() {
+        TypedQuery<Comment> query = em.createQuery("select c from Comment c", Comment.class);
         return query.getResultList();
     }
 
     @Override
     public void updateTextById(long id, String text) {
-        Query query = em.createQuery("update CommentEntity c set c.text = :text where c.id = :id");
+        Query query = em.createQuery("update Comment c set c.text = :text where c.id = :id");
         query.setParameter("id", id);
         query.setParameter("text", text);
         query.executeUpdate();
@@ -58,14 +58,14 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public void delete(long id) {
-        Query query = em.createQuery("delete from CommentEntity c where id = :id");
+        Query query = em.createQuery("delete from Comment c where id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
     }
 
     @Override
     public void deleteAllByBookId(long bookId) {
-        Query query = em.createQuery("delete from CommentEntity c where с.book.bookId = :bookId");
+        Query query = em.createQuery("delete from Comment c where с.book.bookId = :bookId");
         query.setParameter("bookId", bookId);
         query.executeUpdate();
     }

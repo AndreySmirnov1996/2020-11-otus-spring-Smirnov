@@ -5,7 +5,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.domain.GenreEntity;
+import ru.otus.spring.domain.Genre;
 import ru.otus.spring.repositories.GenreRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.OutputFormatter;
@@ -30,7 +30,7 @@ public class GenreCrudService {
     @ShellMethod(value = "Save genre (example: sg new_genre)", key = {"sg", "save genre"})
     @Transactional
     public void saveGenre(@ShellOption String name) {
-        genreRepository.save(GenreEntity.builder()
+        genreRepository.save(Genre.builder()
                 .name(name)
                 .build());
     }

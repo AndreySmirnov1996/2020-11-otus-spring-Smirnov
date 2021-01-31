@@ -2,10 +2,10 @@ package ru.otus.spring.service;
 
 
 import org.springframework.stereotype.Service;
-import ru.otus.spring.domain.AuthorEntity;
-import ru.otus.spring.domain.BookEntity;
-import ru.otus.spring.domain.CommentEntity;
-import ru.otus.spring.domain.GenreEntity;
+import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.Comment;
+import ru.otus.spring.domain.Genre;
 
 import java.util.List;
 
@@ -13,14 +13,14 @@ import java.util.List;
 public class OutputFormatterImpl implements OutputFormatter {
 
     @Override
-    public String formatBook(BookEntity book) {
+    public String formatBook(Book book) {
         StringBuilder sb = new StringBuilder();
         sb.append("id: ").append(book.getId());
         sb.append("\ttitle: ").append(book.getTitle());
         sb.append("\tgenre_id: ").append(book.getGenre().getId());
         sb.append("\tauthors: ");
 
-        List<AuthorEntity> authorsList = book.getAuthors();
+        List<Author> authorsList = book.getAuthors();
         authorsList.forEach(f -> sb.append(f.getName()).append(" ").append(f.getSurname()).append(", "));
         sb.delete(sb.length() - 2, sb.length() - 1);
 
@@ -28,12 +28,12 @@ public class OutputFormatterImpl implements OutputFormatter {
     }
 
     @Override
-    public String formatGenre(GenreEntity genre) {
+    public String formatGenre(Genre genre) {
         return "Id: " + genre.getId() + "\tName: " + genre.getName() + "\n";
     }
 
     @Override
-    public String formatComment(CommentEntity comment) {
+    public String formatComment(Comment comment) {
         return "Id: " + comment.getId() + "\tText: " + comment.getText() + "\tBookId: " + comment.getBook().getId() + "\n" ;
     }
 }

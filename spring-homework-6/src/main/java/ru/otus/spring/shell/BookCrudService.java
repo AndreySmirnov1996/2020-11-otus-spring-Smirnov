@@ -5,7 +5,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.domain.BookEntity;
+import ru.otus.spring.domain.Book;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.ObjectFactory;
@@ -54,7 +54,7 @@ public class BookCrudService {
     public void saveBook(@ShellOption String title,
                          @ShellOption(defaultValue = "NONE") String genreName,
                          @ShellOption(defaultValue = "NONE") String authors) {
-        BookEntity book = objectFactory.createBookEntity(title, genreName, authors);
+        Book book = objectFactory.createBookEntity(title, genreName, authors);
         bookRepository.save(book);
     }
 

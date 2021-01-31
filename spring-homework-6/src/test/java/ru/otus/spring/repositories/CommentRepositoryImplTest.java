@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import ru.otus.spring.domain.AuthorEntity;
-import ru.otus.spring.domain.BookEntity;
-import ru.otus.spring.domain.GenreEntity;
+import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.Genre;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,9 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DisplayName("Репозиторий на основе Jdbc для работы со студентами ")
+@DisplayName("Репозиторий на основе JPA для работы с книгами должен ")
 @DataJpaTest
-@Import({CommentRepositoryImpl.class, GenreRepositoryImpl.class, AuthorRepositoryImpl.class})
+@Import({CommentRepositoryImpl.class, GenreRepositoryImpl.class, AuthorRepositoryImpl.class, BookRepositoryImpl.class})
 class CommentRepositoryImplTest {
 
     @Autowired
@@ -31,9 +31,9 @@ class CommentRepositoryImplTest {
     void findByIdTest() {
         val bookId = 111;
 
-        AuthorEntity author1 = new AuthorEntity(11, "author_name_1", "author_surname_1");
-        AuthorEntity author2 = new AuthorEntity(22, "author_name_2", "author_surname_2");
-        BookEntity book = createBook("book_name_1", new GenreEntity(11, "genre_1"),
+        Author author1 = new Author(11, "author_name_1", "author_surname_1");
+        Author author2 = new Author(22, "author_name_2", "author_surname_2");
+        Book book = createBook("book_name_1", new Genre(11, "genre_1"),
                 Arrays.asList(author1, author2));
 
         val bookOpt = bookRepository.findById(bookId);
@@ -50,8 +50,8 @@ class CommentRepositoryImplTest {
     @DisplayName("должен сохранять книгу")
     @Test
     void saveTest() {
-        BookEntity book = createBook("book_title_new", GenreEntity.builder().name("new_genre_name").build(),
-                Collections.singletonList(AuthorEntity.builder().name("author_name").surname("author_surname").build()));
+        Book book = createBook("book_title_new", Genre.builder().name("new_genre_name").build(),
+                Collections.singletonList(Author.builder().name("author_name").surname("author_surname").build()));
         bookRepository.save(book);
 
         val bookOpt = bookRepository.findById(book.getId());
@@ -62,7 +62,7 @@ class CommentRepositoryImplTest {
     @Test
     void findAllWithAllInfoTest() {
         val expectedBooks = 1;
-        List<BookEntity> books = bookRepository.findAll();
+        List<Book> books = bookRepository.findAll();
         assertEquals(expectedBooks, books.size());
         books.forEach(book -> {
                     assertNotNull(book.getTitle());
@@ -73,14 +73,14 @@ class CommentRepositoryImplTest {
     }
 
 
-    private void assertAuthor(AuthorEntity authorExp, AuthorEntity authorAct) {
+    private void assertAuthor(Author authorExp, Author authorAct) {
         assertEquals(authorExp.getId(), authorAct.getId());
         assertEquals(authorExp.getName(), authorAct.getName());
         assertEquals(authorExp.getSurname(), authorAct.getSurname());
     }
 
-    private BookEntity createBook(String bookTitle, GenreEntity genre, List<AuthorEntity> authors) {
-        return BookEntity.builder()
+    private Book createBook(String bookTitle, Genre genre, List<Author> authors) {
+        return Book.builder()
                 .title(bookTitle)
                 .genre(genre)
                 .authors(authors)

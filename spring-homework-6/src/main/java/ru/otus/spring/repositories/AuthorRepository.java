@@ -1,15 +1,15 @@
 package ru.otus.spring.repositories;
 
-import ru.otus.spring.domain.AuthorEntity;
+import ru.otus.spring.domain.Author;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AuthorRepository {
 
-    void save(AuthorEntity author);
+    void save(Author author);
 
-    void saveAll(List<AuthorEntity> authorList);
+    void saveAll(List<Author> authorList);
 
-    Optional<AuthorEntity> findById(long id);
+    Optional<Author> findById(long id);
 }

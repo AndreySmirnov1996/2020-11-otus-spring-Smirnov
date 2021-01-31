@@ -1,7 +1,7 @@
 package ru.otus.spring.repositories;
 
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.domain.GenreEntity;
+import ru.otus.spring.domain.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +14,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     private EntityManager em;
 
     @Override
-    public void save(GenreEntity genre) {
+    public void save(Genre genre) {
         if (genre.getName() != null) {
             if (genre.getId() <= 0) {
                 em.persist(genre);
@@ -26,7 +26,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public List<GenreEntity> findAll() {
-        return em.createQuery("select e from GenreEntity e", GenreEntity.class).getResultList();
+    public List<Genre> findAll() {
+        return em.createQuery("select e from Genre e", Genre.class).getResultList();
     }
 }

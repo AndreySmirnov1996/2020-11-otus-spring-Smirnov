@@ -2,7 +2,7 @@ package ru.otus.spring.repositories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.domain.BookEntity;
+import ru.otus.spring.domain.Book;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,14 +20,14 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void delete(long bookId) {
-        Query query = em.createQuery("delete from BookEntity b where b.id = :id");
+        Query query = em.createQuery("delete from Book b where b.id = :id");
         query.setParameter("id", bookId);
         query.executeUpdate();
     }
 
 
     @Override
-    public void save(BookEntity book) {
+    public void save(Book book) {
         authorRepository.saveAll(book.getAuthors());
         genreRepository.save(book.getGenre());
         if (book.getId() <= 0) {
@@ -38,9 +38,9 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public Optional<BookEntity> findById(long id) {
-        TypedQuery<BookEntity> query = em.createQuery(
-                "select b from BookEntity b where b.id = :id", BookEntity.class);
+    public Optional<Book> findById(long id) {
+        TypedQuery<Book> query = em.createQuery(
+                "select b from Book b where b.id = :id", Book.class);
         query.setParameter("id", id);
         try {
             return Optional.of(query.getSingleResult());
@@ -50,14 +50,14 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<BookEntity> findAll() {
-        TypedQuery<BookEntity> query = em.createQuery("select s from BookEntity s", BookEntity.class);
+    public List<Book> findAll() {
+        TypedQuery<Book> query = em.createQuery("select s from Book s", Book.class);
         return query.getResultList();
     }
 
     @Override
     public void updateTitleById(long bookId, String newTitle) {
-        Query query = em.createQuery("update BookEntity b " +
+        Query query = em.createQuery("update Book b " +
                 "set b.title = :title " +
                 "where b.id = :id");
         query.setParameter("title", newTitle);

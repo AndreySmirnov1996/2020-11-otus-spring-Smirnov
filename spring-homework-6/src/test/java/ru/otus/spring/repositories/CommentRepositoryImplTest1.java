@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import ru.otus.spring.domain.BookEntity;
-import ru.otus.spring.domain.CommentEntity;
+import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.Comment;
 
 import java.util.List;
 
@@ -15,10 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DisplayName("Репозиторий на основе JPA для работы с книгами должен ")
+@DisplayName("Репозиторий на основе JPA для работы с комментариями должен ")
 @DataJpaTest
 @Import(CommentRepositoryImpl.class)
-class BookRepositoryImplTest {
+class CommentRepositoryImplTest1 {
 
     @Autowired
     private CommentRepositoryImpl commentRepository;
@@ -28,9 +28,9 @@ class BookRepositoryImplTest {
     void findByIdTest() {
         val commentId = 7;
 
-        CommentEntity commentExp = CommentEntity.builder()
+        Comment commentExp = Comment.builder()
                 .text("Good book!")
-                .book(BookEntity.builder().id(111).build())
+                .book(Book.builder().id(111).build())
                 .build();
 
         val commentOpt = commentRepository.findById(commentId);
@@ -46,7 +46,7 @@ class BookRepositoryImplTest {
     @DisplayName("должен сохранять комментарий")
     @Test
     void saveTest() {
-        CommentEntity comment = createComment("Some bad comment", BookEntity.builder().id(111).build());
+        Comment comment = createComment("Some bad comment", Book.builder().id(111).build());
         commentRepository.save(comment);
 
         val bookOpt = commentRepository.findById(comment.getId());
@@ -58,7 +58,7 @@ class BookRepositoryImplTest {
     void findAllTest() {
         val expectedComments = 1;
         val bookId = 111;
-        List<CommentEntity> comments = commentRepository.findAllByBookId(bookId);
+        List<Comment> comments = commentRepository.findAllByBookId(bookId);
 
         assertEquals(expectedComments, comments.size());
         comments.forEach(comment -> {
@@ -77,10 +77,10 @@ class BookRepositoryImplTest {
         assertThat(commentOpt).isEmpty();
     }
 
-    private CommentEntity createComment(String text, BookEntity bookEntity) {
-        return CommentEntity.builder()
+    private Comment createComment(String text, Book book) {
+        return Comment.builder()
                 .text(text)
-                .book(bookEntity)
+                .book(book)
                 .build();
     }
 }
