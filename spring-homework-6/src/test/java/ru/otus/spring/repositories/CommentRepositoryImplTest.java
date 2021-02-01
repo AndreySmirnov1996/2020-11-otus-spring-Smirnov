@@ -5,85 +5,85 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.Comment;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Репозиторий на основе JPA для работы с книгами должен ")
+@DisplayName("Репозиторий на основе JPA для работы с комментариями должен ")
 @DataJpaTest
-@Import({CommentRepositoryImpl.class, GenreRepositoryImpl.class, AuthorRepositoryImpl.class, BookRepositoryImpl.class})
+@Import(CommentRepositoryImpl.class)
 class CommentRepositoryImplTest {
 
     @Autowired
-    private BookRepositoryImpl bookRepository;
+    private TestEntityManager em;
+    @Autowired
+    private CommentRepositoryImpl commentRepository;
 
-    @DisplayName("должен находить книгу по id")
+    @DisplayName("должен находить комментарий по id")
     @Test
     void findByIdTest() {
-        val bookId = 111;
+        val commentId = 7;
 
-        Author author1 = new Author(11, "author_name_1", "author_surname_1");
-        Author author2 = new Author(22, "author_name_2", "author_surname_2");
-        Book book = createBook("book_name_1", new Genre(11, "genre_1"),
-                Arrays.asList(author1, author2));
+        Comment expectedComment = Comment.builder()
+                .text("Good book!")
+                .book(Book.builder().id(111).build())
+                .build();
 
-        val bookOpt = bookRepository.findById(bookId);
-        assertThat(bookOpt).isNotEmpty();
+        val actualCommentOptional = commentRepository.findById(commentId);
+        assertThat(actualCommentOptional).isNotEmpty();
 
-        val bookActual = bookOpt.get();
-        assertEquals(book.getTitle(), bookActual.getTitle());
-        assertEquals(book.getGenre().getName(), bookActual.getGenre().getName());
-        assertEquals(book.getAuthors().size(), bookActual.getAuthors().size());
-        assertAuthor(book.getAuthors().get(0), author1);
-        assertAuthor(book.getAuthors().get(1), author2);
+        val actualComment = actualCommentOptional.get();
+        assertEquals(commentId, actualComment.getId());
+        assertEquals(expectedComment.getText(), actualComment.getText());
+        assertEquals(expectedComment.getBook().getId(), actualComment.getBook().getId());
+
     }
 
-    @DisplayName("должен сохранять книгу")
+    @DisplayName("должен сохранять комментарий")
     @Test
     void saveTest() {
-        Book book = createBook("book_title_new", Genre.builder().name("new_genre_name").build(),
-                Collections.singletonList(Author.builder().name("author_name").surname("author_surname").build()));
-        bookRepository.save(book);
+        Comment expectedComment = createComment("Some bad comment", Book.builder().id(111).build());
+        commentRepository.save(expectedComment);
 
-        val bookOpt = bookRepository.findById(book.getId());
-        assertThat(bookOpt).isNotEmpty().get().isEqualTo(book);
+        val actualComment = em.find(Comment.class, expectedComment.getId());
+        assertNotNull(actualComment);
+        assertThat(actualComment).isEqualTo(expectedComment);
     }
 
-    @DisplayName("должен находить все книги со всей информацией")
+    @DisplayName("должен находить все комментарии по id книги")
     @Test
-    void findAllWithAllInfoTest() {
-        val expectedBooks = 1;
-        List<Book> books = bookRepository.findAll();
-        assertEquals(expectedBooks, books.size());
-        books.forEach(book -> {
-                    assertNotNull(book.getTitle());
-                    assertNotNull(book.getGenre());
-                    assertNotNull(book.getAuthors());
+    void findAllTest() {
+        val expectedCommentsSize = 1;
+        val bookId = 111;
+        List<Comment> comments = commentRepository.findAllByBookId(bookId);
+
+        assertEquals(expectedCommentsSize, comments.size());
+        comments.forEach(comment -> {
+                    assertNotNull(comment.getText());
+                    assertNotNull(comment.getBook());
                 }
         );
     }
 
-
-    private void assertAuthor(Author authorExp, Author authorAct) {
-        assertEquals(authorExp.getId(), authorAct.getId());
-        assertEquals(authorExp.getName(), authorAct.getName());
-        assertEquals(authorExp.getSurname(), authorAct.getSurname());
+    @DisplayName("должен удалять комментарий по id")
+    @Test
+    void deleteTest() {
+        val commentId = 7L;
+        commentRepository.delete(commentId);
+        val actualComment = em.find(Comment.class, commentId);
+        assertNull(actualComment);
     }
 
-    private Book createBook(String bookTitle, Genre genre, List<Author> authors) {
-        return Book.builder()
-                .title(bookTitle)
-                .genre(genre)
-                .authors(authors)
+    private Comment createComment(String text, Book book) {
+        return Comment.builder()
+                .text(text)
+                .book(book)
                 .build();
     }
 }
