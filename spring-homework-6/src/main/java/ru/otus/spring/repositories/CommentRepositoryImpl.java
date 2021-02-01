@@ -24,14 +24,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public Optional<Comment> findById(long id) {
-        TypedQuery<Comment> query = em.createQuery(
-                "select c from Comment c where c.id = :id", Comment.class);
-        query.setParameter("id", id);
-        try {
-            return Optional.of(query.getSingleResult());
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(em.find(Comment.class, id));
     }
 
     @Override
