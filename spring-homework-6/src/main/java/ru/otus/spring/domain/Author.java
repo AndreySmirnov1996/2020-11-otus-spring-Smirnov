@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Table(name = "genres")
+@Table(name = "authors")
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GenreEntity {
+public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +21,6 @@ public class GenreEntity {
 
     @Column(name = "name")
     private String name;
+    @Column(name = "surname")
+    private String surname;
 }

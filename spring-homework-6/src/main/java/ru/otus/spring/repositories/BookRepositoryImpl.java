@@ -2,7 +2,8 @@ package ru.otus.spring.repositories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.domain.BookEntity;
+import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring.domain.Book;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,16 +19,18 @@ public class BookRepositoryImpl implements BookRepository {
     @PersistenceContext
     private EntityManager em;
 
+    @Transactional
     @Override
     public void delete(long bookId) {
-        Query query = em.createQuery("delete from BookEntity b where b.id = :id");
+        Query query = em.createQuery("delete from Book b where b.id = :id");
         query.setParameter("id", bookId);
         query.executeUpdate();
     }
 
 
+    @Transactional
     @Override
-    public void save(BookEntity book) {
+    public void save(Book book) {
         authorRepository.saveAll(book.getAuthors());
         genreRepository.save(book.getGenre());
         if (book.getId() <= 0) {
@@ -37,29 +40,23 @@ public class BookRepositoryImpl implements BookRepository {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Optional<BookEntity> findById(long id) {
-        TypedQuery<BookEntity> query = em.createQuery(
-                "select b from BookEntity b where b.id = :id", BookEntity.class);
-        query.setParameter("id", id);
-        try {
-            return Optional.of(query.getSingleResult());
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
+    public Optional<Book> findById(long id) {
+        return Optional.ofNullable(em.find(Book.class, id));
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<BookEntity> findAll() {
-        TypedQuery<BookEntity> query = em.createQuery("select s from BookEntity s", BookEntity.class);
+    public List<Book> findAll() {
+        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.genre", Book.class);
         return query.getResultList();
     }
 
+    @Transactional
     @Override
     public void updateTitleById(long bookId, String newTitle) {
-        Query query = em.createQuery("update BookEntity b " +
-                "set b.title = :title " +
-                "where b.id = :id");
+        Query query = em.createQuery("update Book b set b.title = :title where b.id = :id");
         query.setParameter("title", newTitle);
         query.setParameter("id", bookId);
         query.executeUpdate();

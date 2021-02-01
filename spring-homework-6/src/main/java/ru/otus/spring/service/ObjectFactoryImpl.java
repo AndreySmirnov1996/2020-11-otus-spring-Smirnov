@@ -9,11 +9,11 @@ import java.util.List;
 @Service
 public class ObjectFactoryImpl implements ObjectFactory {
     @Override
-    public BookEntity createBookEntity(String title, String genreName, String authors) {
-        List<AuthorEntity> authorsList = createAuthors(authors);
-        GenreEntity genre = createGenreEntity(genreName);
+    public Book createBookEntity(String title, String genreName, String authors) {
+        List<Author> authorsList = createAuthors(authors);
+        Genre genre = createGenreEntity(genreName);
 
-        return BookEntity.builder()
+        return Book.builder()
                 .title(title)
                 .genre(genre)
                 .authors(authorsList)
@@ -21,21 +21,20 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     @Override
-    public List<AuthorEntity> createAuthors(String authors) {
-        List<AuthorEntity> authorsList = new ArrayList<>();
+    public List<Author> createAuthors(String authors) {
+        List<Author> authorsList = new ArrayList<>();
         if (!authors.equals("NONE")) {
             String[] authorsArray = authors.split(";");
             for (String str : authorsArray) {
                 String[] data = str.split(",");
-                AuthorEntity author;
-                if (data.length == 3) {
-                    author = AuthorEntity.builder()
-                            .id(Long.parseLong(data[0]))
-                            .name(data[1])
-                            .surname(data[2])
+                Author author;
+                if (data.length == 2) {
+                    author = Author.builder()
+                            .name(data[0])
+                            .surname(data[1])
                             .build();
                 } else {
-                    author = AuthorEntity.builder()
+                    author = Author.builder()
                             .id(Long.parseLong(data[0]))
                             .build();
                 }
@@ -46,23 +45,23 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     @Override
-    public GenreEntity createGenreEntity(String genreIdOrName) {
-        GenreEntity genreEntity = new GenreEntity();
+    public Genre createGenreEntity(String genreIdOrName) {
+        Genre genre = new Genre();
         try {
             long genreId = Long.parseLong(genreIdOrName);
-            genreEntity.setId(genreId);
-            return genreEntity;
+            genre.setId(genreId);
+            return genre;
         } catch (NumberFormatException ex) {
-            genreEntity.setName(genreIdOrName);
+            genre.setName(genreIdOrName);
         }
-        return genreEntity;
+        return genre;
     }
 
     @Override
-    public CommentEntity createCommentEntity(String text, long bookId) {
-        return CommentEntity.builder()
+    public Comment createCommentEntity(String text, long bookId) {
+        return Comment.builder()
                 .text(text)
-                .book(BookEntity.builder().id(bookId).build())
+                .book(Book.builder().id(bookId).build())
                 .build();
     }
 }

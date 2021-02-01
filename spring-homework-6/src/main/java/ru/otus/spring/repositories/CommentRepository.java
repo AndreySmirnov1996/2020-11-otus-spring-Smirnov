@@ -1,19 +1,19 @@
 package ru.otus.spring.repositories;
 
-import ru.otus.spring.domain.CommentEntity;
+import ru.otus.spring.domain.Comment;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository {
 
-    void save(CommentEntity book);
+    void save(Comment book);
 
-    Optional<CommentEntity> findById(long id);
+    Optional<Comment> findById(long id);
 
-    List<CommentEntity> findAllByBookId(long bookId);
+    List<Comment> findAllByBookId(long bookId);
 
-    List<CommentEntity> findAll();
+    List<Comment> findAll();
 
     void updateTextById(long id, String text);
 
