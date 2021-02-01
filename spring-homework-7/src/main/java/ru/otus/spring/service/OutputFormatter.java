@@ -1,13 +1,13 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.domain.BookEntity;
-import ru.otus.spring.domain.CommentEntity;
-import ru.otus.spring.domain.GenreEntity;
+import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.Comment;
+import ru.otus.spring.domain.Genre;
 
 public interface OutputFormatter {
-    String formatBook(BookEntity book);
+    String formatBook(Book book);
 
-    String formatGenre(GenreEntity genre);
+    String formatGenre(Genre genre);
 
-    String formatComment(CommentEntity comment);
+    String formatComment(Comment comment);
 }

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ObjectFactory {
 
-    BookEntity createBookEntity(String title, String genreName, String authors);
+    Book createBookEntity(String title, String genreName, String authors);
 
-    List<AuthorEntity> createAuthors(String authors);
+    List<Author> createAuthors(String authors);
 
-    GenreEntity createGenreEntity(String genreName);
+    Genre createGenreEntity(String genreName);
 
-    CommentEntity createCommentEntity(String text, long bookId);
+    Comment createCommentEntity(String text, long bookId);
 }

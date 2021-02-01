@@ -5,7 +5,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.domain.CommentEntity;
+import ru.otus.spring.domain.Comment;
 import ru.otus.spring.repositories.CommentRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.ObjectFactory;
@@ -51,7 +51,7 @@ public class CommentCrudService {
     @Transactional
     public void saveComment(@ShellOption String title,
                             @ShellOption long bookId) {
-        CommentEntity comment = objectFactory.createCommentEntity(title, bookId);
+        Comment comment = objectFactory.createCommentEntity(title, bookId);
         commentRepository.save(comment);
     }
 

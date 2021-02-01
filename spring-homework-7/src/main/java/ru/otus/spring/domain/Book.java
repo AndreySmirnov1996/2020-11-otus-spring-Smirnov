@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookEntity {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,13 +24,13 @@ public class BookEntity {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne(targetEntity = GenreEntity.class, fetch = FetchType.EAGER/*, cascade = CascadeType.ALL*/)
+    @ManyToOne(targetEntity = Genre.class, fetch = FetchType.EAGER/*, cascade = CascadeType.ALL*/)
     @JoinColumn(name = "genre_id")
-    private GenreEntity genre;
+    private Genre genre;
 
     @BatchSize(size = 5)
-    @ManyToMany(targetEntity = AuthorEntity.class, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY)
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private List<AuthorEntity> authors;
+    private List<Author> authors;
 }
