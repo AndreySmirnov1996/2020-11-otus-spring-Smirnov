@@ -1,6 +1,7 @@
 package ru.otus.spring.repositories;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Comment;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     @PersistenceContext
     private EntityManager em;
 
+    @Transactional
     @Override
     public void save(Comment comment) {
         if (comment.getId() <= 0) {
@@ -27,6 +29,7 @@ public class CommentRepositoryImpl implements CommentRepository {
         return Optional.ofNullable(em.find(Comment.class, id));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Comment> findAllByBookId(long bookId) {
         TypedQuery<Comment> query = em.createQuery(
@@ -35,12 +38,14 @@ public class CommentRepositoryImpl implements CommentRepository {
         return query.getResultList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Comment> findAll() {
         TypedQuery<Comment> query = em.createQuery("select c from Comment c", Comment.class);
         return query.getResultList();
     }
 
+    @Transactional
     @Override
     public void updateTextById(long id, String text) {
         Query query = em.createQuery("update Comment c set c.text = :text where c.id = :id");
@@ -49,6 +54,7 @@ public class CommentRepositoryImpl implements CommentRepository {
         query.executeUpdate();
     }
 
+    @Transactional
     @Override
     public void delete(long id) {
         Query query = em.createQuery("delete from Comment c where id = :id");
