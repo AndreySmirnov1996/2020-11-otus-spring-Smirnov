@@ -13,7 +13,7 @@ import ru.otus.spring.service.OutputFormatter;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class GenreCrudService {
+public class GenreCrudShell {
 
     private final IOService ioService;
     private final OutputFormatter outputFormatter;

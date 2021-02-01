@@ -23,15 +23,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
 })
-@Import(BookCrudService.class)
-class BookCrudServiceTest {
+@Import(BookCrudShell.class)
+class BookCrudShellTest {
 
     @MockBean
     private BookRepositoryImpl bookRepository;
     @Captor
     private ArgumentCaptor<Book> bookCaptor;
     @Autowired
-    private BookCrudService bookCrudService;
+    private BookCrudShell bookCrudShell;
 
     @DisplayName("сохранять книгу")
     @Test
@@ -40,7 +40,7 @@ class BookCrudServiceTest {
         val genre = new Genre();
         genre.setName("genre_new");
         val authorsListSize = 2;
-        bookCrudService.saveBook(bookTitle, genre.getName(), "1;5,Name1,Surname1");
+        bookCrudShell.saveBook(bookTitle, genre.getName(), "1;5,Name1,Surname1");
 
         Mockito.verify(bookRepository).save(bookCaptor.capture());
         Book bookCaptureValue = bookCaptor.getValue();
