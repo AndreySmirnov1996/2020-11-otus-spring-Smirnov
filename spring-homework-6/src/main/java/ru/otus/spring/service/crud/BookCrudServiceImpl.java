@@ -1,10 +1,13 @@
-package ru.otus.spring.service;
+package ru.otus.spring.service.crud;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.repositories.BookRepository;
+import ru.otus.spring.service.IOService;
+import ru.otus.spring.service.ObjectFactory;
+import ru.otus.spring.service.OutputFormatter;
 
 @Service
 @RequiredArgsConstructor

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.spring.service.BookCrudService;
+import ru.otus.spring.service.crud.BookCrudService;
 
 @ShellComponent
 @RequiredArgsConstructor
