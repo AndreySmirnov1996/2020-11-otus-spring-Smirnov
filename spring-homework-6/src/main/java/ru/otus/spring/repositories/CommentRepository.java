@@ -17,7 +17,7 @@ public interface CommentRepository {
 
     void updateTextById(long id, String text);
 
-    void delete(long bookId);
+    void delete(long id);
 
     void deleteAllByBookId(long bookId);
 }
