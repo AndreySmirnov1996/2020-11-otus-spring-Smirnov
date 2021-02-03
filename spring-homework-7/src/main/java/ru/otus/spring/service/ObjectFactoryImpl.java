@@ -28,11 +28,10 @@ public class ObjectFactoryImpl implements ObjectFactory {
             for (String str : authorsArray) {
                 String[] data = str.split(",");
                 Author author;
-                if (data.length == 3) {
+                if (data.length == 2) {
                     author = Author.builder()
-                            .id(Long.parseLong(data[0]))
-                            .name(data[1])
-                            .surname(data[2])
+                            .name(data[0])
+                            .surname(data[1])
                             .build();
                 } else {
                     author = Author.builder()

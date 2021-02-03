@@ -34,7 +34,7 @@ public class CommentCrudServiceImpl implements CommentCrudService {
     @Transactional(readOnly = true)
     @Override
     public void showAllCommentsByBookId(long bookId) {
-        commentRepository.findAllByBookId(bookId)
+        commentRepository.findAllByBook_Id(bookId)
                 .forEach(comment -> ioService.printString(outputFormatter.formatComment(comment)));
     }
 
@@ -54,7 +54,7 @@ public class CommentCrudServiceImpl implements CommentCrudService {
     @Transactional
     @Override
     public void deleteCommentById(long id) {
-        commentRepository.delete(id);
+        commentRepository.deleteById(id);
     }
 
     @Transactional
