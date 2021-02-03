@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DisplayName("Репозиторий на основе JPA для работы с книгами должен ")
 @DataJpaTest
-@Import({CommentRepositoryImpl.class, GenreRepositoryImpl.class, AuthorRepositoryImpl.class, BookRepositoryImpl.class})
+@Import({GenreRepositoryImpl.class, AuthorRepositoryImpl.class, BookRepositoryImpl.class})
 class BookRepositoryImplTest {
 
     @Autowired
