@@ -34,9 +34,9 @@ class BookRepositoryImplTest {
     void findByIdTest() {
         val bookId = 111L;
 
-        Author author1 = new Author(11, "author_name_1", "author_surname_1");
-        Author author2 = new Author(22, "author_name_2", "author_surname_2");
-        Book book = createBook("book_name_1", new Genre(11, "genre_1"),
+        Author author1 = new Author("11", "author_name_1", "author_surname_1");
+        Author author2 = new Author("22", "author_name_2", "author_surname_2");
+        Book book = createBook("book_name_1", new Genre("11", "genre_1"),
                 Arrays.asList(author1, author2));
 
         val actualBook = em.find(Book.class, bookId);
@@ -52,7 +52,7 @@ class BookRepositoryImplTest {
     @DisplayName("должен сохранять книгу")
     @Test
     void saveTest() {
-        Book book = createBook("book_title_new", Genre.builder().name("new_genre_name").build(),
+        Book book = createBook("book_title_new", new Genre("new_genre_name"),
                 Collections.singletonList(Author.builder().name("author_name").surname("author_surname").build()));
         bookRepository.save(book);
 

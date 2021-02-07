@@ -2,18 +2,18 @@ package ru.otus.spring.service.crud;
 
 public interface CommentCrudService {
 
-    void saveComment(String title, long bookId);
+    void saveComment(String title, String bookId);
 
-    void showCommentById(long id);
+    void showCommentById(String id);
 
-    void showAllCommentsByBookId(long bookId);
+    void showAllCommentsByBookId(String bookId);
 
     void showAllComments();
 
-    void updateCommentTextById(long id, String text);
+    void updateCommentTextById(String id, String text);
 
-    void deleteCommentById(long id);
+    void deleteCommentById(String id);
 
-    void deleteAllCommentsByBookId(long bookId);
+    void deleteAllCommentsByBookId(String bookId);
 
 }

@@ -35,7 +35,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
                             .build();
                 } else {
                     author = Author.builder()
-                            .id(Long.parseLong(data[0]))
+                            .id(data[0])
                             .build();
                 }
                 authorsList.add(author);
@@ -45,20 +45,14 @@ public class ObjectFactoryImpl implements ObjectFactory {
     }
 
     @Override
-    public Genre createGenreEntity(String genreIdOrName) {
-        Genre genre = new Genre();
-        try {
-            long genreId = Long.parseLong(genreIdOrName);
-            genre.setId(genreId);
-            return genre;
-        } catch (NumberFormatException ex) {
-            genre.setName(genreIdOrName);
-        }
-        return genre;
+    public Genre createGenreEntity(String genreID) {
+        return new Genre(genreID);
     }
 
     @Override
-    public Comment createCommentEntity(String text, long bookId) {
+    public Comment createCommentEntity(String text, String bookId) {
+
+
         return Comment.builder()
                 .text(text)
                 .book(Book.builder().id(bookId).build())

@@ -28,11 +28,11 @@ class CommentRepositoryImplTest {
     @DisplayName("должен находить комментарий по id")
     @Test
     void findByIdTest() {
-        val commentId = 7;
+        val commentId = "7";
 
         Comment expectedComment = Comment.builder()
                 .text("Good book!")
-                .book(Book.builder().id(111).build())
+                .book(Book.builder().id("111").build())
                 .build();
 
         val actualCommentOptional = commentRepository.findById(commentId);
@@ -48,7 +48,7 @@ class CommentRepositoryImplTest {
     @DisplayName("должен сохранять комментарий")
     @Test
     void saveTest() {
-        Comment expectedComment = createComment("Some bad comment", Book.builder().id(111).build());
+        Comment expectedComment = createComment("Some bad comment", Book.builder().id("111").build());
         commentRepository.save(expectedComment);
 
         val actualComment = em.find(Comment.class, expectedComment.getId());
@@ -60,7 +60,7 @@ class CommentRepositoryImplTest {
     @Test
     void findAllTest() {
         val expectedCommentsSize = 1;
-        val bookId = 111;
+        val bookId = "111";
         List<Comment> comments = commentRepository.findAllByBookId(bookId);
 
         assertEquals(expectedCommentsSize, comments.size());
@@ -74,8 +74,8 @@ class CommentRepositoryImplTest {
     @DisplayName("должен удалять комментарий по id")
     @Test
     void deleteTest() {
-        val commentId = 7L;
-        commentRepository.delete(commentId);
+        val commentId = "7";
+        commentRepository.deleteById(commentId);
         val actualComment = em.find(Comment.class, commentId);
         assertNull(actualComment);
     }

@@ -17,9 +17,7 @@ public class GenreCrudServiceImpl implements GenreCrudService {
 
     @Override
     public void saveGenre(String name) {
-        genreRepository.save(Genre.builder()
-                .name(name)
-                .build());
+        genreRepository.save(new Genre(name));
     }
 
     @Override

@@ -12,5 +12,5 @@ public interface ObjectFactory {
 
     Genre createGenreEntity(String genreName);
 
-    Comment createCommentEntity(String text, long bookId);
+    Comment createCommentEntity(String text, String bookId);
 }

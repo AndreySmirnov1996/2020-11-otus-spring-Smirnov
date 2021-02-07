@@ -27,7 +27,7 @@ public class BookCrudServiceImpl implements BookCrudService {
 
     @Transactional(readOnly = true)
     @Override
-    public void showBookById(long id) {
+    public void showBookById(String id) {
         bookRepository.findById(id).ifPresent(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
@@ -39,13 +39,13 @@ public class BookCrudServiceImpl implements BookCrudService {
 
     @Transactional
     @Override
-    public void updateBookTitleById(long bookId, String newTitle) {
-        bookRepository.updateTitleById(bookId, newTitle);
+    public void updateBookTitleById(String bookId, String newTitle) {
+        //TODO bookRepository.updateTitleById(bookId, newTitle);
     }
 
     @Transactional
     @Override
-    public void deleteBookById(long bookId) {
-        bookRepository.delete(bookId);
+    public void deleteBookById(String bookId) {
+        bookRepository.deleteById(bookId);
     }
 }

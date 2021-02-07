@@ -18,18 +18,18 @@ public class CommentCrudServiceImpl implements CommentCrudService {
     private final ObjectFactory objectFactory;
 
     @Override
-    public void saveComment(String title, long bookId) {
+    public void saveComment(String title, String bookId) {
         Comment comment = objectFactory.createCommentEntity(title, bookId);
         commentRepository.save(comment);
     }
 
     @Override
-    public void showCommentById(long id) {
+    public void showCommentById(String id) {
         commentRepository.findById(id);
     }
 
     @Override
-    public void showAllCommentsByBookId(long bookId) {
+    public void showAllCommentsByBookId(String bookId) {
         commentRepository.findAllByBookId(bookId)
                 .forEach(comment -> ioService.printString(outputFormatter.formatComment(comment)));
     }
@@ -41,17 +41,17 @@ public class CommentCrudServiceImpl implements CommentCrudService {
     }
 
     @Override
-    public void updateCommentTextById(long id, String text) {
-        commentRepository.updateTextById(id, text);
+    public void updateCommentTextById(String id, String text) {
+        //TODO commentRepository.updateTextById(id, text);
     }
 
     @Override
-    public void deleteCommentById(long id) {
-        commentRepository.delete(id);
+    public void deleteCommentById(String id) {
+        commentRepository.deleteById(id);
     }
 
     @Override
-    public void deleteAllCommentsByBookId(long bookId) {
+    public void deleteAllCommentsByBookId(String bookId) {
         commentRepository.deleteAllByBookId(bookId);
     }
 }
