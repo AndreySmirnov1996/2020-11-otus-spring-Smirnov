@@ -19,8 +19,8 @@ public class BookCrudShell {
     }
 
     @ShellMethod(value = "Update title book by id (example: ubt 1 new_title)", key = {"ubt", "update book title"})
-    public void updateBookTitleById(@ShellOption long bookId, @ShellOption String newTitle) {
-        //bookCrudService.updateBookTitleById(bookId, newTitle);
+    public void updateBookTitleById(@ShellOption String bookId, @ShellOption String newTitle) {
+        bookCrudService.updateBookTitleById(bookId, newTitle);
     }
 
     @ShellMethod(value = "Show all books with all info (example: sab)", key = {"sab", "show all books"})
@@ -39,9 +39,9 @@ public class BookCrudShell {
     @ShellMethod(value = "Save book (example: sb book_name_3 1 1;Name1,Surname1)",
             key = {"sb", "save book"})
     public void saveBook(@ShellOption String title,
-                         @ShellOption String genreName,
+                         @ShellOption String genreId,
                          @ShellOption(defaultValue = "NONE") String authors) {
-        bookCrudService.saveBook(title, genreName, authors);
+        bookCrudService.saveBook(title, genreId, authors);
     }
 
 }

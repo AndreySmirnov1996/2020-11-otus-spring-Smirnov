@@ -22,8 +22,8 @@ public class Book {
     private String id;
 
     private String title;
+    @DBRef
     private Genre genre;
-
     @DBRef
     private List<Author> authors;
 

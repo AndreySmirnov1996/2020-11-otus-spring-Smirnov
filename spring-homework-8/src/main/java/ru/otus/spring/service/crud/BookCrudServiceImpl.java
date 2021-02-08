@@ -16,18 +16,14 @@ import ru.otus.spring.service.OutputFormatter;
 public class BookCrudServiceImpl implements BookCrudService {
 
     private final BookRepository bookRepository;
-    private final GenreRepository genreRepository;
     private final ObjectFactory objectFactory;
     private final OutputFormatter outputFormatter;
     private final IOService ioService;
 
     @Transactional
     @Override
-    public void saveBook(String title, String genreName, String authors) {
-        Book book = objectFactory.createBookEntity(title, genreName, authors);
-        if (book.getGenre().getName() != null) {
-            genreRepository.save(book.getGenre());
-        }
+    public void saveBook(String title, String genreId, String authors) {
+        Book book = objectFactory.createBookEntity(title, genreId, authors);
         bookRepository.save(book);
     }
 

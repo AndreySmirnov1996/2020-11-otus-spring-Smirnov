@@ -2,7 +2,7 @@ package ru.otus.spring.service.crud;
 
 public interface BookCrudService {
 
-    void saveBook(String title, String genreName, String authors);
+    void saveBook(String title, String genreId, String authors);
 
     void showBookById(String id);
 

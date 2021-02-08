@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ObjectFactory {
 
-    Book createBookEntity(String title, String genreName, String authors);
+    Book createBookEntity(String title, String genreId, String authors);
 
     List<Author> createAuthors(String authors);
 

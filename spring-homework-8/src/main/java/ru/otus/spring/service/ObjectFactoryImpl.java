@@ -9,9 +9,9 @@ import java.util.List;
 @Service
 public class ObjectFactoryImpl implements ObjectFactory {
     @Override
-    public Book createBookEntity(String title, String genreName, String authors) {
+    public Book createBookEntity(String title, String genreId, String authors) {
         List<Author> authorsList = createAuthors(authors);
-        Genre genre = createGenreEntity(genreName);
+        Genre genre = new Genre(genreId);
 
         return Book.builder()
                 .title(title)
