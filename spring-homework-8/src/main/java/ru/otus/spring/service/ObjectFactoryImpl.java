@@ -46,13 +46,13 @@ public class ObjectFactoryImpl implements ObjectFactory {
 
     @Override
     public Genre createGenreEntity(String genreID) {
-        return new Genre(genreID);
+        Genre genre = new Genre();
+        genre.setId(genreID);
+        return genre;
     }
 
     @Override
     public Comment createCommentEntity(String text, String bookId) {
-
-
         return Comment.builder()
                 .text(text)
                 .book(Book.builder().id(bookId).build())

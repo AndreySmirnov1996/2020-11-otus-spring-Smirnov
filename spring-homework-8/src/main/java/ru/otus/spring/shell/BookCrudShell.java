@@ -34,8 +34,8 @@ public class BookCrudShell {
     }
 
     //For example:
-    //sb book_name_3 1 1;Name1,Surname1
-    //sb book_name_3 1 3
+    //sb book_name_3 1 111;Name1,Surname1
+    //sb book_name_new 2 222
     @ShellMethod(value = "Save book (example: sb book_name_3 1 1;Name1,Surname1)",
             key = {"sb", "save book"})
     public void saveBook(@ShellOption String title,

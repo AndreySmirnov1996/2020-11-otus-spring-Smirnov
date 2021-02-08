@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Book;
+import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
+import ru.otus.spring.repositories.GenreRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.ObjectFactory;
 import ru.otus.spring.service.OutputFormatter;
@@ -14,6 +16,7 @@ import ru.otus.spring.service.OutputFormatter;
 public class BookCrudServiceImpl implements BookCrudService {
 
     private final BookRepository bookRepository;
+    private final GenreRepository genreRepository;
     private final ObjectFactory objectFactory;
     private final OutputFormatter outputFormatter;
     private final IOService ioService;
@@ -22,6 +25,9 @@ public class BookCrudServiceImpl implements BookCrudService {
     @Override
     public void saveBook(String title, String genreName, String authors) {
         Book book = objectFactory.createBookEntity(title, genreName, authors);
+        if (book.getGenre().getName() != null) {
+            genreRepository.save(book.getGenre());
+        }
         bookRepository.save(book);
     }
 
