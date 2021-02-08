@@ -1,15 +1,16 @@
 package ru.otus.spring.service.crud;
 
+import com.mongodb.MongoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Book;
-import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.repositories.GenreRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.ObjectFactory;
 import ru.otus.spring.service.OutputFormatter;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +43,14 @@ public class BookCrudServiceImpl implements BookCrudService {
     @Transactional
     @Override
     public void updateBookTitleById(String bookId, String newTitle) {
-        //TODO bookRepository.updateTitleById(bookId, newTitle);
+        Optional<Book> bookOptional = bookRepository.findById(bookId);
+        if (bookOptional.isPresent()) {
+            Book newBook = bookOptional.get();
+            newBook.setTitle(newTitle);
+            bookRepository.save(newBook);
+        } else {
+            throw new MongoException("Book doesn't exist with id = " + bookId);
+        }
     }
 
     @Transactional
