@@ -34,7 +34,7 @@ public class BookCrudServiceImpl implements BookCrudService {
     @Transactional(readOnly = true)
     @Override
     public void showAllBooks() {
-        bookRepository.findAll().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
+        bookRepository.findAllWithAllInfo().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
     }
 
     @Transactional
