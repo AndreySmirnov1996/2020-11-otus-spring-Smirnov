@@ -46,7 +46,7 @@ public class InitMongoDBDataChangelog {
         annaKareninaBook = repository.save(new Book("Anna Karenina", romanGenre, leoTolstoyAuthor));
     }
 
-    @ChangeSet(order = "004", id = "initCommentss", author = "assmirnov", runAlways = true)
+    @ChangeSet(order = "004", id = "initComments", author = "assmirnov", runAlways = true)
     public void initComments(CommentRepository repository) {
         repository.save(new Comment("The best tragedy!", romeoAndJulietBook));
         repository.save(new Comment("The best roman!!!", annaKareninaBook));

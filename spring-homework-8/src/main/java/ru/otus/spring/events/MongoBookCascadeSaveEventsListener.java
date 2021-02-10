@@ -25,7 +25,6 @@ public class MongoBookCascadeSaveEventsListener extends AbstractMongoEventListen
         val book = event.getSource();
         if(!genreRepository.existsById(book.getGenre().getId())){
             throw new MongoException("Genre is not found with id = " + book.getGenre().getId());
-
         }
         if (book.getAuthors() != null) {
             book.getAuthors().stream().filter(e -> Objects.isNull(e.getId())).forEach(authorRepository::save);
