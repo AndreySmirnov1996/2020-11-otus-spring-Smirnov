@@ -12,13 +12,12 @@ public class BookCrudShell {
 
     private final BookCrudService bookCrudService;
 
-
-    @ShellMethod(value = "Delete book by id (example: db 1)", key = {"db", "delete book"})
+    @ShellMethod(value = "Delete book by id (example: db 60259035b68c172f2b9d67ef)", key = {"db", "delete book"})
     public void deleteBookById(@ShellOption String bookId) {
         bookCrudService.deleteBookById(bookId);
     }
 
-    @ShellMethod(value = "Update title book by id (example: ubt 1 new_title)", key = {"ubt", "update book title"})
+    @ShellMethod(value = "Update title book by id (example: ubt 6025923474813e50a37ea44a new_title)", key = {"ubt", "update book title"})
     public void updateBookTitleById(@ShellOption String bookId, @ShellOption String newTitle) {
         bookCrudService.updateBookTitleById(bookId, newTitle);
     }
@@ -28,7 +27,7 @@ public class BookCrudShell {
         bookCrudService.showAllBooks();
     }
 
-    @ShellMethod(value = "Show book by id (example: sbid 1)", key = {"sbid", "show book"})
+    @ShellMethod(value = "Show book by id (example: sbid 60259035b68c172f2b9d67ef)", key = {"sbid", "show book"})
     public void showBookById(@ShellOption String bookId) {
         bookCrudService.showBookById(bookId);
     }
@@ -36,7 +35,7 @@ public class BookCrudShell {
     //For example:
     //sb book_name_3 1 111;Name1,Surname1
     //sb book_name_new 2 222
-    @ShellMethod(value = "Save book (example: sb book_name_3 1 1;Name1,Surname1)",
+    @ShellMethod(value = "Save book (example: sb book_name_3 1 111;Name1,Surname1)",
             key = {"sb", "save book"})
     public void saveBook(@ShellOption String title,
                          @ShellOption String genreId,
