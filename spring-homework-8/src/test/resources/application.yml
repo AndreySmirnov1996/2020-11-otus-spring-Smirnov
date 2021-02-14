@@ -3,16 +3,9 @@ spring:
     mongodb:
       port: 0
       database: test
-      #host: localhost
-      #port: 27017
-      #database: awesomeMongo
 
 mongock:
   runner-type: "ApplicationRunner" # default
   #runner-type: "InitializingBean" # if problems shell + mongock
   change-logs-scan-package:
-    - ru.otus.spring.mongock.changelog
-
-logging:
-  level:
-    root: ERROR
+    - ru.otus.spring.mongock.testchangelog
