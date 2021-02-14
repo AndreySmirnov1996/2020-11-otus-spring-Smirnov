@@ -1,6 +1,7 @@
 package ru.otus.spring.service.crud;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.domain.Comment;
 import ru.otus.spring.repositories.CommentRepository;
@@ -8,8 +9,11 @@ import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.ObjectFactory;
 import ru.otus.spring.service.OutputFormatter;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommentCrudServiceImpl implements CommentCrudService {
 
     private final CommentRepository commentRepository;
@@ -25,7 +29,12 @@ public class CommentCrudServiceImpl implements CommentCrudService {
 
     @Override
     public void showCommentById(String id) {
-        commentRepository.findById(id);
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+        if (commentOptional.isPresent()) {
+            ioService.printString(outputFormatter.formatComment(commentOptional.get()));
+        } else {
+            log.warn("Comment with id = {} doesn't exist", id);
+        }
     }
 
     @Override
@@ -42,7 +51,14 @@ public class CommentCrudServiceImpl implements CommentCrudService {
 
     @Override
     public void updateCommentTextById(String id, String text) {
-        //TODO commentRepository.updateTextById(id, text);
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+        if (commentOptional.isPresent()) {
+            Comment comment = commentOptional.get();
+            comment.setText(text);
+            commentRepository.save(comment);
+        } else {
+            log.warn("Comment with id = {} doesn't exist", id);
+        }
     }
 
     @Override

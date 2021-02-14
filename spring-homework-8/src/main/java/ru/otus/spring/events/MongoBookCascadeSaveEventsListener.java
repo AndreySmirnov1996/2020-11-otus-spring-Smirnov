@@ -10,8 +10,6 @@ import ru.otus.spring.domain.Book;
 import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.GenreRepository;
 
-import java.util.Objects;
-
 @Component
 @RequiredArgsConstructor
 public class MongoBookCascadeSaveEventsListener extends AbstractMongoEventListener<Book> {
@@ -23,11 +21,12 @@ public class MongoBookCascadeSaveEventsListener extends AbstractMongoEventListen
     public void onBeforeConvert(BeforeConvertEvent<Book> event) {
         super.onBeforeConvert(event);
         val book = event.getSource();
-        if(!genreRepository.existsById(book.getGenre().getId())){
+        if (!genreRepository.existsById(book.getGenre().getId())) {
             throw new MongoException("Genre is not found with id = " + book.getGenre().getId());
         }
         if (book.getAuthors() != null) {
-            book.getAuthors().stream().filter(e -> Objects.isNull(e.getId())).forEach(authorRepository::save);
+            book.getAuthors().stream().filter(author -> author.getName() != null && author.getSurname() != null)
+                    .forEach(authorRepository::save);
         }
     }
 }
