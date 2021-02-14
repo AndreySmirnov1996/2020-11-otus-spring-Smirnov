@@ -44,6 +44,7 @@ public class InitMongoDBTestDataChangelog {
 
     @ChangeSet(order = "004", id = "initComments", author = "assmirnov", runAlways = true)
     public void initComments(CommentRepository repository) {
-        repository.save(new Comment("The best tragedy!", romeoAndJulietBook));
+        repository.save(new Comment("111", "The best tragedy!", romeoAndJulietBook));
+        repository.save(new Comment("222", "Not bad, but everyone died", romeoAndJulietBook));
     }
 }
