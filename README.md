@@ -20,3 +20,5 @@
 Библиотеку на Spring Data JPA
 1. Модуль spring-homework-8
 Использовать MongoDB и spring-data для хранения информации о книгах
+1. Модуль spring-homework-9
+CRUD приложение с Web UI и хранением данных в БД
