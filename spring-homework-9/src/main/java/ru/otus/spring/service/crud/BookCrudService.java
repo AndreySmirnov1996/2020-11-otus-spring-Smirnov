@@ -3,12 +3,15 @@ package ru.otus.spring.service.crud;
 import ru.otus.spring.domain.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookCrudService {
 
+    void save(Book book);
+
     void saveBook(String title, String genreName, String authors);
 
-    void showBookById(long id);
+    Optional<Book> findById(long id);
 
     List<Book> findAll();
 

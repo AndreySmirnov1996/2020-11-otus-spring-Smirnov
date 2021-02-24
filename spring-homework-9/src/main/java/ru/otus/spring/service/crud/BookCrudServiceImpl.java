@@ -5,11 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.ObjectFactory;
-import ru.otus.spring.service.OutputFormatter;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +16,6 @@ public class BookCrudServiceImpl implements BookCrudService {
 
     private final BookRepository bookRepository;
     private final ObjectFactory objectFactory;
-    private final OutputFormatter outputFormatter;
-    private final IOService ioService;
 
     @Transactional
     @Override
@@ -27,10 +24,16 @@ public class BookCrudServiceImpl implements BookCrudService {
         bookRepository.save(book);
     }
 
+    @Transactional
+    @Override
+    public void save(Book book) {
+        bookRepository.save(book);
+    }
+
     @Transactional(readOnly = true)
     @Override
-    public void showBookById(long id) {
-        bookRepository.findById(id).ifPresent(book -> ioService.printString(outputFormatter.formatBook(book)));
+    public Optional<Book> findById(long id) {
+        return bookRepository.findById(id);
     }
 
     @Transactional(readOnly = true)

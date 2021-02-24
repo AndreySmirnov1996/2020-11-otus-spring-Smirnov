@@ -16,7 +16,7 @@
 </head>
 <body>
 <h1>Books:</h1>
-
+<h3><a th:href="@{/new}" href="new_book.html">New Book</a></h3>
 <table class="books">
     <thead>
     <tr>
@@ -35,9 +35,13 @@
             <td th:text="${book.title}">Some title</td>
             <td th:text="${book.genreName}">Some genre name</td>
             <td th:text="${book.authors}">Some authors</td>
-            <!--        <td>-->
-            <!--            <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>-->
-            <!--        </td>-->
+            <td>
+                <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
+            </td>
+            <td>
+                <a th:href="@{/delete/{id}(id=${book.id})}">Delete</a>
+<!--                <a th:href="@{/delete(id=${book.id})}" th:method="post">Delete book</a>-->
+            </td>
         </tr>
     </tbody>
 </table>

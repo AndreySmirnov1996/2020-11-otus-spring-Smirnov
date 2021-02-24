@@ -1,0 +1,46 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add new book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .books, .books td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<!-- Add new book -->
+<form id="new-form" th:action="@{/save(${book})}" th:object="${book}" th:method="post">
+    <h1>Book Info:</h1>
+
+    <div class="row">
+        <label for="title-input">Title:</label>
+        <input id="title-input" name="title" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-id-input">Genre id:</label>
+        <input id="genre-id-input" name="Genre id" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-name-input">Genre name:</label>
+        <input id="genre-name-input" name="Genre name" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="authors-name-input">Authors:</label>
+        <input id="authors-name-input" name="Authors" type="text"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>
