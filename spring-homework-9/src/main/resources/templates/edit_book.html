@@ -25,7 +25,7 @@
 <body>
 
 <!-- Book edition -->
-<form id="edit-form" th:action="@{/edit(id=${book.id})}"  th:object="${book}" th:method="post" action="edit.html">
+<form id="edit-form" th:action="@{/save(id=${book.id})}"  th:object="${book}" th:method="post">
     <h1>Book Info:</h1>
 
     <div class="row">
@@ -40,12 +40,17 @@
 
     <div class="row">
         <label for="genre-id-input">Genre id:</label>
-        <input id="genre-id-input" name="Genre id" type="text" th:value="${book.genre.id}" value="Genre id"/>
+        <input id="genre-id-input" name="GenreId" type="text" th:value="${book.genreId}" value="Genre id"/>
     </div>
 
     <div class="row">
         <label for="genre-name-input">Genre name:</label>
-        <input id="genre-name-input" name="Genre name" readonly="readonly" type="text" th:value="${book.genre.name}" value="Genre name"/>
+        <input id="genre-name-input" name="GenreName" readonly="readonly" type="text" th:value="${book.genreName}" value="Genre name"/>
+    </div>
+
+    <div class="row">
+        <label for="authors-name-input">Authors:</label>
+        <input id="authors-name-input" name="Authors" readonly="readonly" type="text" th:value="${book.authors}" value="Authors"/>
     </div>
 
     <div class="row">

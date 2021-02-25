@@ -36,11 +36,10 @@
             <td th:text="${book.genreName}">Some genre name</td>
             <td th:text="${book.authors}">Some authors</td>
             <td>
-                <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
+                <a th:href="@{/edit(id=${book.id})}" href="edit_book.html">Edit</a>
             </td>
             <td>
                 <a th:href="@{/delete/{id}(id=${book.id})}">Delete</a>
-<!--                <a th:href="@{/delete(id=${book.id})}" th:method="post">Delete book</a>-->
             </td>
         </tr>
     </tbody>

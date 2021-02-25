@@ -29,20 +29,20 @@ public class BookController {
     @GetMapping("/edit")
     public String editPage(@RequestParam("id") long id, Model model) throws NotFoundException {
         Book book = bookCrudService.findById(id).orElseThrow(NotFoundException::new);
-        model.addAttribute("book", book);
-        return "edit";
+        model.addAttribute("book", BookDto.toDto(book));
+        return "edit_book";
     }
 
-    @PostMapping("/edit")
-    public String saveBook(Book book, Model model) {
-        //bookCrudService.save(book);
-        List<BookDto> booksDto = bookCrudService.findAll()
-                .stream()
-                .map(BookDto::toDto)
-                .collect(Collectors.toList());
-        model.addAttribute("books", booksDto);
-        return "redirect:/";
-    }
+//    @PostMapping("/save")
+//    public String saveBook(@ModelAttribute BookDto bookDto, Model model) {
+//        //bookCrudService.save(book);
+//        List<BookDto> booksDto = bookCrudService.findAll()
+//                .stream()
+//                .map(BookDto::toDto)
+//                .collect(Collectors.toList());
+//        model.addAttribute("books", booksDto);
+//        return "redirect:/";
+//    }
 
     @GetMapping(value = "/delete/{id}")
     public String deleteCustomerForm(@PathVariable long id) {
@@ -50,16 +50,17 @@ public class BookController {
         return "redirect:/";
     }
 
-    @PostMapping("/new")
+    // Форма для создания новой книги
+    @GetMapping("/new")
     public String newCustomerForm(Map<String, Object> model) {
-        Book book = new Book();
+        BookDto book = new BookDto();
         model.put("book", book);
         return "new_book";
     }
 
     @PostMapping(value = "/save")
-    public String saveBook(@ModelAttribute("book") Book book) {
-        bookCrudService.save(book);
+    public String saveBook(@ModelAttribute("book") BookDto book) {
+        bookCrudService.save(book.toBook());
         return "redirect:/";
     }
 }

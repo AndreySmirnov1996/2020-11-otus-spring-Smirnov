@@ -15,7 +15,7 @@
 </head>
 <body>
 <!-- Add new book -->
-<form id="new-form" th:action="@{/save(${book})}" th:object="${book}" th:method="post">
+<form id="new-form" th:action="@{/save(id=${book.id})}" th:object="${book}" th:method="post">
     <h1>Book Info:</h1>
 
     <div class="row">
@@ -25,12 +25,12 @@
 
     <div class="row">
         <label for="genre-id-input">Genre id:</label>
-        <input id="genre-id-input" name="Genre id" type="text"/>
+        <input id="genre-id-input" name="GenreId" type="text"/>
     </div>
 
     <div class="row">
         <label for="genre-name-input">Genre name:</label>
-        <input id="genre-name-input" name="Genre name" type="text"/>
+        <input id="genre-name-input" name="GenreName" type="text"/>
     </div>
 
     <div class="row">

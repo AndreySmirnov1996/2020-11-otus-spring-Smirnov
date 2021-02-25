@@ -15,14 +15,6 @@ import java.util.Optional;
 public class BookCrudServiceImpl implements BookCrudService {
 
     private final BookRepository bookRepository;
-    private final ObjectFactory objectFactory;
-
-    @Transactional
-    @Override
-    public void saveBook(String title, String genreName, String authors) {
-        Book book = objectFactory.createBookEntity(title, genreName, authors);
-        bookRepository.save(book);
-    }
 
     @Transactional
     @Override
