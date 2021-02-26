@@ -16,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BookCrudServiceImpl implements BookCrudService {
 
+    private final CommentCrudService commentCrudService;
     private final BookRepository bookRepository;
     private final ObjectFactory objectFactory;
     private final OutputFormatter outputFormatter;
@@ -56,6 +57,7 @@ public class BookCrudServiceImpl implements BookCrudService {
     @Transactional
     @Override
     public void deleteBookById(String bookId) {
+        commentCrudService.deleteAllCommentsByBookId(bookId);
         bookRepository.deleteById(bookId);
     }
 }
