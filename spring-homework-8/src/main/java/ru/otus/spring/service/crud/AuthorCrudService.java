@@ -6,5 +6,7 @@ public interface AuthorCrudService {
 
     void showAuthorById(String id);
 
+    void showAll();
+
     void deleteAuthorById(String id);
 }
