@@ -56,7 +56,7 @@ class CommentRepositoryTest {
     void findAllTest() {
         val expectedComments = 1;
         val bookId = 111L;
-        List<Comment> comments = commentRepository.findAllByBook_Id(bookId);
+        List<Comment> comments = commentRepository.findAllByBookId(bookId);
 
         assertEquals(expectedComments, comments.size());
         comments.forEach(comment -> {
