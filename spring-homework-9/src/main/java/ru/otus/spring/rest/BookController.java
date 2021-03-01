@@ -1,6 +1,7 @@
 package ru.otus.spring.rest;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class BookController {
@@ -59,8 +61,14 @@ public class BookController {
     }
 
     @PostMapping(value = "/save")
-    public String saveBook(@ModelAttribute("book") BookDto book) {
-        bookCrudService.save(book.toBook());
+    public String saveBook(@ModelAttribute("book") BookDto book, Map<String, Object> model) {
+        try {
+            bookCrudService.save(book.toBook());
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            model.put("message", "Failed: " + ex.getMessage());
+            return "edit_book";
+        }
         return "redirect:/";
     }
 }

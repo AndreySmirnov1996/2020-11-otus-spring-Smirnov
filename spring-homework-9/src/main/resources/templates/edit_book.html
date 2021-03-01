@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Edit book</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style type="text/css">
         body {
             padding: 50px;
@@ -23,7 +24,7 @@
     </style>
 </head>
 <body>
-
+<div th:if="${message}" th:text="${message}" class="w3-panel w3-red">ERROR MESSAGE!</div>
 <!-- Book edition -->
 <form id="edit-form" th:action="@{/save(id=${book.id})}"  th:object="${book}" th:method="post">
     <h1>Book Info:</h1>
