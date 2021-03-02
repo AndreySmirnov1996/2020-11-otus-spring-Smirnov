@@ -22,42 +22,32 @@ public class BookController {
     private final BookCrudService bookCrudService;
 
     @GetMapping("/")
-    public String listPage(Model model) {
+    public String indexPage(Model model) {
         List<BookDto> booksDto = bookCrudService.findAll().stream().map(BookDto::toDto).collect(Collectors.toList());
         model.addAttribute("books", booksDto);
-        return "list";
+        return "index";
     }
 
+    // Форма для создания новой книги
+    @GetMapping("/new")
+    public String newBookForm(Map<String, Object> model) {
+        BookDto book = new BookDto();
+        model.put("book", book);
+        return "new_book";
+    }
+
+    // Форма для редактирования книги
     @GetMapping("/edit")
-    public String editPage(@RequestParam("id") long id, Model model) throws NotFoundException {
+    public String editBook(@RequestParam("id") long id, Model model) throws NotFoundException {
         Book book = bookCrudService.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("book", BookDto.toDto(book));
         return "edit_book";
     }
 
-//    @PostMapping("/save")
-//    public String saveBook(@ModelAttribute BookDto bookDto, Model model) {
-//        //bookCrudService.save(book);
-//        List<BookDto> booksDto = bookCrudService.findAll()
-//                .stream()
-//                .map(BookDto::toDto)
-//                .collect(Collectors.toList());
-//        model.addAttribute("books", booksDto);
-//        return "redirect:/";
-//    }
-
     @GetMapping(value = "/delete/{id}")
-    public String deleteCustomerForm(@PathVariable long id) {
+    public String deleteBook(@PathVariable long id) {
         bookCrudService.deleteBookById(id);
         return "redirect:/";
-    }
-
-    // Форма для создания новой книги
-    @GetMapping("/new")
-    public String newCustomerForm(Map<String, Object> model) {
-        BookDto book = new BookDto();
-        model.put("book", book);
-        return "new_book";
     }
 
     @PostMapping(value = "/save")

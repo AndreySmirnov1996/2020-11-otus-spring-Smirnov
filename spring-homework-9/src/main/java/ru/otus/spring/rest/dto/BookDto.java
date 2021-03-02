@@ -19,6 +19,7 @@ public class BookDto {
     private long genreId;
     private String genreName;
     private String authors;
+    private List<String> comments;
 
     private BookDto(Book book) {
         id = book.getId();
