@@ -6,10 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 
-import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Table(name = "books")
@@ -34,7 +34,7 @@ public class Book {
 
     @BatchSize(size = 5)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(targetEntity = Author.class, cascade = CascadeType.MERGE)
+    @ManyToMany(targetEntity = Author.class, cascade = CascadeType.ALL)
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
     private List<Author> authors;

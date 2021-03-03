@@ -51,17 +51,27 @@ public class BookDto {
             for (String str : authorsArray) {
                 String[] data = str.split(" ");
                 Author author = null;
-                if (data.length == 3) {
-                    author = Author.builder()
-                            .id(Long.parseLong(data[0]))
-                            .name(data[1])
-                            .surname(data[2])
-                            .build();
-                } else if (data.length == 1) {
-                    author = Author.builder()
-                            .id(Long.parseLong(data[0]))
-                            .build();
+                switch (data.length) {
+                    case 1:
+                        author = Author.builder()
+                                .id(Long.parseLong(data[0]))
+                                .build();
+                        break;
+                    case 2:
+                        author = Author.builder()
+                                .name(data[0])
+                                .surname(data[1])
+                                .build();
+                        break;
+                    case 3:
+                        author = Author.builder()
+                                .id(Long.parseLong(data[0]))
+                                .name(data[1])
+                                .surname(data[2])
+                                .build();
+                        break;
                 }
+
                 if (author != null) {
                     authorsList.add(author);
                 }
