@@ -1,3 +1,25 @@
+.books{
+    border: 1px solid #eee;
+    margin-bottom: 20px;
+}
+.books th {
+    font-weight: bold;
+    padding: 5px;
+    background: #efd5c8;
+    border: 1px solid #dddddd;
+}
+.books td{
+    padding: 5px 10px;
+    border: 1px solid #eee;
+    text-align: left;
+}
+.books tbody tr:nth-child(odd){
+    background: #fff;
+}
+.books tbody tr:nth-child(even){
+    background: #F7F7F7;
+}
+
 body {
     padding: 50px;
 }
