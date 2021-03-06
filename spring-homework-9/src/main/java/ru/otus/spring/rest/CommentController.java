@@ -34,7 +34,7 @@ public class CommentController {
     }
 
     @GetMapping("/book/{id}/comment/{commentId}/edit")
-    public String editComment(@PathVariable("id") long commentId, Model model) throws ChangeSetPersister.NotFoundException {
+    public String editComment(@PathVariable("commentId") long commentId, Model model) throws ChangeSetPersister.NotFoundException {
         Comment comment = commentCrudService.findCommentById(commentId).orElseThrow(ChangeSetPersister.NotFoundException::new);
         model.addAttribute("comment", comment);
         return "edit_comment";
@@ -46,14 +46,13 @@ public class CommentController {
         return "redirect:/book/{id}/comment";
     }
 
-    @PostMapping("/book/{id}/comment/save")
-    public String saveComment(@ModelAttribute("comment") CommentDto commentDto, Map<String, Object> model) {
+    @PostMapping("/comment/update")
+    public String updateComment(@ModelAttribute("comment") CommentDto commentDto, Map<String, Object> model) {
         try {
-            commentCrudService.saveComment(commentDto.toComment());
+            commentCrudService.updateCommentTextById(commentDto.getId(), commentDto.getText());
         } catch (Exception ex) {
             log.error(ex.getMessage());
             model.put("message", "Failed: " + ex.getMessage());
-            //return "new_book";
         }
         return "redirect:/book/ " + commentDto.getBookId() + "/comment";
     }
