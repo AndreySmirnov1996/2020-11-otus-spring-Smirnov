@@ -37,8 +37,8 @@ public class BookController {
     }
 
     // Форма для редактирования книги
-    @GetMapping("/edit")
-    public String editBook(@RequestParam("id") long id, Model model) throws NotFoundException {
+    @GetMapping("/edit/{id}")
+    public String editBook(@PathVariable("id") long id, Model model) throws NotFoundException {
         Book book = bookCrudService.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("book", BookDto.toDto(book));
         return "edit_book";

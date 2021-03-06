@@ -8,10 +8,9 @@
 </head>
 <body>
 <h1>Books:</h1>
-<h3>Add button</h3><a th:href="@{/new}" href="new_book.html">New Book</a>
 <table class="w3-table w3-bordered">
     <thead>
-    <tr class="w3-indigo">
+    <tr class="w3-purple">
         <th>Id</th>
         <th>Title</th>
         <th>Genre</th>
@@ -28,13 +27,14 @@
             <td th:text="${book.genreName}">Some genre name</td>
             <td th:text="${book.authors}">Some authors</td>
             <td>
-                <a th:href="@{/edit(id=${book.id})}" class="w3-btn w3-teal">Edit</a>
+                <a th:href="@{/edit/{id}(id=${book.id})}" class="w3-button w3-yellow">Edit</a>
             </td>
             <td>
-                <a th:href="@{/delete/{id}(id=${book.id})}" class="w3-button w3-red">Delete</a>
+                <a th:href="@{/delete/{id}(id=${book.id})}" class="w3-button w3-black">Delete</a>
             </td>
         </tr>
     </tbody>
 </table>
+<a th:href="@{/new}" href="new_book.html" class="w3-btn w3-aqua">Add new Book</a>
 </body>
 </html>
