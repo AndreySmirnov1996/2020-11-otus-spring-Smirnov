@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface CommentCrudService {
 
-    void saveComment(String title, long bookId);
-
     void saveComment(Comment comment);
 
     void showCommentById(long id);

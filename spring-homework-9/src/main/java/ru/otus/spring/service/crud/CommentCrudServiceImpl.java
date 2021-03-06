@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Comment;
 import ru.otus.spring.repositories.CommentRepository;
-import ru.otus.spring.service.ObjectFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,14 +14,6 @@ import java.util.Optional;
 public class CommentCrudServiceImpl implements CommentCrudService {
 
     private final CommentRepository commentRepository;
-    private final ObjectFactory objectFactory;
-
-    @Transactional
-    @Override
-    public void saveComment(String title, long bookId) {
-        Comment comment = objectFactory.createCommentEntity(title, bookId);
-        commentRepository.save(comment);
-    }
 
     @Transactional
     @Override

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.service.ObjectFactory;
 
 import java.util.List;
 import java.util.Optional;
