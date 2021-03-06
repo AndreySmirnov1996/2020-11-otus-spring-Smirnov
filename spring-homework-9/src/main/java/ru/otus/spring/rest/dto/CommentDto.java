@@ -19,11 +19,13 @@ public class CommentDto {
 
     private long id;
     private String text;
+    private long bookId;
 
 
     private CommentDto(Comment comment) {
         id = comment.getId();
         text = comment.getText();
+        bookId = comment.getBook().getId();
     }
 
     public static CommentDto toDto(Comment comment) {
@@ -34,6 +36,7 @@ public class CommentDto {
         return Comment.builder()
                 .id(id)
                 .text(text)
+                .book(Book.builder().id(bookId).build())
                 .build();
     }
 }

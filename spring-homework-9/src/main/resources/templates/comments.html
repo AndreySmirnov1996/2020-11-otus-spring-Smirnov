@@ -23,7 +23,7 @@
         <td th:text="${comment.id}">Comment id</td>
         <td th:text="${comment.text}">Comment text</td>
         <td>
-            <a th:href="@{/comment/{id}/edit(id=${comment.id})}" class="w3-button w3-yellow">Edit</a>
+            <a th:href="@{/book/{id}/comment/{commentId}/edit(id=${comment.bookId}, commentId=${comment.id})}" class="w3-button w3-yellow">Edit</a>
         </td>
         <td>
             <a th:href="@{/comment/{id}/delete(id=${comment.id})}" class="w3-button w3-black">Delete</a>

@@ -8,6 +8,7 @@ import ru.otus.spring.repositories.CommentRepository;
 import ru.otus.spring.service.ObjectFactory;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,12 @@ public class CommentCrudServiceImpl implements CommentCrudService {
         commentRepository.save(comment);
     }
 
+    @Transactional
+    @Override
+    public void saveComment(Comment comment) {
+        commentRepository.save(comment);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public void showCommentById(long id) {
@@ -33,6 +40,12 @@ public class CommentCrudServiceImpl implements CommentCrudService {
     @Override
     public List<Comment> findAllCommentsByBookId(long bookId) {
         return commentRepository.findAllByBookId(bookId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<Comment> findCommentById(long commentId) {
+        return commentRepository.findById(commentId);
     }
 
     @Transactional
