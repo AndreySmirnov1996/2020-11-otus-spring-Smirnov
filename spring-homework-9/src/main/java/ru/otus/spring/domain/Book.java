@@ -34,7 +34,7 @@ public class Book {
 
     @BatchSize(size = 5)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(targetEntity = Author.class, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Author.class, cascade = CascadeType.MERGE)
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
     private List<Author> authors;

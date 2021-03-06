@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
+    List<Comment> findTop10ByBookId(Long bookId);
+
     List<Comment> findAllByBookId(Long bookId);
 
     @Modifying

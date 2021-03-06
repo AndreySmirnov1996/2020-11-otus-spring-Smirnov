@@ -22,7 +22,7 @@
     </div>
     <div class="row">
         <label for="genre-id-input">Genre id:</label>
-        <input id="genre-id-input" name="GenreId" type="text" th:value="${book.genreId}" value="Genre id"/>
+        <input id="genre-id-input" name="GenreId" readonly="readonly" type="text" th:value="${book.genreId}" value="Genre id"/>
     </div>
     <div class="row">
         <label for="genre-name-input">Genre name:</label>
@@ -36,7 +36,7 @@
     </div>
 
     <div class="row">
-        <button type="submit">Save</button>
+        <button type="submit" class="w3-btn w3-aqua">Save</button>
     </div>
 </form>
 

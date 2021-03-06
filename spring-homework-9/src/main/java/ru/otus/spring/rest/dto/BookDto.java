@@ -2,6 +2,7 @@ package ru.otus.spring.rest.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Data
 @NoArgsConstructor
 public class BookDto {
@@ -50,7 +52,7 @@ public class BookDto {
             String[] authorsArray = authors.split("; ");
             for (String str : authorsArray) {
                 String[] data = str.split(" ");
-                Author author = null;
+                Author author;
                 switch (data.length) {
                     case 1:
                         author = Author.builder()
@@ -70,6 +72,8 @@ public class BookDto {
                                 .surname(data[2])
                                 .build();
                         break;
+                    default:
+                        throw new IllegalArgumentException("\"" + str + "\" can't be parsed as Author");
                 }
 
                 if (author != null) {

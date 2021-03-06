@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
@@ -6,6 +7,7 @@
     <title>Add new book</title>
 </head>
 <body>
+<div th:if="${message}" th:text="${message}" class="w3-panel w3-red">ERROR MESSAGE!</div>
 <!-- Add new book -->
 <form id="new-form" th:action="@{/save}" th:object="${book}" th:method="post">
     <h1>New book:</h1>
@@ -26,7 +28,7 @@
     </div>
 
     <div class="row">
-        <button type="submit">Save</button>
+        <button type="submit" class="w3-btn w3-aqua">Save</button>
     </div>
 </form>
 </body>

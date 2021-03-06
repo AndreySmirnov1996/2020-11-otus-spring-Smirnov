@@ -27,10 +27,13 @@
             <td th:text="${book.genreName}">Some genre name</td>
             <td th:text="${book.authors}">Some authors</td>
             <td>
-                <a th:href="@{/edit/{id}(id=${book.id})}" class="w3-button w3-yellow">Edit</a>
+                <a th:href="@{/book/{id}/comment(id=${book.id})}" class="w3-button w3-deep-purple">Show comments</a>
             </td>
             <td>
-                <a th:href="@{/delete/{id}(id=${book.id})}" class="w3-button w3-black">Delete</a>
+                <a th:href="@{/book/{id}/edit(id=${book.id})}" class="w3-button w3-yellow">Edit</a>
+            </td>
+            <td>
+                <a th:href="@{/book/{id}/delete(id=${book.id})}" class="w3-button w3-black">Delete</a>
             </td>
         </tr>
     </tbody>

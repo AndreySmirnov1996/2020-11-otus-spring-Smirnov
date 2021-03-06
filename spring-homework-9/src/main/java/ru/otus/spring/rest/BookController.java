@@ -10,6 +10,7 @@ import ru.otus.spring.domain.Book;
 import ru.otus.spring.rest.dto.BookDto;
 import ru.otus.spring.service.crud.BookCrudService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,14 +38,14 @@ public class BookController {
     }
 
     // Форма для редактирования книги
-    @GetMapping("/edit/{id}")
+    @GetMapping("/book/{id}/edit")
     public String editBook(@PathVariable("id") long id, Model model) throws NotFoundException {
         Book book = bookCrudService.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("book", BookDto.toDto(book));
         return "edit_book";
     }
 
-    @GetMapping(value = "/delete/{id}")
+    @GetMapping("/book/{id}/delete")
     public String deleteBook(@PathVariable long id) {
         bookCrudService.deleteBookById(id);
         return "redirect:/";
@@ -57,7 +58,7 @@ public class BookController {
         } catch (Exception ex) {
             log.error(ex.getMessage());
             model.put("message", "Failed: " + ex.getMessage());
-            return "edit_book";
+            return "new_book";
         }
         return "redirect:/";
     }
