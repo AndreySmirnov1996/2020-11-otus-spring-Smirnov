@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Book;
+import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.repositories.CommentRepository;
 
@@ -15,11 +16,17 @@ import java.util.Optional;
 public class BookCrudServiceImpl implements BookCrudService {
 
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
     @Override
     public void save(Book book) {
+        book.getAuthors().forEach(author -> {
+            if (author.getId() <= 0) {
+                authorRepository.save(author);
+            }
+        });
         bookRepository.save(book);
     }
 
