@@ -9,18 +9,20 @@
 <body>
 <div th:if="${message}" th:text="${message}" class="w3-panel w3-red">ERROR MESSAGE!</div>
 <!-- Add new book -->
-<form id="new-form" th:action="@{/save}" th:object="${book}" th:method="post">
-    <h1>New book:</h1>
+<form  id="new-form" th:action="@{/save}" th:object="${book}" th:method="post" class="w3-container">
+    <div class="w3-container w3-yellow">
+        <h2>New book</h2>
+    </div>
 
     <div class="row">
         <label for="title-input">Title:</label>
-        <input id="title-input" name="title" type="text"/>
+        <input id="title-input" name="title" type="text" placeholder="New Title" class="w3-input"/>
     </div>
 
     <div class="row">
         <label for="genre-id-input">Genre id:</label>
 
-        <select id="genre-id-input" size="1" name="GenreId">
+        <select  id="genre-id-input" size="1" name="GenreId" class="w3-select">
             <option selected value="1">Genre 1</option>
             <option value="2">Genre 2</option>
             <option value="3">Genre 3</option>
@@ -28,8 +30,8 @@
     </div>
 
     <div class="row">
-        <label for="authors-name-input">Authors:</label>
-        <input id="authors-name-input" name="Authors" type="text" value="NONE"/>
+        <label for="authors-name-input">Authors: [Authors formats: 1; (only id if present) OR author_name, author_surname; (if author new)]</label>
+        <input id="authors-name-input" name="Authors" type="text" placeholder="NONE" class="w3-input "/>
     </div>
 
     <div class="row">
