@@ -49,9 +49,9 @@ public class BookDto {
     private List<Author> createAuthors(String authors) {
         List<Author> authorsList = new ArrayList<>();
         if (!authors.equals("NONE")) {
-            String[] authorsArray = authors.split("; ");
+            String[] authorsArray = authors.split(";");
             for (String str : authorsArray) {
-                String[] data = str.split(" ");
+                String[] data = str.trim().split(" ");
                 Author author;
                 switch (data.length) {
                     case 1:
