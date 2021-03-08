@@ -54,7 +54,7 @@ public class BookController {
         return "redirect:/";
     }
 
-    @PostMapping(value = "/save")
+    @PostMapping(value = "/book/save")
     public String saveBook(@ModelAttribute("book") BookDto book, Map<String, Object> model) {
         try {
             bookCrudService.save(book.toBook());

@@ -9,7 +9,7 @@
 <body>
 <div th:if="${message}" th:text="${message}" class="w3-panel w3-red">ERROR MESSAGE!</div>
 <!-- Add new book -->
-<form  id="new-form" th:action="@{/save}" th:object="${book}" th:method="post" class="w3-container">
+<form  id="new-form" th:action="@{/book/save}" th:object="${book}" th:method="post" class="w3-container">
     <div class="w3-container w3-yellow">
         <h2>New book</h2>
     </div>
