@@ -18,4 +18,5 @@
 Переписать приложение для хранения книг на ORM
 1. Модуль spring-homework-7
 Библиотеку на Spring Data JPA
-
+1. Модуль spring-homework-8
+Использовать MongoDB и spring-data для хранения информации о книгах
