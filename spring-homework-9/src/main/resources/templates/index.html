@@ -33,11 +33,14 @@
                 <a th:href="@{/book/{id}/edit(id=${book.id})}" class="w3-button w3-yellow">Edit</a>
             </td>
             <td>
-                <a th:href="@{/book/{id}/delete(id=${book.id})}" class="w3-button w3-black">Delete</a>
+                <form th:action="@{/book/delete}" method="post">
+                    <input type="hidden" name="id" th:value="${book.id}" />
+                    <input type="submit" value="Delete" class="w3-button w3-black"/>
+                </form>
             </td>
         </tr>
     </tbody>
 </table>
-<a th:href="@{/new}" href="new_book.html" class="w3-btn w3-aqua">Add new Book</a>
+<a th:href="@{/book/new}" href="new_book.html" class="w3-btn w3-aqua">Add new Book</a>
 </body>
 </html>

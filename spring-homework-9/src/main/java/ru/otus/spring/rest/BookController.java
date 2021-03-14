@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.rest.dto.BookDto;
 import ru.otus.spring.service.crud.BookCrudService;
@@ -33,7 +30,7 @@ public class BookController {
     }
 
     // Форма для создания новой книги
-    @GetMapping("/new")
+    @GetMapping("/book/new")
     public String newBookForm(Map<String, Object> model) {
         BookDto book = new BookDto();
         model.put("book", book);
@@ -48,8 +45,9 @@ public class BookController {
         return "edit_book";
     }
 
-    @GetMapping("/book/{id}/delete")
-    public String deleteBook(@PathVariable long id) {
+
+    @PostMapping("/book/delete")
+    public String deleteBook(@RequestParam long id) {
         bookCrudService.deleteBookById(id);
         return "redirect:/";
     }
@@ -63,6 +61,12 @@ public class BookController {
             model.put("message", "Failed: " + ex.getMessage());
             return "new_book";
         }
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/book/edit")
+    public String editBook(@ModelAttribute("book") BookDto book) {
+        bookCrudService.updateBookTitleById(book.getId(), book.getTitle());
         return "redirect:/";
     }
 }
