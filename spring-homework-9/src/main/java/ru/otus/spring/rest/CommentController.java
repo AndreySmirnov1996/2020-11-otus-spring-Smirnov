@@ -30,6 +30,7 @@ public class CommentController {
                 .map(CommentDto::toDto)
                 .collect(Collectors.toList());
         model.addAttribute("comments", commentDto);
+        model.addAttribute("bookId", id);
         return "comments";
     }
 
