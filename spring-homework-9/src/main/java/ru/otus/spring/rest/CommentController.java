@@ -57,4 +57,25 @@ public class CommentController {
         return "redirect:/book/ " + commentDto.getBookId() + "/comment";
     }
 
+    // Форма для создания нового комментария
+    @GetMapping("/book/{id}/comment/new")
+    public String newCommentForm(@PathVariable long id, Map<String, Object> model) {
+        CommentDto comment = new CommentDto();
+        comment.setBookId(id);
+        model.put("comment", comment);
+        return "new_comment";
+    }
+
+    @PostMapping(value = "/comment/save")
+    public String saveComment(@ModelAttribute("comment") CommentDto comment, Map<String, Object> model) {
+        try {
+            commentCrudService.saveComment(comment.toComment());
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            model.put("message", "Failed: " + ex.getMessage());
+            return "new_comment";
+        }
+        return "redirect:/book/" + comment.getBookId() + "/comment";
+    }
+
 }

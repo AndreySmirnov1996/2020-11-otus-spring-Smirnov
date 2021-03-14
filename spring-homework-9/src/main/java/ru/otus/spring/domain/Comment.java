@@ -23,7 +23,7 @@ public class Comment {
     @Column(name = "text")
     private String text;
 
-    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
     private Book book;
 }
