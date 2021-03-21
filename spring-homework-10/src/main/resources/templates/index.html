@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <title>ELibrary</title>
+</head>
+<body>
+<h1>Books:</h1>
+<table class="w3-table w3-bordered">
+    <thead>
+    <tr class="w3-purple">
+        <th>Id</th>
+        <th>Title</th>
+        <th>Genre</th>
+        <th>Authors</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $.get('/api/books').done(function (books) {
+            if (typeof books !== 'undefined' && books.length > 0) {
+                //Object.keys(books).forEach(function (book) {
+                books.forEach(function (book) {
+                    $('tbody').append(`
+                    <tr>
+                        <td>${book.id}</td>
+                        <td>${book.title}</td>
+                        <td>${book.genreName}</td>
+                        <td>${book.authors}</td>
+                        <td>
+                            <a href="/book/${book.id}/comment" class="w3-button w3-deep-purple">Show comments</a>
+                        </td>
+                        <td>
+                            <a href="@{/book/{id}/edit(id=${book.id})}" class="w3-button w3-yellow">Edit</a>
+                        </td>
+                        <td>
+                            <form action="@{/book/delete}" method="post">
+                                <input type="hidden" name="id" value="${book.id}" />
+                                <input type="submit" value="Delete" class="w3-button w3-black"/>
+                            </form>
+                        </td>
+                    </tr>
+                `)
+                });
+            } else {
+                books.forEach(function () {
+                    $('tbody').append(`
+                        <tr>
+                            <td colspan="2"> No Books Available </td>
+                        </tr>
+                `)
+                });
+            }
+
+
+        })
+    });
+</script>
+
+<a th:href="@{/book/new}" href="new_book.html" class="w3-btn w3-aqua">Add new Book</a>
+</body>
+</html>
