@@ -27,20 +27,10 @@ public class BookController {
         return bookCrudService.findAll().stream().map(BookDto::toDto).collect(Collectors.toList());
     }
 
-    // Форма для создания новой книги
-    @GetMapping("/book/new")
-    public String newBookForm(Map<String, Object> model) {
-        BookDto book = new BookDto();
-        model.put("book", book);
-        return "new_book";
-    }
-
-    // Форма для редактирования книги
-    @GetMapping("/book/{id}/edit")
-    public String editBook(@PathVariable("id") long id, Model model) throws NotFoundException {
-        Book book = bookCrudService.findById(id).orElseThrow(NotFoundException::new);
-        model.addAttribute("book", BookDto.toDto(book));
-        return "edit_book";
+    //NEW
+    @GetMapping("/api/book/{id}/edit")
+    public BookDto getEditBook(@PathVariable("id") long id) throws NotFoundException {
+        return BookDto.toDto(bookCrudService.findById(id).orElseThrow(NotFoundException::new));
     }
 
 
@@ -50,16 +40,9 @@ public class BookController {
         return "redirect:/";
     }
 
-    @PostMapping(value = "/book/save")
-    public String saveBook(@ModelAttribute("book") BookDto book, Map<String, Object> model) {
-        try {
-            bookCrudService.save(book.toBook());
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-            model.put("message", "Failed: " + ex.getMessage());
-            return "new_book";
-        }
-        return "redirect:/";
+    @PostMapping(value = "/api/book/save")
+    public void saveBook(@RequestBody BookDto book) {
+        bookCrudService.save(book.toBook());
     }
 
     @PostMapping(value = "/book/edit")
