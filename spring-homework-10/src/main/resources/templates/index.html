@@ -33,13 +33,13 @@
                         <td>${book.genreName}</td>
                         <td>${book.authors}</td>
                         <td>
-                            <a href="/book/${book.id}/comment" class="w3-button w3-deep-purple">Show comments</a>
+                            <a href="/book/${book.id}/comment" class="w3-button w3-deep-purple">Comments</a>
                         </td>
                         <td>
-                            <a href="@{/book/{id}/edit(id=${book.id})}" class="w3-button w3-yellow">Edit</a>
+                            <a href="/book/${book.id}/edit" class="w3-button w3-yellow">Edit</a>
                         </td>
                         <td>
-                            <form action="@{/book/delete}" method="post">
+                            <form action="/book/delete" method="post">
                                 <input type="hidden" name="id" value="${book.id}" />
                                 <input type="submit" value="Delete" class="w3-button w3-black"/>
                             </form>
@@ -48,27 +48,24 @@
                 `)
                 });
             } else {
-                books.forEach(function () {
                     $('tbody').append(`
                         <tr>
                             <td colspan="2"> No Books Available </td>
                         </tr>
                 `)
-                });
             }
-
-
         })
     });
 
-    $(document).ready(function() {
-        $("#new-book-btn").click(function() {
+    $(document).ready(function () {
+        $("#new-book-btn").click(function () {
             $("#new-book-form").toggle();
         });
     });
 
-    $(document).ready(function(){
-        $("#new-book-form").submit(function(event){
+    // Add new book
+    $(document).ready(function () {
+        $("#new-book-form").submit(function (event) {
 
             event.preventDefault();
 
@@ -79,14 +76,11 @@
                 title: title,
                 genreId: $("#genre-id-input").val(),
                 authors: authors
-            }
+            };
 
-            if(title==''||authors=='')
-            {
-                alert("Please Fill All Fields");
-            }
-            else
-            {
+            if (title === '' || authors === '') {
+                alert("Please fill title and authors");
+            } else {
                 $.ajax({
                     type: "POST",
                     contentType: "application/json",
@@ -95,8 +89,8 @@
                     success: function () {
                         location.reload();
                     },
-                    error: function (xhr) {
-                        alert("Error status :" + xhr.status + "\nError message:" + xhr.responseText);
+                    error: function (error) {
+                        alert("Error message:" + error.responseText);
                     }
                 });
             }
@@ -127,7 +121,8 @@
     </div>
 
     <div class="row">
-        <label for="authors-name-input">Authors: [Authors formats: 1; (only id if present) OR author_name, author_surname; (if author new)]</label>
+        <label for="authors-name-input">Authors: [Authors formats: 1; (only id if present) OR author_name,
+            author_surname; (if author new)]</label>
         <input id="authors-name-input" name="Authors" type="text" placeholder="NONE" class="w3-input "/>
     </div>
 
