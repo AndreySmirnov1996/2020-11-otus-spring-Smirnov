@@ -7,18 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
-import ru.otus.spring.rest.dto.BookDto;
+import ru.otus.spring.page.BookPagesController;
 import ru.otus.spring.service.crud.BookCrudService;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Optional.ofNullable;
@@ -30,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @DisplayName("REST Контроллер для книг должен")
-@WebMvcTest(BookController.class)
+@WebMvcTest(BookPagesController.class)
 class BookControllerTest {
 
     @Autowired
@@ -38,36 +35,6 @@ class BookControllerTest {
 
     @MockBean
     private BookCrudService service;
-
-    @DisplayName("отображать главную страницу со списком книг")
-    @Test
-    void indexPageTest() throws Exception {
-        Author author1 = new Author(11, "author_name_1", "author_surname_1");
-        Author author2 = new Author(22, "author_name_2", "author_surname_2");
-        Book book = createBook(11, "book_name_1", new Genre(11, "genre_1"),
-                Arrays.asList(author1, author2));
-
-        given(service.findAll()).willReturn(Collections.singletonList(book));
-
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/"));
-
-        result.andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("index"))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("books"));
-
-        MvcResult mvcResult = result.andReturn();
-        List<BookDto> bookDtoList = (List<BookDto>) mvcResult.getModelAndView().getModel().get("books");
-        assertEquals(bookDtoList.size(), 1);
-    }
-
-    @DisplayName("открывать форму для ввода новой книги")
-    @Test
-    void newBookPageTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/book/new"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("new_book"))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("book"));
-    }
 
     @DisplayName("удалять книгу")
     @Test

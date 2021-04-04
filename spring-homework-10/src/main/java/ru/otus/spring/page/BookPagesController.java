@@ -13,7 +13,7 @@ import ru.otus.spring.service.crud.BookCrudService;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class BooksPagesController {
+public class BookPagesController {
 
     private final BookCrudService bookCrudService;
 
