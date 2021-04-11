@@ -23,7 +23,7 @@
 </table>
 <script>
     $(function () {
-        $.get('/api/books').done(function (books) {
+        $.get('/api/book').done(function (books) {
             if (typeof books !== 'undefined' && books.length > 0) {
                 books.forEach(function (book) {
                     $('tbody').append(`
@@ -84,7 +84,7 @@
                 $.ajax({
                     type: "POST",
                     contentType: "application/json",
-                    url: "/api/book/save",
+                    url: "/api/book",
                     data: JSON.stringify(formData),
                     success: function () {
                         location.reload();
