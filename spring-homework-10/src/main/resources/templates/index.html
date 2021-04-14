@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script type="text/javascript" th:src="@{/js/functions.js}"></script>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <title>ELibrary</title>
 </head>
@@ -22,40 +23,13 @@
     </tbody>
 </table>
 <script>
-    $(function () {
-        $.get('/api/book').done(function (books) {
-            if (typeof books !== 'undefined' && books.length > 0) {
-                books.forEach(function (book) {
-                    $('tbody').append(`
-                    <tr>
-                        <td>${book.id}</td>
-                        <td>${book.title}</td>
-                        <td>${book.genreName}</td>
-                        <td>${book.authors}</td>
-                        <td>
-                            <a href="/book/${book.id}/comment" class="w3-button w3-deep-purple">Comments</a>
-                        </td>
-                        <td>
-                            <a href="/book/${book.id}/edit" class="w3-button w3-yellow">Edit</a>
-                        </td>
-                        <td>
-                            <form action="/book/delete" method="post">
-                                <input type="hidden" name="id" value="${book.id}" />
-                                <input type="submit" value="Delete" class="w3-button w3-black"/>
-                            </form>
-                        </td>
-                    </tr>
-                `)
-                });
-            } else {
-                    $('tbody').append(`
-                        <tr>
-                            <td colspan="2"> No Books Available </td>
-                        </tr>
-                `)
-            }
-        })
-    });
+    window.booksGlobal = [];
+    console.log("I am here : "  + window.booksGlobal.length)
+    getAllBooks()
+   // $(getAllBooks());
+
+    console.log("after getAllBooks :  "  + window.booksGlobal.length)
+
 
     $(document).ready(function () {
         $("#new-book-btn").click(function () {
