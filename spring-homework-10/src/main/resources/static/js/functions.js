@@ -1,21 +1,11 @@
 
 function getAllBooks() {
-    if(window.booksGlobal.length === 0) {
-        $.get('/api/book').done(function (books) {
-            books.forEach(function(book) {
-                window.booksGlobal.push(book)
-            })
-            console.log("books size = " + booksGlobal.length)
-
-        })
-    }
-    printAllBooks()
+        $.get('/api/book').done(books => printAllBooks(books))
 }
 
-function printAllBooks() {
-    console.log("printAllBooks booksSize = " + booksGlobal.length)
-    if (typeof booksGlobal !== 'undefined' && booksGlobal.length > 0) {
-        booksGlobal.forEach(function (book) {
+function printAllBooks(books) {
+    if (typeof books !== 'undefined' && books.length > 0) {
+        books.forEach(function (book) {
             $('tbody').append(`
                     <tr>
                         <td>${book.id}</td>
@@ -35,7 +25,7 @@ function printAllBooks() {
                             </form>
                         </td>
                         <td>
-                            <input id="deleteBook" type="button" value="Delete" class="w3-button w3-black" onclick="deleteBook(${book.id}, books);" />
+                            <input id="deleteBook" type="button" value="Delete NEW" class="w3-button w3-black" onclick="deleteBook(${book.id})" />
                         </td>
                     </tr>
                 `)
@@ -54,13 +44,11 @@ function deleteBook(id) {
     $.ajax({
         type : "DELETE",
         url : "/api/book/" + id,
-        success: function (result) {
+        success: function () {
+            $('tbody').children().remove();
+            getAllBooks();
         },
         error: function (e) {
         }
     });
-
-    // remove book from global array
-
-    printAllBooks();
 }
