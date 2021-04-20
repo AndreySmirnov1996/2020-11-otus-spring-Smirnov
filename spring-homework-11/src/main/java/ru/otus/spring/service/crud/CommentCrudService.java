@@ -9,15 +9,14 @@ public interface CommentCrudService {
 
     void saveComment(Comment comment);
 
-    void showCommentById(long id);
+    Optional<Comment> findById(String id);
 
-    List<Comment> findAllCommentsByBookId(long bookId);
+    List<Comment> findAllByBookId(String bookId);
 
-    void updateCommentTextById(long id, String text);
+    void updateCommentTextById(String id, String text);
 
-    void deleteCommentById(long id);
+    void deleteCommentById(String id);
 
-    void deleteAllCommentsByBookId(long bookId);
+    void deleteAllCommentsByBookId(String bookId);
 
-    Optional<Comment> findCommentById(long commentId);
 }

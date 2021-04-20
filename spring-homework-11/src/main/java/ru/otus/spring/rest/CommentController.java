@@ -25,8 +25,8 @@ public class CommentController {
     private final CommentCrudService commentCrudService;
 
     @GetMapping("/book/{id}/comment")
-    public String listComments(@PathVariable("id") long id, Model model) {
-        List<CommentDto> commentDto = commentCrudService.findAllCommentsByBookId(id).stream()
+    public String listComments(@PathVariable("id") String id, Model model) {
+        List<CommentDto> commentDto = commentCrudService.findAllByBookId(id).stream()
                 .map(CommentDto::toDto)
                 .collect(Collectors.toList());
         model.addAttribute("comments", commentDto);
@@ -35,14 +35,14 @@ public class CommentController {
     }
 
     @GetMapping("/book/{id}/comment/{commentId}/edit")
-    public String editComment(@PathVariable("commentId") long commentId, Model model) throws ChangeSetPersister.NotFoundException {
-        Comment comment = commentCrudService.findCommentById(commentId).orElseThrow(ChangeSetPersister.NotFoundException::new);
+    public String editComment(@PathVariable("commentId") String commentId, Model model) throws ChangeSetPersister.NotFoundException {
+        Comment comment = commentCrudService.findById(commentId).orElseThrow(ChangeSetPersister.NotFoundException::new);
         model.addAttribute("comment", comment);
         return "edit_comment";
     }
 
     @GetMapping("/book/{id}/comment/{commentId}/delete")
-    public String deleteComment(@PathVariable long commentId) {
+    public String deleteComment(@PathVariable String commentId) {
         commentCrudService.deleteCommentById(commentId);
         return "redirect:/book/{id}/comment";
     }
@@ -60,7 +60,7 @@ public class CommentController {
 
     // Форма для создания нового комментария
     @GetMapping("/book/{id}/comment/new")
-    public String newCommentForm(@PathVariable long id, Map<String, Object> model) {
+    public String newCommentForm(@PathVariable String id, Map<String, Object> model) {
         CommentDto comment = new CommentDto();
         comment.setBookId(id);
         model.put("comment", comment);

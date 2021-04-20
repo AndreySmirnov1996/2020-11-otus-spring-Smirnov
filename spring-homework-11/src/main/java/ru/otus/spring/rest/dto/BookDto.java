@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class BookDto {
 
-    private long id;
+    private String id;
     private String title;
-    private long genreId;
+    private String genreId;
     private String genreName;
     private String authors;
     private List<String> comments;
@@ -56,7 +56,7 @@ public class BookDto {
                 switch (data.length) {
                     case 1:
                         author = Author.builder()
-                                .id(Long.parseLong(data[0]))
+                                .id(data[0])
                                 .build();
                         break;
                     case 2:
@@ -67,7 +67,7 @@ public class BookDto {
                         break;
                     case 3:
                         author = Author.builder()
-                                .id(Long.parseLong(data[0]))
+                                .id(data[0])
                                 .name(data[1])
                                 .surname(data[2])
                                 .build();

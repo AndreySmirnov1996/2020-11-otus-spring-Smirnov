@@ -4,7 +4,7 @@ import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import ru.otus.spring.AbstractRepositoryTest;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Comment;
 import ru.otus.spring.repositories.CommentRepository;
@@ -15,9 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DisplayName("Репозиторий на основе JPA для работы с комментариями ")
-@DataJpaTest
-class CommentRepositoryTest {
+@DisplayName("Репозиторий для работы с комментариями к книгам")
+class CommentRepositoryTest extends AbstractRepositoryTest {
 
     @Autowired
     private CommentRepository commentRepository;
@@ -25,59 +24,64 @@ class CommentRepositoryTest {
     @DisplayName("должен находить комментарий по id")
     @Test
     void findByIdTest() {
-        val commentId = 7L;
-
-        Comment commentExp = Comment.builder()
-                .text("Good book!")
-                .book(Book.builder().id(111).build())
-                .build();
-
-        val commentOpt = commentRepository.findById(commentId);
-        assertThat(commentOpt).isNotEmpty();
-
-        val commentAct = commentOpt.get();
-        assertEquals(commentId, commentAct.getId());
-        assertEquals(commentExp.getText(), commentAct.getText());
-        assertEquals(commentExp.getBook().getId(), commentAct.getBook().getId());
-
+        val commentId = "111";
+        val actualCommentOptional = commentRepository.findById(commentId);
+        assertThat(actualCommentOptional).isNotEmpty();
+        val actualComment = actualCommentOptional.get();
+        assertEquals(commentId, actualComment.getId());
+        assertEquals("The best tragedy!", actualComment.getText());
+        assertEquals("1234", actualComment.getBook().getId());
     }
 
     @DisplayName("должен сохранять комментарий")
     @Test
     void saveTest() {
-        Comment comment = createComment("Some bad comment", Book.builder().id(111).build());
-        commentRepository.save(comment);
+        val commentId = "777";
+        Comment expectedComment = createComment(commentId, "Some bad comment", Book.builder().id("1234").build());
+        commentRepository.save(expectedComment);
 
-        val bookOpt = commentRepository.findById(comment.getId());
-        assertThat(bookOpt).isNotEmpty().get().isEqualTo(comment);
+        val actualCommentOptional = commentRepository.findById(commentId);
+        assertThat(actualCommentOptional).isNotEmpty();
+        val actualComment = actualCommentOptional.get();
+
+        assertEquals(commentId, actualComment.getId());
+        assertEquals(expectedComment.getText(), actualComment.getText());
+        assertEquals(expectedComment.getBook().getId(), actualComment.getBook().getId());
+        commentRepository.deleteById(commentId);
     }
 
     @DisplayName("должен находить все комментарии по id книги")
     @Test
     void findAllTest() {
-        val expectedComments = 1;
-        val bookId = 111L;
+        val expectedCommentsSize = 2;
+        val bookId = "1234";
         List<Comment> comments = commentRepository.findAllByBookId(bookId);
 
-        assertEquals(expectedComments, comments.size());
+        assertEquals(expectedCommentsSize, comments.size());
         comments.forEach(comment -> {
+                    assertNotNull(comment.getId());
                     assertNotNull(comment.getText());
                     assertNotNull(comment.getBook());
+                    assertEquals(bookId, comment.getBook().getId());
                 }
         );
     }
 
-    @DisplayName("должен удалять комментарий по id")
+    @DisplayName("удалять комментарий по id")
     @Test
     void deleteTest() {
-        val commentId = 7L;
+        val commentId = "7";
+        Comment expectedComment = createComment(commentId, "Some bad comment", Book.builder().id("1234").build());
+        commentRepository.save(expectedComment);
         commentRepository.deleteById(commentId);
-        val commentOpt = commentRepository.findById(commentId);
-        assertThat(commentOpt).isEmpty();
+        val actualCommentOptional = commentRepository.findById(commentId);
+
+        assertThat(actualCommentOptional).isEmpty();
     }
 
-    private Comment createComment(String text, Book book) {
+    private Comment createComment(String id, String text, Book book) {
         return Comment.builder()
+                .id(id)
                 .text(text)
                 .book(book)
                 .build();

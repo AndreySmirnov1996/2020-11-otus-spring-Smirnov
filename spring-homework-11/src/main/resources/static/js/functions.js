@@ -25,7 +25,7 @@ function printAllBooks(books) {
                             </form>
                         </td>
                         <td>
-                            <input id="deleteBook" type="button" value="Delete NEW" class="w3-button w3-black" onclick="deleteBook(${book.id})" />
+                            <input id="deleteBook" type="button" value="Delete NEW" class="w3-button w3-black" onclick="deleteBook('${book.id}')" />
                         </td>
                     </tr>
                 `)
@@ -41,6 +41,7 @@ function printAllBooks(books) {
 
 
 function deleteBook(id) {
+    console.log("before delete id = " + id);
     $.ajax({
         type : "DELETE",
         url : "/api/book/" + id,

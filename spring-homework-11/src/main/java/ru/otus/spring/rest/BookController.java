@@ -28,6 +28,6 @@ public class BookController {
 
     @DeleteMapping("/api/book/{id}")
     public void deleteBook(@PathVariable("id") String id) {
-        bookCrudService.deleteBookById(Long.parseLong(id));
+        bookCrudService.deleteBookById(id);
     }
 }

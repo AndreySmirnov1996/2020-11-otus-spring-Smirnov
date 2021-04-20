@@ -1,12 +1,11 @@
 package ru.otus.spring.service.crud;
 
+import com.mongodb.MongoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Book;
-import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.repositories.CommentRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,43 +14,44 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BookCrudServiceImpl implements BookCrudService {
 
+    private final CommentCrudService commentCrudService;
     private final BookRepository bookRepository;
-    private final AuthorRepository authorRepository;
-    private final CommentRepository commentRepository;
 
     @Transactional
     @Override
     public void save(Book book) {
-        book.getAuthors().forEach(author -> {
-            if (author.getId() <= 0) {
-                authorRepository.save(author);
-            }
-        });
         bookRepository.save(book);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Book> findById(long id) {
+    public Optional<Book> findById(String id) {
         return bookRepository.findById(id);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Book> findAll() {
-        return bookRepository.findAllWithAllInfo();
+        return bookRepository.findAll();
     }
 
     @Transactional
     @Override
-    public void updateBookTitleById(long bookId, String newTitle) {
-        bookRepository.updateTitleById(bookId, newTitle);
+    public void updateBookTitleById(String bookId, String newTitle) {
+        Optional<Book> bookOptional = bookRepository.findById(bookId);
+        if (bookOptional.isPresent()) {
+            Book newBook = bookOptional.get();
+            newBook.setTitle(newTitle);
+            bookRepository.save(newBook);
+        } else {
+            throw new MongoException("Book doesn't exist with id = " + bookId);
+        }
     }
 
     @Transactional
     @Override
-    public void deleteBookById(long bookId) {
-        commentRepository.deleteAllByBookId(bookId);
+    public void deleteBookById(String bookId) {
+        commentCrudService.deleteAllCommentsByBookId(bookId);
         bookRepository.deleteById(bookId);
     }
 }

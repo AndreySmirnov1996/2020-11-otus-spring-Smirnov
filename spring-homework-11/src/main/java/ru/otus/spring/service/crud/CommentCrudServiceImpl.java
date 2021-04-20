@@ -1,6 +1,7 @@
 package ru.otus.spring.service.crud;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Comment;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommentCrudServiceImpl implements CommentCrudService {
 
     private final CommentRepository commentRepository;
@@ -21,39 +23,35 @@ public class CommentCrudServiceImpl implements CommentCrudService {
         commentRepository.save(comment);
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public void showCommentById(long id) {
-        commentRepository.findById(id);
+    public Optional<Comment> findById(String id) {
+        return commentRepository.findById(id);
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public List<Comment> findAllCommentsByBookId(long bookId) {
+    public List<Comment> findAllByBookId(String bookId) {
         return commentRepository.findAllByBookId(bookId);
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public Optional<Comment> findCommentById(long commentId) {
-        return commentRepository.findById(commentId);
+    public void updateCommentTextById(String id, String text) {
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+        if (commentOptional.isPresent()) {
+            Comment comment = commentOptional.get();
+            comment.setText(text);
+            commentRepository.save(comment);
+        } else {
+            log.warn("Comment with id = {} doesn't exist", id);
+        }
     }
 
-    @Transactional
     @Override
-    public void updateCommentTextById(long id, String text) {
-        commentRepository.updateTextById(id, text);
-    }
-
-    @Transactional
-    @Override
-    public void deleteCommentById(long id) {
+    public void deleteCommentById(String id) {
         commentRepository.deleteById(id);
     }
 
-    @Transactional
     @Override
-    public void deleteAllCommentsByBookId(long bookId) {
+    public void deleteAllCommentsByBookId(String bookId) {
         commentRepository.deleteAllByBookId(bookId);
     }
 }

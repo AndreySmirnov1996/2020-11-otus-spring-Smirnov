@@ -9,12 +9,11 @@ public interface BookCrudService {
 
     void save(Book book);
 
-    Optional<Book> findById(long id);
+    Optional<Book> findById(String id);
 
     List<Book> findAll();
 
-    void updateBookTitleById(long bookId, String newTitle);
+    void updateBookTitleById(String bookId, String newTitle);
 
-    void deleteBookById(long bookId);
-
+    void deleteBookById(String bookId);
 }

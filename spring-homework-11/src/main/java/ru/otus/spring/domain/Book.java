@@ -4,38 +4,32 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
 
-@Table(name = "books")
-@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "books")
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
 
-    @Column(name = "title")
     private String title;
-
-    @Fetch(FetchMode.JOIN)
-    @ManyToOne(targetEntity = Genre.class, fetch = FetchType.EAGER/*, cascade = CascadeType.ALL*/)
-    @JoinColumn(name = "genre_id")
+    @DBRef
     private Genre genre;
-
-    @BatchSize(size = 5)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(targetEntity = Author.class, cascade = CascadeType.MERGE)
-    @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
+    @DBRef
     private List<Author> authors;
+
+    public Book(String title, Genre genre, Author... authors) {
+        this.title = title;
+        this.genre = genre;
+        this.authors = Arrays.asList(authors);
+    }
 }

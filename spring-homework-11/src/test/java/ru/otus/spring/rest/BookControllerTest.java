@@ -1,5 +1,6 @@
 package ru.otus.spring.rest;
 
+import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -39,9 +40,9 @@ class BookControllerTest {
     @DisplayName("удалять книгу")
     @Test
     void deleteBookTest() throws Exception {
-        long bookId = 1;
+        val bookId = "1";
         Mockito.doNothing().when(service).deleteBookById(bookId);
-        mockMvc.perform(MockMvcRequestBuilders.post("/book/delete").param("id", String.valueOf(bookId)))
+        mockMvc.perform(MockMvcRequestBuilders.post("/book/delete").param("id", bookId))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/"));
 
@@ -51,11 +52,11 @@ class BookControllerTest {
     @DisplayName("открывать форму редактирования книги")
     @Test
     void editBookPageTest() throws Exception {
-        long bookId = 1;
+        val bookId = "1";
 
-        Author author1 = new Author(11, "author_name_1", "author_surname_1");
-        Author author2 = new Author(22, "author_name_2", "author_surname_2");
-        Book book = createBook(bookId, "book_name_1", new Genre(11, "genre_1"),
+        Author author1 = new Author("11", "author_name_1", "author_surname_1");
+        Author author2 = new Author("22", "author_name_2", "author_surname_2");
+        Book book = createBook(bookId, "book_name_1", new Genre("11", "genre_1"),
                 Arrays.asList(author1, author2));
 
         given(service.findById(bookId)).willReturn(ofNullable(book));
@@ -67,7 +68,7 @@ class BookControllerTest {
         verify(service, times(1)).findById(bookId);
     }
 
-    private Book createBook(long id, String bookTitle, Genre genre, List<Author> authors) {
+    private Book createBook(String id, String bookTitle, Genre genre, List<Author> authors) {
         return Book.builder()
                 .id(id)
                 .title(bookTitle)

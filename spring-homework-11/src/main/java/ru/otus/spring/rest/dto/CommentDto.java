@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class CommentDto {
 
-    private long id;
+    private String id;
     private String text;
-    private long bookId;
+    private String bookId;
 
 
     private CommentDto(Comment comment) {
