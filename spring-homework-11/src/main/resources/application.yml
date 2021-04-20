@@ -4,7 +4,6 @@ spring:
       uri: mongodb://localhost:27017/library
 
 mongock:
-  #runner-type: "ApplicationRunner" # default
-  runner-type: "InitializingBean" # if problems shell + mongock
+  runner-type: "ApplicationRunner"
   change-logs-scan-package:
     - ru.otus.spring.mongock.changelog

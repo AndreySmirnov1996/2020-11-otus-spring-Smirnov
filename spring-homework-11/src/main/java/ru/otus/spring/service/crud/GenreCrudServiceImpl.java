@@ -2,6 +2,7 @@ package ru.otus.spring.service.crud;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import ru.otus.spring.domain.Genre;
 import ru.otus.spring.repositories.GenreRepository;
 
@@ -19,7 +20,7 @@ public class GenreCrudServiceImpl implements GenreCrudService {
     }
 
     @Override
-    public List<Genre> findAllGenres() {
+    public Flux<Genre> findAllGenres() {
         return genreRepository.findAll();
     }
 }

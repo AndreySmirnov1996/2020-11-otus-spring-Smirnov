@@ -3,6 +3,7 @@ package ru.otus.spring.service.crud;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
@@ -23,7 +24,7 @@ public class AuthorCrudServiceImpl implements AuthorCrudService {
     }
 
     @Override
-    public Optional<Author> findById(String id) {
+    public Mono<Author> findById(String id) {
         return authorRepository.findById(id);
     }
 

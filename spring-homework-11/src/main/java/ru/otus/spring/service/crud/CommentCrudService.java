@@ -1,17 +1,16 @@
 package ru.otus.spring.service.crud;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.spring.domain.Comment;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface CommentCrudService {
 
     void saveComment(Comment comment);
 
-    Optional<Comment> findById(String id);
+    Mono<Comment> findById(String id);
 
-    List<Comment> findAllByBookId(String bookId);
+    Flux<Comment> findAllByBookId(String bookId);
 
     void updateCommentTextById(String id, String text);
 

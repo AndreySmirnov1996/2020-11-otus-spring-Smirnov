@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.spring.domain.Comment;
 import ru.otus.spring.repositories.CommentRepository;
 
@@ -24,25 +26,21 @@ public class CommentCrudServiceImpl implements CommentCrudService {
     }
 
     @Override
-    public Optional<Comment> findById(String id) {
+    public Mono<Comment> findById(String id) {
         return commentRepository.findById(id);
     }
 
     @Override
-    public List<Comment> findAllByBookId(String bookId) {
+    public Flux<Comment> findAllByBookId(String bookId) {
         return commentRepository.findAllByBookId(bookId);
     }
 
     @Override
     public void updateCommentTextById(String id, String text) {
-        Optional<Comment> commentOptional = commentRepository.findById(id);
-        if (commentOptional.isPresent()) {
-            Comment comment = commentOptional.get();
+        commentRepository.findById(id).subscribe( comment -> {
             comment.setText(text);
             commentRepository.save(comment);
-        } else {
-            log.warn("Comment with id = {} doesn't exist", id);
-        }
+        }, error -> log.warn("Comment with id = {} doesn't exist or error : {}", id, error.getMessage()));
     }
 
     @Override

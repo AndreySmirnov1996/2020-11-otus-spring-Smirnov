@@ -3,6 +3,7 @@ package ru.otus.spring.mongock.changelog;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoDatabase;
+import reactor.core.publisher.Mono;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Comment;
@@ -12,15 +13,17 @@ import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.repositories.CommentRepository;
 import ru.otus.spring.repositories.GenreRepository;
 
+import java.util.Collections;
+
 @ChangeLog(order = "001")
 public class InitMongoDBDataChangelog {
 
-    private Genre tragedyGenre;
-    private Genre romanGenre;
-    private Author williamShakespeareAuthor;
-    private Author leoTolstoyAuthor;
-    private Book romeoAndJulietBook;
-    private Book annaKareninaBook;
+    private Mono<Genre> tragedyGenre;
+    private Mono<Genre> romanGenre;
+    private Mono<Author> williamShakespeareAuthor;
+    private Mono<Author> leoTolstoyAuthor;
+    private Mono<Book> romeoAndJulietBook;
+    private Mono<Book> annaKareninaBook;
 
     @ChangeSet(order = "000", id = "dropDb", author = "assmirnov", runAlways = true)
     public void dropDb(MongoDatabase db) {
@@ -42,13 +45,15 @@ public class InitMongoDBDataChangelog {
 
     @ChangeSet(order = "003", id = "initBooks", author = "assmirnov", runAlways = true)
     public void initBooks(BookRepository repository) {
-        romeoAndJulietBook = repository.save(new Book("Romeo and Juliet", tragedyGenre, williamShakespeareAuthor));
-        annaKareninaBook = repository.save(new Book("Anna Karenina", romanGenre, leoTolstoyAuthor));
+        romeoAndJulietBook = repository.save(new Book("Romeo and Juliet", tragedyGenre.block(),
+                Collections.singletonList(williamShakespeareAuthor.block())));
+        annaKareninaBook = repository.save(new Book("Anna Karenina", romanGenre.block(),
+                Collections.singletonList(leoTolstoyAuthor.block())));
     }
 
     @ChangeSet(order = "004", id = "initComments", author = "assmirnov", runAlways = true)
     public void initComments(CommentRepository repository) {
-        repository.save(new Comment("The best tragedy!", romeoAndJulietBook));
-        repository.save(new Comment("The best roman!!!", annaKareninaBook));
+        repository.save(new Comment("The best tragedy!", romeoAndJulietBook.block()));
+        repository.save(new Comment("The best roman!!!", annaKareninaBook.block()));
     }
 }

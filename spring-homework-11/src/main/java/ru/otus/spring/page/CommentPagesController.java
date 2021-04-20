@@ -1,8 +1,7 @@
-package ru.otus.spring.rest;
+package ru.otus.spring.page;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,28 +14,25 @@ import ru.otus.spring.service.crud.CommentCrudService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class CommentController {
+public class CommentPagesController {
 
     private final CommentCrudService commentCrudService;
 
     @GetMapping("/book/{id}/comment")
     public String listComments(@PathVariable("id") String id, Model model) {
-        List<CommentDto> commentDto = commentCrudService.findAllByBookId(id).stream()
-                .map(CommentDto::toDto)
-                .collect(Collectors.toList());
+        List<Comment> commentDto = commentCrudService.findAllByBookId(id).collectList().block();
         model.addAttribute("comments", commentDto);
         model.addAttribute("bookId", id);
         return "comments";
     }
 
     @GetMapping("/book/{id}/comment/{commentId}/edit")
-    public String editComment(@PathVariable("commentId") String commentId, Model model) throws ChangeSetPersister.NotFoundException {
-        Comment comment = commentCrudService.findById(commentId).orElseThrow(ChangeSetPersister.NotFoundException::new);
+    public String editComment(@PathVariable("commentId") String commentId, Model model) {
+        Comment comment = commentCrudService.findById(commentId).block();
         model.addAttribute("comment", comment);
         return "edit_comment";
     }

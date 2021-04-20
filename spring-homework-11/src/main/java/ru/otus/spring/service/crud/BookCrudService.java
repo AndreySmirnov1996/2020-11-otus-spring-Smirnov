@@ -1,19 +1,18 @@
 package ru.otus.spring.service.crud;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.spring.domain.Book;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface BookCrudService {
 
     void save(Book book);
 
-    Optional<Book> findById(String id);
+    Mono<Book> findById(String id);
 
-    List<Book> findAll();
-
-    void updateBookTitleById(String bookId, String newTitle);
-
-    void deleteBookById(String bookId);
+    Flux<Book> findAll();
+//
+//    void updateBookTitleById(String bookId, String newTitle);
+//
+//    void deleteBookById(String bookId);
 }
