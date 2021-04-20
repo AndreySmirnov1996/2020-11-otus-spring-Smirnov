@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script type="text/javascript" th:src="@{/js/functions.js}"></script>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <title>ELibrary</title>
+</head>
+<body>
+<h1>Books:</h1>
+<table class="w3-table w3-bordered">
+    <thead>
+    <tr class="w3-purple">
+        <th>Id</th>
+        <th>Title</th>
+        <th>Genre</th>
+        <th>Authors</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script>
+    getAllBooks();
+
+    $(document).ready(function () {
+        $("#new-book-btn").click(function () {
+            $("#new-book-form").toggle();
+        });
+    });
+
+    // Add new book
+    $(document).ready(function () {
+        $("#new-book-form").submit(function (event) {
+
+            event.preventDefault();
+
+            let title = $("#title-input").val();
+            let authors = $("#authors-name-input").val();
+
+            let formData = {
+                title: title,
+                genreId: $("#genre-id-input").val(),
+                authors: authors
+            };
+
+            if (title === '' || authors === '') {
+                alert("Please fill title and authors");
+            } else {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/api/book",
+                    data: JSON.stringify(formData),
+                    success: function () {
+                        location.reload();
+                    },
+                    error: function (error) {
+                        alert("Error message:" + error.responseText);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<button type="button" id="new-book-btn" class="w3-btn w3-aqua">Add new Book</button>
+
+<form id="new-book-form" class="w3-container">
+    <div class="w3-container w3-yellow">
+        <h2>New book</h2>
+    </div>
+
+    <div class="row">
+        <label for="title-input">Title:</label>
+        <input id="title-input" name="title" type="text" placeholder="New Title" class="w3-input"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-id-input">Genre id:</label>
+
+        <select id="genre-id-input" size="1" name="GenreId" class="w3-select">
+            <option selected value="1">Genre 1</option>
+            <option value="2">Genre 2</option>
+            <option value="3">Genre 3</option>
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="authors-name-input">Authors: [Authors formats: 1; (only id if present) OR author_name,
+            author_surname; (if author new)]</label>
+        <input id="authors-name-input" name="Authors" type="text" placeholder="NONE" class="w3-input "/>
+    </div>
+
+    <div class="row">
+        <button type="submit" id="save-book-btn" class="w3-btn w3-aqua">Save</button>
+    </div>
+</form>
+
+</body>
+</html>
