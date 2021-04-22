@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @DisplayName("Веб приложение библиотека должно")
 @SpringBootTest
-@AutoConfigureMockMvc
 class WebApplicationTests {
 
     @DisplayName("корректно запускать контекст")
