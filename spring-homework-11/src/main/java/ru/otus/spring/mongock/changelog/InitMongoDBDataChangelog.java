@@ -6,11 +6,9 @@ import com.mongodb.client.MongoDatabase;
 import reactor.core.publisher.Mono;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Comment;
 import ru.otus.spring.domain.Genre;
 import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.repositories.CommentRepository;
 import ru.otus.spring.repositories.GenreRepository;
 
 import java.util.Collections;
@@ -22,8 +20,6 @@ public class InitMongoDBDataChangelog {
     private Mono<Genre> romanGenre;
     private Mono<Author> williamShakespeareAuthor;
     private Mono<Author> leoTolstoyAuthor;
-    private Mono<Book> romeoAndJulietBook;
-    private Mono<Book> annaKareninaBook;
 
     @ChangeSet(order = "000", id = "dropDb", author = "assmirnov", runAlways = true)
     public void dropDb(MongoDatabase db) {
@@ -45,15 +41,9 @@ public class InitMongoDBDataChangelog {
 
     @ChangeSet(order = "003", id = "initBooks", author = "assmirnov", runAlways = true)
     public void initBooks(BookRepository repository) {
-        romeoAndJulietBook = repository.save(new Book("Romeo and Juliet", tragedyGenre.block(),
-                Collections.singletonList(williamShakespeareAuthor.block())));
-        annaKareninaBook = repository.save(new Book("Anna Karenina", romanGenre.block(),
-                Collections.singletonList(leoTolstoyAuthor.block())));
-    }
-
-    @ChangeSet(order = "004", id = "initComments", author = "assmirnov", runAlways = true)
-    public void initComments(CommentRepository repository) {
-        repository.save(new Comment("The best tragedy!", romeoAndJulietBook.block()));
-        repository.save(new Comment("The best roman!!!", annaKareninaBook.block()));
+        repository.save(new Book("Romeo and Juliet", tragedyGenre.block(),
+                Collections.singletonList(williamShakespeareAuthor.block()))).block();
+        repository.save(new Book("Anna Karenina", romanGenre.block(),
+                Collections.singletonList(leoTolstoyAuthor.block()))).block();
     }
 }

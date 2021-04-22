@@ -13,19 +13,10 @@ function printAllBooks(books) {
                         <td>${book.genreName}</td>
                         <td>${book.authors}</td>
                         <td>
-                            <a href="/book/${book.id}/comment" class="w3-button w3-deep-purple">Comments</a>
-                        </td>
-                        <td>
                             <a href="/book/${book.id}/edit" class="w3-button w3-yellow">Edit</a>
                         </td>
                         <td>
-                            <form action="/book/delete" method="post">
-                                <input type="hidden" name="id" value="${book.id}" />
-                                <input type="submit" value="Delete" class="w3-button w3-black"/>
-                            </form>
-                        </td>
-                        <td>
-                            <input id="deleteBook" type="button" value="Delete NEW" class="w3-button w3-black" onclick="deleteBook('${book.id}')" />
+                            <input id="deleteBook" type="button" value="Delete" class="w3-button w3-black" onclick="deleteBook('${book.id}')" />
                         </td>
                     </tr>
                 `)
