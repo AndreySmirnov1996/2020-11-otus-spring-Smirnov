@@ -6,7 +6,4 @@ import ru.otus.spring.domain.Book;
 
 public interface BookRepository extends ReactiveMongoRepository<Book, String> {
 
-    Flux<Book> findByAuthorsId(String id);
-
-    boolean existsBooksByAuthorsId(String authorId);
 }

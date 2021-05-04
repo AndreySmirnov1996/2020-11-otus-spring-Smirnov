@@ -21,12 +21,11 @@ public class Book {
     private String id;
 
     private String title;
-    @DBRef
-    private Genre genre;
-    @DBRef
+    private String genre;
+
     private List<Author> authors;
 
-    public Book(String title, Genre genre, List<Author> authors) {
+    public Book(String title, String genre, List<Author> authors) {
         this.title = title;
         this.genre = genre;
         this.authors = authors;

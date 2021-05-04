@@ -10,7 +10,7 @@ function printAllBooks(books) {
                     <tr>
                         <td>${book.id}</td>
                         <td>${book.title}</td>
-                        <td>${book.genreName}</td>
+                        <td>${book.genre}</td>
                         <td>${book.authors}</td>
                         <td>
                             <a href="/book/${book.id}/edit" class="w3-button w3-yellow">Edit</a>
@@ -32,7 +32,6 @@ function printAllBooks(books) {
 
 
 function deleteBook(id) {
-    console.log("before delete id = " + id);
     $.ajax({
         type : "DELETE",
         url : "/api/book/" + id,

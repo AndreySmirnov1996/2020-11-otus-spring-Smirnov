@@ -42,7 +42,7 @@
 
             let formData = {
                 title: title,
-                genreId: $("#genre-id-input").val(),
+                genre: $("#genre-input").val(),
                 authors: authors
             };
 
@@ -79,17 +79,16 @@
     </div>
 
     <div class="row">
-        <label for="genre-id-input">Genre id:</label>
+        <label for="genre-input">Genre:</label>
 
-        <select id="genre-id-input" size="1" name="GenreId" class="w3-select">
-            <option selected value="1">Tragedy</option>
-            <option value="2">Roman</option>
+        <select id="genre-input" size="1" name="genre" class="w3-select">
+            <option selected>Tragedy</option>
+            <option>Roman</option>
         </select>
     </div>
 
     <div class="row">
-        <label for="authors-name-input">Authors: [Authors formats: 1; (only id if present) OR author_name,
-            author_surname; (if author new)]</label>
+        <label for="authors-name-input">Authors: [Authors formats: author_name, author_surname; ]</label>
         <input id="authors-name-input" name="Authors" type="text" placeholder="NONE" class="w3-input "/>
     </div>
 
