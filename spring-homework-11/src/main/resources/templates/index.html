@@ -10,7 +10,7 @@
 </head>
 <body>
 <h1>Books:</h1>
-<table class="w3-table w3-bordered">
+<table class="w3-table w3-bordered" id="book-table">
     <thead>
     <tr class="w3-purple">
         <th>Id</th>
@@ -28,6 +28,22 @@
     $(document).ready(function () {
         $("#new-book-btn").click(function () {
             $("#new-book-form").toggle();
+        });
+    });
+
+    // Edit book TODO
+    $(document).ready(function () {
+        $('#book-table').on('click',"button", function() { // any button
+            console.log($( this ).text());
+            //
+            var currentRow=$(this).closest("tr");
+            //
+            // var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+            // var col2=currentRow.find("td:eq(1)").text(); // get current row 2nd TD
+            // var col3=currentRow.find("td:eq(2)").text(); // get current row 3rd TD
+            // var data=col1+"\n"+col2+"\n"+col3;
+            //
+            // alert(data);
         });
     });
 
@@ -49,18 +65,7 @@
             if (title === '' || authors === '') {
                 alert("Please fill title and authors");
             } else {
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: "/api/book",
-                    data: JSON.stringify(formData),
-                    success: function () {
-                        location.reload();
-                    },
-                    error: function (error) {
-                        alert("Error message:" + error.responseText);
-                    }
-                });
+                saveBook(formData)
             }
         });
     });
