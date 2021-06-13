@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
@@ -45,26 +45,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @SuppressWarnings("deprecation")
     @Bean
     public PasswordEncoder passwordEncoder() {
-        log.info("in method passwordEncoder() ");
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder(10);
     }
-
-//    @Autowired
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        log.info("in method configure(AuthenticationManagerBuilder auth)");
-//        auth.inMemoryAuthentication()
-//                .withUser("admin").password("admin").roles("ADMIN");
-//    }
-
-//    @Override
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication()
-//                .dataSource(dataSource)
-////                .withDefaultSchema()
-//                .withUser(User.withUsername("user").password("password").roles("USER"))
-//                .withUser(User.withUsername("admin").password("password").roles("ADMIN"));
-//    }
-
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
