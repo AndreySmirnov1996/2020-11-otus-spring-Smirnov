@@ -40,3 +40,13 @@ create table comments
     text    varchar2(255),
     book_id bigint references books (id) on delete cascade
 );
+
+drop table if exists users;
+create table users
+(
+    id       bigint IDENTITY primary key,
+    role     varchar2(255) not null,
+    login    varchar2(255) not null,
+    password_hash varchar2(300) not null,
+    enabled  boolean not null
+);

@@ -21,12 +21,12 @@ public class BookController {
 
     private final BookCrudService bookCrudService;
 
-    @GetMapping("/")
+    @PostMapping("/book")
     public String indexPage(Model model) {
         List<Book> books = bookCrudService.findAll();
         List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
         model.addAttribute("books", booksDto);
-        return "index";
+        return "book";
     }
 
     // Форма для создания новой книги

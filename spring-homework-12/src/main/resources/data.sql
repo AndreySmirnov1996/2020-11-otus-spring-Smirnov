@@ -19,3 +19,7 @@ insert into authors_books (author_id, book_id) values (4, 2);
 insert into comments (id, text, book_id) values (1, 'text1', 1);
 insert into comments (id, text, book_id) values (2, 'text2', 1);
 insert into comments (id, text, book_id) values (3, 'text3', 2);
+
+-- Add user
+insert into users (id, role, login, password_hash, enabled) values (1, 'ROLE_ADMIN', 'admin', 'admin', true);
+insert into users (id, role, login, password_hash, enabled) values (2, 'ROLE_USER', 'user', 'user', true);

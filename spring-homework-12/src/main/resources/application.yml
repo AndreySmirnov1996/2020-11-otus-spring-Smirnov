@@ -11,3 +11,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+app:
+  security:
+    salt: 123123
