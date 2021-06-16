@@ -11,14 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.sql.DataSource;
-
 @EnableWebSecurity
 @Slf4j
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final DataSource dataSource;
+    private final DatabaseUserDetailsService databaseUserDetailsService;
 
     @Override
     public void configure(WebSecurity web) {
@@ -49,14 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery(
-                        "select login, password_hash, 'true' from users " +
-                                "where login=?")
-                .authoritiesByUsernameQuery(
-                        "select login, role, 'true' from users " +
-                                "where login=?")
+        auth.userDetailsService(databaseUserDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 }
