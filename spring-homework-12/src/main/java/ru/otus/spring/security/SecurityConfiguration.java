@@ -42,7 +42,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .successForwardUrl("/book");
     }
 
-    @SuppressWarnings("deprecation")
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
