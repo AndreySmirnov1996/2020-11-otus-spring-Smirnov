@@ -9,3 +9,5 @@ insert into authors_books (author_id, book_id) values (11, 111);
 insert into authors_books (author_id, book_id) values (22, 111);
 
 insert into comments (id, text, book_id) values (7, 'Good book!', 111);
+
+insert into users (id, role, login, password_hash, enabled) values (1, 'ROLE_ADMIN', 'admin', '$2a$10$lqj04iq3qH7khXJF6x3.YeLF4L1hAUPYaAkau.NLVJjGGV3txPgfu', true); --password = admin

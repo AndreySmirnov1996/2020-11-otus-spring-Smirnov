@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -15,6 +16,7 @@ import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
 import ru.otus.spring.rest.dto.BookDto;
+import ru.otus.spring.security.DatabaseUserDetailsService;
 import ru.otus.spring.service.crud.BookCrudService;
 
 import java.util.Arrays;
@@ -31,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("REST Контроллер для книг должен")
 @WebMvcTest(BookController.class)
+@MockBean(DatabaseUserDetailsService.class)
 class BookControllerTest {
 
     @Autowired
@@ -39,6 +42,11 @@ class BookControllerTest {
     @MockBean
     private BookCrudService service;
 
+    @WithMockUser(
+            username = "admin",
+            password = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     @DisplayName("отображать главную страницу со списком книг")
     @Test
     void indexPageTest() throws Exception {
@@ -49,10 +57,10 @@ class BookControllerTest {
 
         given(service.findAll()).willReturn(Collections.singletonList(book));
 
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/"));
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post("/book"));
 
         result.andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("index"))
+                .andExpect(MockMvcResultMatchers.view().name("book"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("books"));
 
         MvcResult mvcResult = result.andReturn();
@@ -60,6 +68,11 @@ class BookControllerTest {
         assertEquals(bookDtoList.size(), 1);
     }
 
+    @WithMockUser(
+            username = "admin",
+            password = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     @DisplayName("открывать форму для ввода новой книги")
     @Test
     void newBookPageTest() throws Exception {
@@ -69,6 +82,11 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("book"));
     }
 
+    @WithMockUser(
+            username = "admin",
+            password = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     @DisplayName("удалять книгу")
     @Test
     void deleteBookTest() throws Exception {
@@ -81,6 +99,11 @@ class BookControllerTest {
         verify(service, times(1)).deleteBookById(bookId);
     }
 
+    @WithMockUser(
+            username = "admin",
+            password = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     @DisplayName("открывать форму редактирования книги")
     @Test
     void editBookPageTest() throws Exception {
