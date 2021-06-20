@@ -21,5 +21,5 @@ insert into comments (id, text, book_id) values (2, 'text2', 1);
 insert into comments (id, text, book_id) values (3, 'text3', 2);
 
 -- Add user
-insert into users (id, role, login, password_hash, enabled) values (1, 'ROLE_ADMIN', 'admin', '$2a$10$lqj04iq3qH7khXJF6x3.YeLF4L1hAUPYaAkau.NLVJjGGV3txPgfu', true); --password = admin
-insert into users (id, role, login, password_hash, enabled) values (2, 'ROLE_USER', 'user', '$2a$10$bYQtsnxTSzqZNn7J2JtJj.j7cF3mjJvPTi6JBMzk65NpVi8XBvch2', true); -- password = user
+insert into users (id, role, login, password_hash, enabled) values (1, 'ADMIN', 'admin', '$2a$10$lqj04iq3qH7khXJF6x3.YeLF4L1hAUPYaAkau.NLVJjGGV3txPgfu', true); --password = admin
+insert into users (id, role, login, password_hash, enabled) values (2, 'USER', 'user', '$2a$10$bYQtsnxTSzqZNn7J2JtJj.j7cF3mjJvPTi6JBMzk65NpVi8XBvch2', true); -- password = user

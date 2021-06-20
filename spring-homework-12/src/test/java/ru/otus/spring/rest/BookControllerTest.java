@@ -45,7 +45,7 @@ class BookControllerTest {
     @WithMockUser(
             username = "admin",
             password = "admin",
-            authorities = {"ROLE_ADMIN"}
+            roles = "ADMIN"
     )
     @DisplayName("отображать главную страницу со списком книг")
     @Test
