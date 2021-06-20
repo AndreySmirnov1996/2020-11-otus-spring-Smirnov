@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
+    <meta charset="UTF-8"/>
+    <title>Edit comment</title>
+</head>
+<body>
+<div th:if="${message}" th:text="${message}" class="w3-panel w3-red">ERROR MESSAGE!</div>
+<!-- Comment edition -->
+<form id="edit-form" th:action="@{/comment/update}" th:object="${comment}" th:method="post">
+    <h1>Edit comment:</h1>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" name="id" type="text" readonly="readonly" th:value="${comment.id}"/>
+    </div>
+    <div class="row">
+        <label for="title-input">Text:</label>
+        <input id="title-input" name="text" type="text" th:value="${comment.text}"/>
+    </div>
+    <div class="row">
+        <label for="book-id-input">BookId:</label>
+        <input id="book-id-input" name="BookId" readonly="readonly" type="text" th:value="${comment.book.id}"/>
+    </div>
+    <div class="row">
+        <button type="submit" class="w3-btn w3-aqua">Save</button>
+    </div>
+</form>
+
+</body>
+</html>

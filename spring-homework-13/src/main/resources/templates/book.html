@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <meta charset="UTF-8"/>
+    <title>ELibrary</title>
+</head>
+<body>
+<h1>Books:</h1>
+<table class="w3-table w3-bordered">
+    <thead>
+    <tr class="w3-purple">
+        <th>Id</th>
+        <th>Title</th>
+        <th>Genre</th>
+        <th>Authors</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${books.empty}">
+            <td colspan="2"> No Books Available </td>
+        </tr>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}">1</td>
+            <td th:text="${book.title}">Some title</td>
+            <td th:text="${book.genreName}">Some genre name</td>
+            <td th:text="${book.authors}">Some authors</td>
+            <td>
+                <a th:href="@{/book/{id}/comment(id=${book.id})}" class="w3-button w3-deep-purple">Show comments</a>
+            </td>
+            <td>
+                <a th:href="@{/book/{id}/edit(id=${book.id})}" class="w3-button w3-yellow">Edit</a>
+            </td>
+            <td>
+                <form th:action="@{/book/delete}" method="post">
+                    <input type="hidden" name="id" th:value="${book.id}" />
+                    <input type="submit" value="Delete" class="w3-button w3-black"/>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<a th:href="@{/book/new}" href="new_book.html" class="w3-btn w3-aqua">Add new Book</a>
+</body>
+</html>
