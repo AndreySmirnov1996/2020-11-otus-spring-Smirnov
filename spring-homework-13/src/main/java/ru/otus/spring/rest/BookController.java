@@ -3,6 +3,8 @@ package ru.otus.spring.rest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,16 +28,22 @@ public class BookController {
         List<Book> books = bookCrudService.findAll();
         List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
         model.addAttribute("books", booksDto);
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+        log.info("Role ");
+        userDetails.getAuthorities().forEach(f -> log.info(f.getAuthority()));
+
         return "book";
     }
 
-    @GetMapping("/book")
-    public String getBook(Model model) {
-        List<Book> books = bookCrudService.findAll();
-        List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
-        model.addAttribute("books", booksDto);
-        return "book";
-    }
+//    @GetMapping("/book")
+//    public String getBook(Model model) {
+//        List<Book> books = bookCrudService.findAll();
+//        List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
+//        model.addAttribute("books", booksDto);
+//        return "book";
+//    }
 
     // Форма для создания новой книги
     @GetMapping("/book/new")
@@ -56,6 +64,11 @@ public class BookController {
 
     @PostMapping("/book/delete")
     public String deleteBook(@RequestParam long id) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+        log.info("Role ");
+        userDetails.getAuthorities().forEach(f -> log.info(f.getAuthority()));
+
         bookCrudService.deleteBookById(id);
         return "redirect:/book";
     }

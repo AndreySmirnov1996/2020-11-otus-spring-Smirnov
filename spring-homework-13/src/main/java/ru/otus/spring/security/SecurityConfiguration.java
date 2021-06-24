@@ -30,18 +30,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // По умолчанию SecurityContext хранится в сессии
                 // Это необходимо, чтобы он нигде не хранился
                 // и данные приходили каждый раз с запросом
-//                .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
-//                .and()
-//                .authorizeRequests().antMatchers("/").permitAll()
-                //.authorizeRequests().antMatchers("/").anonymous()
-//                .and()
                 .authorizeRequests().antMatchers("/book").hasAnyRole( "ADMIN", "USER" )
                 .and()
-//                .authorizeRequests().antMatchers("/book").hasAnyRole( "ADMIN", "USER" )
-//                .and()
                 .authorizeRequests().antMatchers("/book/delete").hasRole( "ADMIN" )
-                .and()
-                .authorizeRequests().antMatchers("/book/*/edit").hasRole( "ADMIN" )
                 .and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
