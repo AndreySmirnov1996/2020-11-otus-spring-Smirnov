@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -16,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final DatabaseUserDetailsService databaseUserDetailsService;
+    private final UserDetailsService databaseUserDetailsService;
 
     @Override
     public void configure(WebSecurity web) {
@@ -31,10 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // и данные приходили каждый раз с запросом
 //                .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
 //                .and()
-                .authorizeRequests().antMatchers("/").anonymous()
-                .and()
-                .authorizeRequests().antMatchers("/").authenticated()
-                .and()
+//                .authorizeRequests().antMatchers("/").permitAll()
+                //.authorizeRequests().antMatchers("/").anonymous()
+//                .and()
                 .authorizeRequests().antMatchers("/book").hasAnyRole( "ADMIN", "USER" )
                 .and()
 //                .authorizeRequests().antMatchers("/book").hasAnyRole( "ADMIN", "USER" )
@@ -43,12 +43,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/book/*/edit").hasRole( "ADMIN" )
                 .and()
+                .authorizeRequests().anyRequest().authenticated()
+                .and()
                 .formLogin()
-                .successForwardUrl("/book");
-//                .and()
-//                .authorizeRequests().antMatchers("/**").authenticated();
-//                .and()
-//                .logout().logoutUrl("/logout");
+                .successForwardUrl("/book")
+                .and()
+                .logout().logoutUrl("/logout");
     }
 
     @Bean

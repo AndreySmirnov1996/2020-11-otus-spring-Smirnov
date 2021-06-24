@@ -22,7 +22,7 @@ public class BookController {
     private final BookCrudService bookCrudService;
 
     @PostMapping("/book")
-    public String postPage(Model model) {
+    public String postBook(Model model) {
         List<Book> books = bookCrudService.findAll();
         List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
         model.addAttribute("books", booksDto);
@@ -30,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/book")
-    public String getIndex(Model model) {
+    public String getBook(Model model) {
         List<Book> books = bookCrudService.findAll();
         List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
         model.addAttribute("books", booksDto);
