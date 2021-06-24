@@ -33,11 +33,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .and()
                 .authorizeRequests().antMatchers("/").anonymous()
                 .and()
-                .authorizeRequests().antMatchers("/**").authenticated()
+                .authorizeRequests().antMatchers("/").authenticated()
                 .and()
-                // Включает Form-based аутентификацию
+                .authorizeRequests().antMatchers("/book").hasAnyRole( "ADMIN", "USER" )
+                .and()
+//                .authorizeRequests().antMatchers("/book").hasAnyRole( "ADMIN", "USER" )
+//                .and()
+                .authorizeRequests().antMatchers("/book/delete").hasRole( "ADMIN" )
+                .and()
+                .authorizeRequests().antMatchers("/book/*/edit").hasRole( "ADMIN" )
+                .and()
                 .formLogin()
                 .successForwardUrl("/book");
+//                .and()
+//                .authorizeRequests().antMatchers("/**").authenticated();
+//                .and()
+//                .logout().logoutUrl("/logout");
     }
 
     @Bean

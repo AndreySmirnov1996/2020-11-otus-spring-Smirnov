@@ -22,7 +22,15 @@ public class BookController {
     private final BookCrudService bookCrudService;
 
     @PostMapping("/book")
-    public String indexPage(Model model) {
+    public String postPage(Model model) {
+        List<Book> books = bookCrudService.findAll();
+        List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
+        model.addAttribute("books", booksDto);
+        return "book";
+    }
+
+    @GetMapping("/book")
+    public String getIndex(Model model) {
         List<Book> books = bookCrudService.findAll();
         List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
         model.addAttribute("books", booksDto);
@@ -49,7 +57,7 @@ public class BookController {
     @PostMapping("/book/delete")
     public String deleteBook(@RequestParam long id) {
         bookCrudService.deleteBookById(id);
-        return "redirect:/";
+        return "redirect:/book";
     }
 
     @PostMapping(value = "/book/save")
@@ -61,12 +69,12 @@ public class BookController {
             model.put("message", "Failed: " + ex.getMessage());
             return "new_book";
         }
-        return "redirect:/";
+        return "redirect:/book";
     }
 
     @PostMapping(value = "/book/edit")
     public String editBook(@ModelAttribute("book") BookDto book) {
         bookCrudService.updateBookTitleById(book.getId(), book.getTitle());
-        return "redirect:/";
+        return "redirect:/book";
     }
 }
