@@ -31,11 +31,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // Это необходимо, чтобы он нигде не хранился
                 // и данные приходили каждый раз с запросом
 //                .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
-//                .and()
-//                .authorizeRequests().antMatchers("/book").hasAnyRole("ADMIN", "USER")
-//                .and()
-//                .authorizeRequests().antMatchers("/book/delete").hasRole("ADMIN")
-//                .and()
                 .authorizeRequests().antMatchers("/book/*/edit", "/book/edit", "/book/delete").hasRole("ADMIN")
                 .and()
                 .authorizeRequests().antMatchers("/book/*/comment/*/edit", "/book/*/comment/*/delete").hasRole("ADMIN")

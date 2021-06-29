@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("REST Контроллер для книг должен")
 @WebMvcTest(BookController.class)
-@MockBean(DatabaseUserDetailsService.class)
+@MockBean(UserDetailsService.class)
 class BookControllerTest {
 
     @Autowired
@@ -45,7 +46,7 @@ class BookControllerTest {
     @WithMockUser(
             username = "admin",
             password = "admin",
-            roles = "ADMIN"
+            authorities = {"ROLE_ADMIN"}
     )
     @DisplayName("отображать главную страницу со списком книг")
     @Test
@@ -57,7 +58,7 @@ class BookControllerTest {
 
         given(service.findAll()).willReturn(Collections.singletonList(book));
 
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post("/book"));
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/book"));
 
         result.andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("book"))
@@ -94,7 +95,7 @@ class BookControllerTest {
         Mockito.doNothing().when(service).deleteBookById(bookId);
         mockMvc.perform(MockMvcRequestBuilders.post("/book/delete").param("id", String.valueOf(bookId)))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/"));
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/book"));
 
         verify(service, times(1)).deleteBookById(bookId);
     }
