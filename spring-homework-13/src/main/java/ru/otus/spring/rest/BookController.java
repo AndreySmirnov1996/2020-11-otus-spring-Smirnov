@@ -21,14 +21,6 @@ public class BookController {
 
     private final BookCrudService bookCrudService;
 
-    @PostMapping("/book")
-    public String postBook(Model model) {
-        List<Book> books = bookCrudService.findAll();
-        List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
-        model.addAttribute("books", booksDto);
-        return "book";
-    }
-
     @GetMapping("/book")
     public String getBook(Model model) {
         List<Book> books = bookCrudService.findAll();
