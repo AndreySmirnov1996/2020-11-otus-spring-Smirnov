@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:librarydb
+    initialization-mode: always
+
+  jpa:
+    generate-ddl: false
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+
+app:
+  security:
+    salt: 123123
