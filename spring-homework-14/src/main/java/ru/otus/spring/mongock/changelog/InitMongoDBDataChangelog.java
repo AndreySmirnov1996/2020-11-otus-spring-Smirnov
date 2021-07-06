@@ -6,9 +6,9 @@ import com.mongodb.client.MongoDatabase;
 import ru.otus.spring.domain.MongoAuthor;
 import ru.otus.spring.domain.MongoBook;
 import ru.otus.spring.domain.MongoGenre;
-import ru.otus.spring.repositories.AuthorRepository;
-import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.repositories.GenreRepository;
+import ru.otus.spring.repositories.MongoAuthorRepository;
+import ru.otus.spring.repositories.MongoBookRepository;
+import ru.otus.spring.repositories.MongoGenreRepository;
 
 @ChangeLog(order = "001")
 public class InitMongoDBDataChangelog {
@@ -26,20 +26,20 @@ public class InitMongoDBDataChangelog {
     }
 
     @ChangeSet(order = "001", id = "initGenres", author = "assmirnov", runAlways = true)
-    public void initGenres(GenreRepository repository) {
+    public void initGenres(MongoGenreRepository repository) {
         tragedyMongoGenre = repository.save(new MongoGenre("1", "Tragedy"));
         romanMongoGenre = repository.save(new MongoGenre("2", "Roman"));
         repository.save(new MongoGenre("3", "Detective fiction"));
     }
 
     @ChangeSet(order = "002", id = "initAuthors", author = "assmirnov", runAlways = true)
-    public void initAuthors(AuthorRepository repository) {
+    public void initAuthors(MongoAuthorRepository repository) {
         williamShakespeareMongoAuthor = repository.save(new MongoAuthor("111", "William", "Shakespeare"));
         leoTolstoyMongoAuthor = repository.save(new MongoAuthor("222", "Leo", "Tolstoy"));
     }
 
     @ChangeSet(order = "003", id = "initBooks", author = "assmirnov", runAlways = true)
-    public void initBooks(BookRepository repository) {
+    public void initBooks(MongoBookRepository repository) {
         repository.save(new MongoBook("Romeo and Juliet", tragedyMongoGenre, williamShakespeareMongoAuthor));
         repository.save(new MongoBook("Anna Karenina", romanMongoGenre, leoTolstoyMongoAuthor));
     }

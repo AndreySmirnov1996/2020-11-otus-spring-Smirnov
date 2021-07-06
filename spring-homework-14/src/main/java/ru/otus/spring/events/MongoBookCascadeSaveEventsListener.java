@@ -7,26 +7,26 @@ import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventLis
 import org.springframework.data.mongodb.core.mapping.event.BeforeConvertEvent;
 import org.springframework.stereotype.Component;
 import ru.otus.spring.domain.MongoBook;
-import ru.otus.spring.repositories.AuthorRepository;
-import ru.otus.spring.repositories.GenreRepository;
+import ru.otus.spring.repositories.MongoAuthorRepository;
+import ru.otus.spring.repositories.MongoGenreRepository;
 
 @Component
 @RequiredArgsConstructor
 public class MongoBookCascadeSaveEventsListener extends AbstractMongoEventListener<MongoBook> {
 
-    private final AuthorRepository authorRepository;
-    private final GenreRepository genreRepository;
+    private final MongoAuthorRepository mongoAuthorRepository;
+    private final MongoGenreRepository mongoGenreRepository;
 
     @Override
     public void onBeforeConvert(BeforeConvertEvent<MongoBook> event) {
         super.onBeforeConvert(event);
         val book = event.getSource();
-        if (book.getMongoGenre() != null && !genreRepository.existsById(book.getMongoGenre().getId())) {
+        if (book.getMongoGenre() != null && !mongoGenreRepository.existsById(book.getMongoGenre().getId())) {
             throw new MongoException("Genre is not found with id = " + book.getMongoGenre().getId());
         }
         if (book.getMongoAuthors() != null) {
             book.getMongoAuthors().stream().filter(author -> author.getName() != null && author.getSurname() != null)
-                    .forEach(authorRepository::save);
+                    .forEach(mongoAuthorRepository::save);
         }
     }
 }

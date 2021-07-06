@@ -16,18 +16,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Репозиторий для работы с книгами должен ")
-class MongoBookRepositoryImplTest extends AbstractRepositoryTest {
+class MongoMongoBookRepositoryImplTest extends AbstractRepositoryTest {
 
     @Autowired
-    private BookRepository bookRepository;
+    private MongoBookRepository mongoBookRepository;
     @Autowired
-    private GenreRepository genreRepository;
+    private MongoGenreRepository mongoGenreRepository;
 
     @DisplayName(" находить все книги со всей информацией")
     @Test
     void findAllWithAllInfoTest() {
         val expectedBooksSize = 1;
-        List<MongoBook> mongoBooks = bookRepository.findAll();
+        List<MongoBook> mongoBooks = mongoBookRepository.findAll();
         mongoBooks.forEach(System.out::println);
         assertEquals(expectedBooksSize, mongoBooks.size());
         mongoBooks.forEach(book -> {
@@ -42,7 +42,7 @@ class MongoBookRepositoryImplTest extends AbstractRepositoryTest {
     @Test
     void findByIdTest() {
         val bookId = "1234";
-        val actualBook = bookRepository.findById(bookId).orElse(null);
+        val actualBook = mongoBookRepository.findById(bookId).orElse(null);
         assertNotNull(actualBook);
         assertEquals(bookId, actualBook.getId());
         assertEquals("Romeo and Juliet", actualBook.getTitle());
@@ -58,9 +58,9 @@ class MongoBookRepositoryImplTest extends AbstractRepositoryTest {
     void saveTest() {
         val bookId = "1112";
         MongoBook mongoBook = saveAndReturnBook(bookId);
-        val actualBook = bookRepository.findById(mongoBook.getId());
+        val actualBook = mongoBookRepository.findById(mongoBook.getId());
         assertThat(actualBook).isPresent().get().isEqualTo(mongoBook);
-        bookRepository.deleteById(bookId);
+        mongoBookRepository.deleteById(bookId);
     }
 
     @DisplayName(" удалять книгу по id")
@@ -69,10 +69,10 @@ class MongoBookRepositoryImplTest extends AbstractRepositoryTest {
         val bookId = "1112";
         saveAndReturnBook(bookId);
 
-        val beforeDeleteBook = bookRepository.findById(bookId).orElse(null);
+        val beforeDeleteBook = mongoBookRepository.findById(bookId).orElse(null);
         assertNotNull(beforeDeleteBook);
-        bookRepository.deleteById(bookId);
-        val afterDeleteBook = bookRepository.findById(bookId).orElse(null);
+        mongoBookRepository.deleteById(bookId);
+        val afterDeleteBook = mongoBookRepository.findById(bookId).orElse(null);
         assertNull(afterDeleteBook);
     }
 
@@ -83,8 +83,8 @@ class MongoBookRepositoryImplTest extends AbstractRepositoryTest {
         MongoGenre mongoGenre = new MongoGenre("11", "genre_1");
         MongoBook mongoBook = createBook(bookId, "book_name_1", new MongoGenre("11", "genre_1"),
                 Arrays.asList(mongoAuthor1, mongoAuthor2));
-        genreRepository.save(mongoGenre);
-        bookRepository.save(mongoBook);
+        mongoGenreRepository.save(mongoGenre);
+        mongoBookRepository.save(mongoBook);
         return mongoBook;
     }
 
