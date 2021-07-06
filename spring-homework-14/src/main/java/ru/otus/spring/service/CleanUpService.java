@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 public class CleanUpService {
 
     void cleanUp() {
-        log.info("do nothing");
+        log.info("cleanUp do nothing");
+        //TODO clean mongo data base
+
     }
 
 }
