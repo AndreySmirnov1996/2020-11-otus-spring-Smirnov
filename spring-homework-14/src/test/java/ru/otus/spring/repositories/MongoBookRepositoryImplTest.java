@@ -5,9 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.otus.spring.AbstractRepositoryTest;
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.MongoAuthor;
+import ru.otus.spring.domain.MongoBook;
+import ru.otus.spring.domain.MongoGenre;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Репозиторий для работы с книгами должен ")
-class BookRepositoryImplTest extends AbstractRepositoryTest {
+class MongoBookRepositoryImplTest extends AbstractRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
@@ -27,13 +27,13 @@ class BookRepositoryImplTest extends AbstractRepositoryTest {
     @Test
     void findAllWithAllInfoTest() {
         val expectedBooksSize = 1;
-        List<Book> books = bookRepository.findAll();
-        books.forEach(System.out::println);
-        assertEquals(expectedBooksSize, books.size());
-        books.forEach(book -> {
+        List<MongoBook> mongoBooks = bookRepository.findAll();
+        mongoBooks.forEach(System.out::println);
+        assertEquals(expectedBooksSize, mongoBooks.size());
+        mongoBooks.forEach(book -> {
                     assertNotNull(book.getTitle());
-                    assertNotNull(book.getGenre());
-                    assertNotNull(book.getAuthors());
+                    assertNotNull(book.getMongoGenre());
+                    assertNotNull(book.getMongoAuthors());
                 }
         );
     }
@@ -46,20 +46,20 @@ class BookRepositoryImplTest extends AbstractRepositoryTest {
         assertNotNull(actualBook);
         assertEquals(bookId, actualBook.getId());
         assertEquals("Romeo and Juliet", actualBook.getTitle());
-        assertEquals("1", actualBook.getGenre().getId());
-        assertEquals("Tragedy", actualBook.getGenre().getName());
-        assertEquals(1, actualBook.getAuthors().size());
-        assertEquals("William", actualBook.getAuthors().get(0).getName());
-        assertEquals("Shakespeare", actualBook.getAuthors().get(0).getSurname());
+        assertEquals("1", actualBook.getMongoGenre().getId());
+        assertEquals("Tragedy", actualBook.getMongoGenre().getName());
+        assertEquals(1, actualBook.getMongoAuthors().size());
+        assertEquals("William", actualBook.getMongoAuthors().get(0).getName());
+        assertEquals("Shakespeare", actualBook.getMongoAuthors().get(0).getSurname());
     }
 
     @DisplayName(" сохранять книгу")
     @Test
     void saveTest() {
         val bookId = "1112";
-        Book book = saveAndReturnBook(bookId);
-        val actualBook = bookRepository.findById(book.getId());
-        assertThat(actualBook).isPresent().get().isEqualTo(book);
+        MongoBook mongoBook = saveAndReturnBook(bookId);
+        val actualBook = bookRepository.findById(mongoBook.getId());
+        assertThat(actualBook).isPresent().get().isEqualTo(mongoBook);
         bookRepository.deleteById(bookId);
     }
 
@@ -77,23 +77,23 @@ class BookRepositoryImplTest extends AbstractRepositoryTest {
     }
 
 
-    private Book saveAndReturnBook(String bookId) {
-        Author author1 = new Author("11", "author_name_1", "author_surname_1");
-        Author author2 = new Author("22", "author_name_2", "author_surname_2");
-        Genre genre = new Genre("11", "genre_1");
-        Book book = createBook(bookId, "book_name_1", new Genre("11", "genre_1"),
-                Arrays.asList(author1, author2));
-        genreRepository.save(genre);
-        bookRepository.save(book);
-        return book;
+    private MongoBook saveAndReturnBook(String bookId) {
+        MongoAuthor mongoAuthor1 = new MongoAuthor("11", "author_name_1", "author_surname_1");
+        MongoAuthor mongoAuthor2 = new MongoAuthor("22", "author_name_2", "author_surname_2");
+        MongoGenre mongoGenre = new MongoGenre("11", "genre_1");
+        MongoBook mongoBook = createBook(bookId, "book_name_1", new MongoGenre("11", "genre_1"),
+                Arrays.asList(mongoAuthor1, mongoAuthor2));
+        genreRepository.save(mongoGenre);
+        bookRepository.save(mongoBook);
+        return mongoBook;
     }
 
-    private Book createBook(String id, String bookTitle, Genre genre, List<Author> authors) {
-        return Book.builder()
+    private MongoBook createBook(String id, String bookTitle, MongoGenre mongoGenre, List<MongoAuthor> mongoAuthors) {
+        return MongoBook.builder()
                 .id(id)
                 .title(bookTitle)
-                .genre(genre)
-                .authors(authors)
+                .mongoGenre(mongoGenre)
+                .mongoAuthors(mongoAuthors)
                 .build();
     }
 }

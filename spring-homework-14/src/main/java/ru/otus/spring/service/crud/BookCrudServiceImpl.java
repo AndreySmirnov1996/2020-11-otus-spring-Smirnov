@@ -4,7 +4,7 @@ import com.mongodb.MongoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.MongoBook;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.ObjectFactory;
@@ -24,8 +24,8 @@ public class BookCrudServiceImpl implements BookCrudService {
     @Transactional
     @Override
     public void saveBook(String title, String genreId, String authors) {
-        Book book = objectFactory.createBookEntity(title, genreId, authors);
-        bookRepository.save(book);
+        MongoBook mongoBook = objectFactory.createBookEntity(title, genreId, authors);
+        bookRepository.save(mongoBook);
     }
 
     @Transactional(readOnly = true)
@@ -43,11 +43,11 @@ public class BookCrudServiceImpl implements BookCrudService {
     @Transactional
     @Override
     public void updateBookTitleById(String bookId, String newTitle) {
-        Optional<Book> bookOptional = bookRepository.findById(bookId);
+        Optional<MongoBook> bookOptional = bookRepository.findById(bookId);
         if (bookOptional.isPresent()) {
-            Book newBook = bookOptional.get();
-            newBook.setTitle(newTitle);
-            bookRepository.save(newBook);
+            MongoBook newMongoBook = bookOptional.get();
+            newMongoBook.setTitle(newTitle);
+            bookRepository.save(newMongoBook);
         } else {
             throw new MongoException("Book doesn't exist with id = " + bookId);
         }

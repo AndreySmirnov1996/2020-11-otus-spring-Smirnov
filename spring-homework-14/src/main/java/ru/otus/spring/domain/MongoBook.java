@@ -16,20 +16,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "books")
-public class Book {
+public class MongoBook {
 
     @Id
     private String id;
 
     private String title;
     @DBRef
-    private Genre genre;
+    private MongoGenre mongoGenre;
     @DBRef
-    private List<Author> authors;
+    private List<MongoAuthor> mongoAuthors;
 
-    public Book(String title, Genre genre, Author... authors) {
+    public MongoBook(String title, MongoGenre mongoGenre, MongoAuthor... mongoAuthors) {
         this.title = title;
-        this.genre = genre;
-        this.authors = Arrays.asList(authors);
+        this.mongoGenre = mongoGenre;
+        this.mongoAuthors = Arrays.asList(mongoAuthors);
     }
 }

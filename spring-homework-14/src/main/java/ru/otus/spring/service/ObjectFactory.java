@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ObjectFactory {
 
-    Book createBookEntity(String title, String genreId, String authors);
+    MongoBook createBookEntity(String title, String genreId, String authors);
 
-    List<Author> createAuthors(String authors);
+    List<MongoAuthor> createAuthors(String authors);
 
-    Genre createGenreEntity(String genreName);
+    MongoGenre createGenreEntity(String genreName);
 }

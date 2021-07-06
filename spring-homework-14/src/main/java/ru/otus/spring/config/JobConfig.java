@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.lang.NonNull;
-import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.MongoBook;
 import ru.otus.spring.service.CleanUpService;
 import ru.otus.spring.service.ShowBookService;
 
@@ -50,26 +50,26 @@ public class JobConfig {
 
     @StepScope
     @Bean
-    public MongoItemReader<Book> reader(MongoTemplate template) {
-        return new MongoItemReaderBuilder<Book>()
+    public MongoItemReader<MongoBook> reader(MongoTemplate template) {
+        return new MongoItemReaderBuilder<MongoBook>()
                 .name("mongoItemReader")
                 .template(template)
                 .jsonQuery("{}")
-                .targetType(Book.class)
+                .targetType(MongoBook.class)
                 .sorts(new HashMap<>())
                 .build();
     }
 
     @StepScope
     @Bean
-    public ItemProcessor<Book, Book> processor(ShowBookService showBookService) {
+    public ItemProcessor<MongoBook, MongoBook> processor(ShowBookService showBookService) {
         return showBookService::doHappyBirthday;
     }
 
     @StepScope
     @Bean
-    public FlatFileItemWriter<Book> writer(@Value("#{jobParameters['" + OUTPUT_FILE_NAME + "']}") String outputFileName) {
-        return new FlatFileItemWriterBuilder<Book>()
+    public FlatFileItemWriter<MongoBook> writer(@Value("#{jobParameters['" + OUTPUT_FILE_NAME + "']}") String outputFileName) {
+        return new FlatFileItemWriterBuilder<MongoBook>()
                 .name("bookItemWriter")
                 .resource(new FileSystemResource(outputFileName))
                 .lineAggregator(new DelimitedLineAggregator<>())
@@ -110,10 +110,10 @@ public class JobConfig {
     }
 
     @Bean
-    public Step transformPersonsStep(ItemReader<Book> reader, FlatFileItemWriter<Book> writer,
-                                     ItemProcessor<Book, Book> itemProcessor) {
+    public Step transformPersonsStep(ItemReader<MongoBook> reader, FlatFileItemWriter<MongoBook> writer,
+                                     ItemProcessor<MongoBook, MongoBook> itemProcessor) {
         return stepBuilderFactory.get("transformPersonsStep")
-                .<Book, Book>chunk(CHUNK_SIZE)
+                .<MongoBook, MongoBook>chunk(CHUNK_SIZE)
                 .reader(reader)
                 .processor(itemProcessor)
                 .writer(writer)
@@ -122,7 +122,7 @@ public class JobConfig {
                         logger.info("Начало чтения");
                     }
 
-                    public void afterRead(@NonNull Book o) {
+                    public void afterRead(@NonNull MongoBook o) {
                         logger.info("Конец чтения");
                     }
 
@@ -143,16 +143,16 @@ public class JobConfig {
                         logger.info("Ошибка записи");
                     }
                 })
-                .listener(new ItemProcessListener<Book,Book>() {
-                    public void beforeProcess(Book o) {
+                .listener(new ItemProcessListener<MongoBook, MongoBook>() {
+                    public void beforeProcess(MongoBook o) {
                         logger.info("Начало обработки");
                     }
 
-                    public void afterProcess(@NonNull Book o, Book o2) {
+                    public void afterProcess(@NonNull MongoBook o, MongoBook o2) {
                         logger.info("Конец обработки");
                     }
 
-                    public void onProcessError(@NonNull Book o, @NonNull Exception e) {
+                    public void onProcessError(@NonNull MongoBook o, @NonNull Exception e) {
                         logger.info("Ошибка обработки");
                     }
                 })

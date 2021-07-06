@@ -2,7 +2,7 @@ package ru.otus.spring.service.crud;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.MongoGenre;
 import ru.otus.spring.repositories.GenreRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.OutputFormatter;
@@ -17,7 +17,7 @@ public class GenreCrudServiceImpl implements GenreCrudService {
 
     @Override
     public void saveGenre(String name) {
-        genreRepository.save(new Genre(name));
+        genreRepository.save(new MongoGenre(name));
     }
 
     @Override

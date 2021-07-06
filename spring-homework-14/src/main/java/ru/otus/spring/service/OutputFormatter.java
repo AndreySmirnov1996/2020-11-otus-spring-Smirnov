@@ -1,11 +1,11 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.MongoBook;
+import ru.otus.spring.domain.MongoGenre;
 
 public interface OutputFormatter {
-    String formatBook(Book book);
+    String formatBook(MongoBook mongoBook);
 
-    String formatGenre(Genre genre);
+    String formatGenre(MongoGenre mongoGenre);
 
 }

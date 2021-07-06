@@ -9,46 +9,46 @@ import java.util.List;
 @Service
 public class ObjectFactoryImpl implements ObjectFactory {
     @Override
-    public Book createBookEntity(String title, String genreId, String authors) {
-        List<Author> authorsList = createAuthors(authors);
-        Genre genre = new Genre(genreId);
+    public MongoBook createBookEntity(String title, String genreId, String authors) {
+        List<MongoAuthor> authorsList = createAuthors(authors);
+        MongoGenre mongoGenre = new MongoGenre(genreId);
 
-        return Book.builder()
+        return MongoBook.builder()
                 .title(title)
-                .genre(genre)
-                .authors(authorsList)
+                .mongoGenre(mongoGenre)
+                .mongoAuthors(authorsList)
                 .build();
     }
 
     @Override
-    public List<Author> createAuthors(String authors) {
-        List<Author> authorsList = new ArrayList<>();
+    public List<MongoAuthor> createAuthors(String authors) {
+        List<MongoAuthor> authorsList = new ArrayList<>();
         if (!authors.equals("NONE")) {
             String[] authorsArray = authors.split(";");
             for (String str : authorsArray) {
                 String[] data = str.split(",");
-                Author author;
+                MongoAuthor mongoAuthor;
                 if (data.length == 2) {
-                    author = Author.builder()
+                    mongoAuthor = MongoAuthor.builder()
                             .name(data[0])
                             .surname(data[1])
                             .build();
                 } else {
-                    author = Author.builder()
+                    mongoAuthor = MongoAuthor.builder()
                             .id(data[0])
                             .build();
                 }
-                authorsList.add(author);
+                authorsList.add(mongoAuthor);
             }
         }
         return authorsList;
     }
 
     @Override
-    public Genre createGenreEntity(String genreID) {
-        Genre genre = new Genre();
-        genre.setId(genreID);
-        return genre;
+    public MongoGenre createGenreEntity(String genreID) {
+        MongoGenre mongoGenre = new MongoGenre();
+        mongoGenre.setId(genreID);
+        return mongoGenre;
     }
 
 }

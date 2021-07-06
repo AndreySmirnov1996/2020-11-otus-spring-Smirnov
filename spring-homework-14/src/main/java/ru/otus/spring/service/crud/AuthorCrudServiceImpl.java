@@ -3,7 +3,7 @@ package ru.otus.spring.service.crud;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.MongoAuthor;
 import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.service.IOService;
@@ -24,7 +24,7 @@ public class AuthorCrudServiceImpl implements AuthorCrudService {
 
     @Override
     public void saveAuthor(String name, String surName) {
-        authorRepository.save(new Author(name, surName));
+        authorRepository.save(new MongoAuthor(name, surName));
     }
 
     @Override

@@ -1,9 +1,7 @@
 package ru.otus.spring.repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domain.MongoGenre;
 
-import java.util.List;
-
-public interface GenreRepository extends MongoRepository<Genre, String> {
+public interface GenreRepository extends MongoRepository<MongoGenre, String> {
 }
