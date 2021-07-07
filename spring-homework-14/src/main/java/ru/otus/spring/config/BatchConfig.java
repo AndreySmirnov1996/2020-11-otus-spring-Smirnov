@@ -1,5 +1,6 @@
 package ru.otus.spring.config;
 
+import com.github.cloudyrock.spring.v5.EnableMongock;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @EnableBatchProcessing
+@EnableMongock
 @Configuration
 public class BatchConfig {
     @Bean

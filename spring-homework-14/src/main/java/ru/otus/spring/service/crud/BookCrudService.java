@@ -4,10 +4,6 @@ public interface BookCrudService {
 
     void saveBook(String title, String genreId, String authors);
 
-    void showBookById(String id);
-
-    void showAllBooks();
-
     void updateBookTitleById(String bookId, String newTitle);
 
     void deleteBookById(String bookId);

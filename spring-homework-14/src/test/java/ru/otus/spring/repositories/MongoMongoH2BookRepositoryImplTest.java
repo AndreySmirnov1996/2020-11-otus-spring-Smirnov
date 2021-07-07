@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Репозиторий для работы с книгами должен ")
-class MongoMongoBookRepositoryImplTest extends AbstractRepositoryTest {
+class MongoMongoH2BookRepositoryImplTest extends AbstractRepositoryTest {
 
     @Autowired
     private MongoBookRepository mongoBookRepository;

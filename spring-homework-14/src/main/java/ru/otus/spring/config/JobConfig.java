@@ -1,52 +1,42 @@
 package ru.otus.spring.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemReader;
+import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.MongoItemReaderBuilder;
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
-import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.lang.NonNull;
+import ru.otus.spring.domain.H2Book;
 import ru.otus.spring.domain.MongoBook;
-import ru.otus.spring.service.CleanUpService;
-import ru.otus.spring.service.ShowBookService;
+import ru.otus.spring.repositories.H2BookRepository;
+import ru.otus.spring.service.TransformBookService;
 
 import java.util.HashMap;
 import java.util.List;
 
-
 @Configuration
+@Slf4j
+@RequiredArgsConstructor
 public class JobConfig {
-    private static final int CHUNK_SIZE = 1;
-    private final Logger logger = LoggerFactory.getLogger("Batch");
 
     public static final String IMPORT_USER_JOB_NAME = "importUserJob";
-    public static final String OUTPUT_FILE_NAME = "output.txt";
+    private static final int CHUNK_SIZE = 1;
 
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
-
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
-
-    @Autowired
-    private CleanUpService cleanUpService;
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
 
     @StepScope
     @Bean
@@ -62,121 +52,98 @@ public class JobConfig {
 
     @StepScope
     @Bean
-    public ItemProcessor<MongoBook, MongoBook> processor(ShowBookService showBookService) {
-        return showBookService::doHappyBirthday;
+    public ItemProcessor<MongoBook, H2Book> processor(TransformBookService transformBookService) {
+        return transformBookService::doH2BookFromMongoBook;
     }
 
     @StepScope
     @Bean
-    public FlatFileItemWriter<MongoBook> writer(@Value("#{jobParameters['" + OUTPUT_FILE_NAME + "']}") String outputFileName) {
-        return new FlatFileItemWriterBuilder<MongoBook>()
-                .name("bookItemWriter")
-                .resource(new FileSystemResource(outputFileName))
-                .lineAggregator(new DelimitedLineAggregator<>())
+    public RepositoryItemWriter<H2Book> writer(H2BookRepository h2BookRepository) {
+        return new RepositoryItemWriterBuilder<H2Book>()
+                .repository(h2BookRepository)
                 .build();
     }
 
-
     @Bean
-    public MethodInvokingTaskletAdapter cleanUpTasklet() {
-        MethodInvokingTaskletAdapter adapter = new MethodInvokingTaskletAdapter();
-
-        adapter.setTargetObject(cleanUpService);
-        adapter.setTargetMethod("cleanUp");
-
-        return adapter;
-    }
-
-
-    @Bean
-    public Job importUserJob(Step transformPersonsStep, Step cleanUpStep) {
+    public Job importUserJob(Step transformBookStep) {
         return jobBuilderFactory.get(IMPORT_USER_JOB_NAME)
                 .incrementer(new RunIdIncrementer())
-                .flow(transformPersonsStep)
-                .next(cleanUpStep)
+                .flow(transformBookStep)
                 .end()
                 .listener(new JobExecutionListener() {
                     @Override
                     public void beforeJob(@NonNull JobExecution jobExecution) {
-                        logger.info("Начало job");
+                        log.info("Начало job");
                     }
 
                     @Override
                     public void afterJob(@NonNull JobExecution jobExecution) {
-                        logger.info("Конец job");
+                        log.info("Конец job");
                     }
                 })
                 .build();
     }
 
     @Bean
-    public Step transformPersonsStep(ItemReader<MongoBook> reader, FlatFileItemWriter<MongoBook> writer,
-                                     ItemProcessor<MongoBook, MongoBook> itemProcessor) {
-        return stepBuilderFactory.get("transformPersonsStep")
-                .<MongoBook, MongoBook>chunk(CHUNK_SIZE)
+    public Step transformBookStep(ItemReader<MongoBook> reader, ItemWriter<H2Book> writer,
+                                  ItemProcessor<MongoBook, H2Book> itemProcessor) {
+        return stepBuilderFactory.get("transformBookStep")
+                .<MongoBook, H2Book>chunk(CHUNK_SIZE)
                 .reader(reader)
                 .processor(itemProcessor)
                 .writer(writer)
                 .listener(new ItemReadListener<>() {
                     public void beforeRead() {
-                        logger.info("Начало чтения");
+                        log.info("Начало чтения");
                     }
 
                     public void afterRead(@NonNull MongoBook o) {
-                        logger.info("Конец чтения");
+                        log.info("Конец чтения");
                     }
 
                     public void onReadError(@NonNull Exception e) {
-                        logger.info("Ошибка чтения");
+                        log.info("Ошибка чтения");
                     }
                 })
                 .listener(new ItemWriteListener<>() {
                     public void beforeWrite(@NonNull List list) {
-                        logger.info("Начало записи");
+                        log.info("Начало записи");
                     }
 
                     public void afterWrite(@NonNull List list) {
-                        logger.info("Конец записи");
+                        log.info("Конец записи");
                     }
 
                     public void onWriteError(@NonNull Exception e, @NonNull List list) {
-                        logger.info("Ошибка записи");
+                        log.info("Ошибка записи");
                     }
                 })
                 .listener(new ItemProcessListener<MongoBook, MongoBook>() {
                     public void beforeProcess(MongoBook o) {
-                        logger.info("Начало обработки");
+                        log.info("Начало обработки");
                     }
 
                     public void afterProcess(@NonNull MongoBook o, MongoBook o2) {
-                        logger.info("Конец обработки");
+                        log.info("Конец обработки");
                     }
 
                     public void onProcessError(@NonNull MongoBook o, @NonNull Exception e) {
-                        logger.info("Ошибка обработки");
+                        log.info("Ошибка обработки");
                     }
                 })
                 .listener(new ChunkListener() {
                     public void beforeChunk(@NonNull ChunkContext chunkContext) {
-                        logger.info("Начало пачки");
+                        log.info("Начало пачки");
                     }
 
                     public void afterChunk(@NonNull ChunkContext chunkContext) {
-                        logger.info("Конец пачки");
+                        log.info("Конец пачки");
                     }
 
                     public void afterChunkError(@NonNull ChunkContext chunkContext) {
-                        logger.info("Ошибка пачки");
+                        log.info("Ошибка пачки");
                     }
                 })
-//                .taskExecutor(new SimpleAsyncTaskExecutor())
-                .build();
-    }
-
-    @Bean
-    public Step cleanUpStep() {
-        return this.stepBuilderFactory.get("cleanUpStep")
-                .tasklet(cleanUpTasklet())
                 .build();
     }
 }

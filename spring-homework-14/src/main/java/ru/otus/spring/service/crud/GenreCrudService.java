@@ -4,5 +4,4 @@ public interface GenreCrudService {
 
     void saveGenre(String name);
 
-    void showAllGenres();
 }
