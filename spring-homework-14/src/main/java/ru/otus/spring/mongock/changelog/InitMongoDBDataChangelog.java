@@ -15,10 +15,9 @@ public class InitMongoDBDataChangelog {
 
     private MongoGenre tragedyMongoGenre;
     private MongoGenre romanMongoGenre;
+    private MongoGenre superGenre;
     private MongoAuthor williamShakespeareMongoAuthor;
     private MongoAuthor leoTolstoyMongoAuthor;
-    private MongoBook romeoAndJulietMongoBook;
-    private MongoBook annaKareninaMongoBook;
 
     @ChangeSet(order = "000", id = "dropDb", author = "assmirnov", runAlways = true)
     public void dropDb(MongoDatabase db) {
@@ -29,6 +28,7 @@ public class InitMongoDBDataChangelog {
     public void initGenres(MongoGenreRepository repository) {
         tragedyMongoGenre = repository.save(new MongoGenre("1", "Tragedy"));
         romanMongoGenre = repository.save(new MongoGenre("2", "Roman"));
+        superGenre = repository.save(new MongoGenre("3", "Romagedy"));
         repository.save(new MongoGenre("3", "Detective fiction"));
     }
 
@@ -42,5 +42,7 @@ public class InitMongoDBDataChangelog {
     public void initBooks(MongoBookRepository repository) {
         repository.save(new MongoBook("Romeo and Juliet", tragedyMongoGenre, williamShakespeareMongoAuthor));
         repository.save(new MongoBook("Anna Karenina", romanMongoGenre, leoTolstoyMongoAuthor));
+        repository.save(new MongoBook("Romeo and Anna Karenina (fake)", superGenre,
+                williamShakespeareMongoAuthor, leoTolstoyMongoAuthor));
     }
 }
