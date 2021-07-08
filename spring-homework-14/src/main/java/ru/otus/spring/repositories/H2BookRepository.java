@@ -11,4 +11,6 @@ import java.util.List;
 
 @Repository
 public interface H2BookRepository extends JpaRepository<H2Book, String> {
+
+//    List<H2Book> saveAll(List<H2Book> entities);
 }

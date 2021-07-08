@@ -1,7 +1,7 @@
 drop table if exists authors;
 create table authors
 (
-    id      varchar2(24) IDENTITY primary key,
+    id      bigint IDENTITY primary key,
     name    varchar2(255),
     surname varchar2(255),
     phone   varchar2(20)
@@ -28,7 +28,7 @@ create table books
 drop table if exists authors_books;
 create table authors_books
 (
-    author_id varchar2(24) references authors (id) on delete cascade,
+    author_id bigint references authors (id) on delete cascade,
     book_id   varchar2(24) references books (id) on delete cascade,
     primary key (author_id, book_id)
 );

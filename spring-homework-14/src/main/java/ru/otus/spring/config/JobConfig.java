@@ -33,7 +33,7 @@ import java.util.List;
 public class JobConfig {
 
     public static final String IMPORT_USER_JOB_NAME = "importUserJob";
-    private static final int CHUNK_SIZE = 1;
+    private static final int CHUNK_SIZE = 5;
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -61,6 +61,7 @@ public class JobConfig {
     public RepositoryItemWriter<H2Book> writer(H2BookRepository h2BookRepository) {
         return new RepositoryItemWriterBuilder<H2Book>()
                 .repository(h2BookRepository)
+                //.methodName("saveAll")
                 .build();
     }
 
@@ -118,12 +119,12 @@ public class JobConfig {
                         log.info("Ошибка записи");
                     }
                 })
-                .listener(new ItemProcessListener<MongoBook, MongoBook>() {
+                .listener(new ItemProcessListener<MongoBook, H2Book>() {
                     public void beforeProcess(MongoBook o) {
                         log.info("Начало обработки");
                     }
 
-                    public void afterProcess(@NonNull MongoBook o, MongoBook o2) {
+                    public void afterProcess(@NonNull MongoBook o, H2Book o2) {
                         log.info("Конец обработки");
                     }
 
