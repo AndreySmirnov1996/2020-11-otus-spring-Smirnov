@@ -19,7 +19,7 @@ public class TransformBookService {
                 .title(mongoBook.getTitle())
                 .h2Genre(new H2Genre(mongoBook.getMongoGenre().getId(), mongoBook.getMongoGenre().getName()))
                 .h2Authors(mongoBook.getMongoAuthors().stream()
-                        .map(ma -> new H2Author(Long.parseLong(ma.getId()), ma.getName(), ma.getSurname()))
+                        .map(ma -> new H2Author(ma.getId(), ma.getName(), ma.getSurname()))
                         .collect(Collectors.toList()))
                 .build();
     }

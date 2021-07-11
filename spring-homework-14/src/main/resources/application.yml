@@ -17,6 +17,15 @@ spring:
       enabled: true
       path: /h2-console
 
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+
   data:
     mongodb:
       host: localhost
