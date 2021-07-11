@@ -26,7 +26,7 @@ public class InitMongoDBDataChangelog {
 
     @ChangeSet(order = "001", id = "initGenres", author = "assmirnov", runAlways = true)
     public void initGenres(MongoGenreRepository repository) {
-        tragedyMongoGenre = repository.save(new MongoGenre("1", "Tragedy"));
+        tragedyMongoGenre = repository.save(new MongoGenre("1qqq", "Tragedy"));
         romanMongoGenre = repository.save(new MongoGenre("2", "Roman"));
         superGenre = repository.save(new MongoGenre("3", "Romagedy"));
         repository.save(new MongoGenre("3", "Detective fiction"));
@@ -34,7 +34,7 @@ public class InitMongoDBDataChangelog {
 
     @ChangeSet(order = "002", id = "initAuthors", author = "assmirnov", runAlways = true)
     public void initAuthors(MongoAuthorRepository repository) {
-        williamShakespeareMongoAuthor = repository.save(new MongoAuthor("111", "William", "Shakespeare"));
+        williamShakespeareMongoAuthor = repository.save(new MongoAuthor("111qqq", "William", "Shakespeare"));
         leoTolstoyMongoAuthor = repository.save(new MongoAuthor("222", "Leo", "Tolstoy"));
     }
 

@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class H2Author {
 
     @Id
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;
