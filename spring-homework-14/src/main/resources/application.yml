@@ -19,7 +19,7 @@ spring:
 
   jpa:
     generate-ddl: false
-    show-sql: true
+#    show-sql: true
     hibernate:
       ddl-auto: validate
     properties:
