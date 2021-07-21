@@ -12,5 +12,5 @@ import java.util.Collection;
 public interface ItCompany {
 
     @Gateway(requestChannel = "technicalTaskChannel", replyChannel = "appChannel")
-    Collection<App> process(Collection<TechnicalTask> orderItem);
+    Collection<App> process(Collection<TechnicalTask> tasks);
 }

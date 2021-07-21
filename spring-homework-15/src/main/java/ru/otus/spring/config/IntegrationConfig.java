@@ -1,15 +1,18 @@
-package ru.otus.spring.confog;
+package ru.otus.spring.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.PublishSubscribeChannel;
 import org.springframework.integration.channel.QueueChannel;
+import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.scheduling.PollerMetadata;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.PollableChannel;
 import ru.otus.spring.service.CustomerService;
 
 @Configuration
@@ -24,8 +27,8 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public PublishSubscribeChannel appChannel() {
-        return MessageChannels.publishSubscribe().get();
+    public QueueChannel appChannel() {
+        return MessageChannels.queue(10).get();
     }
 
     @Bean(name = PollerMetadata.DEFAULT_POLLER)
@@ -35,14 +38,12 @@ public class IntegrationConfig {
 
     @Bean
     public IntegrationFlow developFlow() {
-        return IntegrationFlows.from("technicalTaskChannel")
+        return IntegrationFlows.from(technicalTaskChannel())
                 .split()
-                .channel("goToDevelopBack")
+                //.channel("goToDevelopBack")
                 .handle("developService", "develop")
-//                .routeToRecipients(router -> router.recipientMessageSelector("goToDevelopBack", customerService)
-//                        .defaultOutputToParentFlow())
                 .aggregate()
-                .channel("appChannel")
+                .channel(appChannel())
                 .get();
     }
 }

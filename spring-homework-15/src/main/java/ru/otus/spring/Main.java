@@ -23,10 +23,9 @@ public class Main {
     private static final String[] PROJECTS = {"web site", "backend app", "console app"};
 
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         AbstractApplicationContext ctx = new AnnotationConfigApplicationContext(Main.class);
 
-        // here we works with cafe using interface
         ItCompany company = ctx.getBean(ItCompany.class);
         ForkJoinPool pool = ForkJoinPool.commonPool();
 
@@ -45,11 +44,11 @@ public class Main {
     }
 
 
-    private static TechnicalTask generateTechnicalTaskItem(int index) {
+    public static TechnicalTask generateTechnicalTaskItem(int index) {
         return new TechnicalTask(PROJECTS[index]);
     }
 
-    private static Collection<TechnicalTask> generateTechnicalTaskItems() {
+    public static Collection<TechnicalTask> generateTechnicalTaskItems() {
         List<TechnicalTask> items = new ArrayList<>();
         for (int i = 0; i < PROJECTS.length; i++) {
             items.add(generateTechnicalTaskItem(i));
