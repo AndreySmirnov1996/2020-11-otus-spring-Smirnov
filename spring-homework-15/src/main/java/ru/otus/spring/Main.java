@@ -16,7 +16,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
 @IntegrationComponentScan
-//@SuppressWarnings({ "resource", "Duplicates", "InfiniteLoopStatement" })
 @ComponentScan
 @EnableIntegration
 public class Main {

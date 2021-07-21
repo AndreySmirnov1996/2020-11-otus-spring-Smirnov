@@ -8,15 +8,15 @@ import ru.otus.spring.domain.App;
 import java.util.Random;
 
 @Service
-public class CustomerService implements MessageSelector {
+public class CustomerSelector implements MessageSelector {
 
     @Override
     public boolean accept(Message<?> message) {
         Random random = new Random();
-        boolean acceptAppFlag = random.nextBoolean();
-        System.out.println("Customer accept '" + message.getPayload() + "' ? " + acceptAppFlag);
+        boolean notAcceptAppFlag = random.nextBoolean();
+        System.out.println("Customer doesn't accept app ? - " + notAcceptAppFlag);
 
-        return acceptAppFlag;
+        return notAcceptAppFlag;
     }
 
 }

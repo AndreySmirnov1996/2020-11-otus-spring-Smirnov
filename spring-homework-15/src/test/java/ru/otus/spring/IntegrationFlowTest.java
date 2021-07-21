@@ -14,14 +14,14 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.GenericMessage;
 import ru.otus.spring.config.IntegrationConfig;
 import ru.otus.spring.domain.App;
-import ru.otus.spring.service.CustomerService;
+import ru.otus.spring.service.CustomerSelector;
 
 import java.util.Collection;
 
 import static ru.otus.spring.Main.generateTechnicalTaskItem;
 
 
-@SpringBootTest(classes = {IntegrationConfig.class, CustomerService.class})
+@SpringBootTest(classes = {IntegrationConfig.class, CustomerSelector.class})
 @ComponentScan
 @IntegrationComponentScan
 @EnableIntegration
