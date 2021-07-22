@@ -14,7 +14,6 @@ public class MyHealthIndicator implements HealthIndicator {
     private static final String BOOKS_COUNT_MESSAGE = "Books in library";
     private static final String BOOKS_ZERO = "Library is empty :( ";
 
-
     private final BookRepository bookRepository;
 
     @Override
