@@ -1,4 +1,4 @@
-package ru.otus.spring.repositories;
+package ru.otus.spring.repository;
 
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Comment;
+import ru.otus.spring.repositories.CommentRepository;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ class CommentRepositoryTest {
     void findAllTest() {
         val expectedComments = 1;
         val bookId = 111L;
-        List<Comment> comments = commentRepository.findAllByBook_Id(bookId);
+        List<Comment> comments = commentRepository.findAllByBookId(bookId);
 
         assertEquals(expectedComments, comments.size());
         comments.forEach(comment -> {

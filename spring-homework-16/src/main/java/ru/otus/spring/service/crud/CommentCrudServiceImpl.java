@@ -5,23 +5,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Comment;
 import ru.otus.spring.repositories.CommentRepository;
-import ru.otus.spring.service.IOService;
-import ru.otus.spring.service.ObjectFactory;
-import ru.otus.spring.service.OutputFormatter;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CommentCrudServiceImpl implements CommentCrudService {
 
     private final CommentRepository commentRepository;
-    private final IOService ioService;
-    private final OutputFormatter outputFormatter;
-    private final ObjectFactory objectFactory;
 
     @Transactional
     @Override
-    public void saveComment(String title, long bookId) {
-        Comment comment = objectFactory.createCommentEntity(title, bookId);
+    public void saveComment(Comment comment) {
         commentRepository.save(comment);
     }
 
@@ -33,16 +29,14 @@ public class CommentCrudServiceImpl implements CommentCrudService {
 
     @Transactional(readOnly = true)
     @Override
-    public void showAllCommentsByBookId(long bookId) {
-        commentRepository.findAllByBook_Id(bookId)
-                .forEach(comment -> ioService.printString(outputFormatter.formatComment(comment)));
+    public List<Comment> findAllCommentsByBookId(long bookId) {
+        return commentRepository.findAllByBookId(bookId);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public void showAllComments() {
-        commentRepository.findAll()
-                .forEach(comment -> ioService.printString(outputFormatter.formatComment(comment)));
+    public Optional<Comment> findCommentById(long commentId) {
+        return commentRepository.findById(commentId);
     }
 
     @Transactional
