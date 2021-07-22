@@ -4,37 +4,42 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Book;
+import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.service.IOService;
-import ru.otus.spring.service.ObjectFactory;
-import ru.otus.spring.service.OutputFormatter;
+import ru.otus.spring.repositories.CommentRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class BookCrudServiceImpl implements BookCrudService {
 
     private final BookRepository bookRepository;
-    private final ObjectFactory objectFactory;
-    private final OutputFormatter outputFormatter;
-    private final IOService ioService;
+    private final AuthorRepository authorRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     @Override
-    public void saveBook(String title, String genreName, String authors) {
-        Book book = objectFactory.createBookEntity(title, genreName, authors);
+    public void save(Book book) {
+        book.getAuthors().forEach(author -> {
+            if (author.getId() <= 0) {
+                authorRepository.save(author);
+            }
+        });
         bookRepository.save(book);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public void showBookById(long id) {
-        bookRepository.findById(id).ifPresent(book -> ioService.printString(outputFormatter.formatBook(book)));
+    public Optional<Book> findById(long id) {
+        return bookRepository.findById(id);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public void showAllBooks() {
-        bookRepository.findAllWithAllInfo().forEach(book -> ioService.printString(outputFormatter.formatBook(book)));
+    public List<Book> findAll() {
+        return bookRepository.findAllWithAllInfo();
     }
 
     @Transactional
@@ -46,6 +51,7 @@ public class BookCrudServiceImpl implements BookCrudService {
     @Transactional
     @Override
     public void deleteBookById(long bookId) {
+        commentRepository.deleteAllByBookId(bookId);
         bookRepository.deleteById(bookId);
     }
 }

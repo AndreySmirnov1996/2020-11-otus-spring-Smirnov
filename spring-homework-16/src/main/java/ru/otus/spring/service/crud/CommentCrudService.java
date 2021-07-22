@@ -1,14 +1,17 @@
 package ru.otus.spring.service.crud;
 
+import ru.otus.spring.domain.Comment;
+
+import java.util.List;
+import java.util.Optional;
+
 public interface CommentCrudService {
 
-    void saveComment(String title, long bookId);
+    void saveComment(Comment comment);
 
     void showCommentById(long id);
 
-    void showAllCommentsByBookId(long bookId);
-
-    void showAllComments();
+    List<Comment> findAllCommentsByBookId(long bookId);
 
     void updateCommentTextById(long id, String text);
 
@@ -16,4 +19,5 @@ public interface CommentCrudService {
 
     void deleteAllCommentsByBookId(long bookId);
 
+    Optional<Comment> findCommentById(long commentId);
 }
