@@ -1,23 +1,25 @@
 package ru.otus.spring.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.domain.App;
 import ru.otus.spring.domain.TechnicalTask;
 
 @Service
+@Slf4j
 public class DevelopService {
 
     public App developApp(TechnicalTask task) throws InterruptedException {
-        System.out.println("Analytic, Develop, Testing, Deploy of " + task.getItemName());
+        log.info("Analytic, Develop, Testing, Deploy of " + task.getItemName());
         Thread.sleep(1000);
-        System.out.println("App: " + task.getItemName() + " is DONE");
+        log.info("Analytic, Develop, Testing, Deploy of " + task.getItemName() + " is DONE");
         return new App(task.getItemName());
     }
 
     public App refactoringApp(App app) throws InterruptedException {
-        System.out.println("Refactoring of " + app.getName());
+        log.info("Refactoring of " + app.getName());
         Thread.sleep(1000);
-        System.out.println("Refactoring: " + app.getName() + " is DONE");
+        log.info("Refactoring of " + app.getName() + " is DONE");
         return app;
     }
 }

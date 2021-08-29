@@ -1,8 +1,9 @@
 package ru.otus.spring;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.support.AbstractApplicationContext;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.config.EnableIntegration;
 import ru.otus.spring.domain.App;
@@ -15,26 +16,27 @@ import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
+@SpringBootApplication
 @IntegrationComponentScan
-@ComponentScan
 @EnableIntegration
+@Slf4j
 public class Main {
     private static final String[] PROJECTS = {"web site", "backend app", "console app"};
 
 
     public static void main(String[] args) {
-        AbstractApplicationContext ctx = new AnnotationConfigApplicationContext(Main.class);
+        ConfigurableApplicationContext ctx = SpringApplication.run(Main.class, args);
 
         ItCompany company = ctx.getBean(ItCompany.class);
         ForkJoinPool pool = ForkJoinPool.commonPool();
 
         pool.execute(() -> {
             Collection<TechnicalTask> items = generateTechnicalTaskItems();
-            System.out.println("New technical task: " +
+            log.info("New technical tasks: " +
                     items.stream().map(TechnicalTask::getItemName)
                             .collect(Collectors.joining(",")));
             Collection<App> app = company.process(items);
-            System.out.println("Ready app: " + app.stream()
+            log.info("Ready all app: " + app.stream()
                     .map(App::getName)
                     .collect(Collectors.joining(",")));
         });
