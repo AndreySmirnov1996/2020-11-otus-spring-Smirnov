@@ -1,0 +1,4 @@
+#logging.level.org.springframework: off
+#logging.level.root: off
+#logging:
+#  level.org.springframework.integration: off
