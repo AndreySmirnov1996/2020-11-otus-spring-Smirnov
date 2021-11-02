@@ -6,12 +6,14 @@ spring:
     username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver
-    data: classpath:dataTest.sql
+    initialization-mode: always
+    #data: classpath*:data.sql
+
   jpa:
-    generate-ddl: true
+    generate-ddl: false
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
