@@ -71,6 +71,7 @@
     </dependencies>
 
     <build>
+        <finalName>docker-app</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-enforcer-plugin</artifactId>

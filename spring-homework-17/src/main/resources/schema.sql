@@ -1,10 +1,12 @@
+DROP SEQUENCE IF EXISTS AUTHORS_SEQUENCE;
+CREATE SEQUENCE AUTHORS_SEQUENCE START WITH 1 INCREMENT BY 1;
+
 drop table if exists authors cascade;
 create table authors
 (
     id      bigint UNIQUE primary key,
     name    varchar(255),
-    surname varchar(255),
-    phone   varchar(20)
+    surname varchar(255)
 );
 
 
@@ -14,6 +16,9 @@ create table genres
     id   bigint UNIQUE primary key,
     name varchar(255)
 );
+
+DROP SEQUENCE IF EXISTS BOOKS_SEQUENCE;
+CREATE SEQUENCE BOOKS_SEQUENCE START WITH 1 INCREMENT BY 1;
 
 drop table if exists books cascade;
 create table books
@@ -31,7 +36,8 @@ create table authors_books
     primary key (author_id, book_id)
 );
 
-
+DROP SEQUENCE IF EXISTS COMMENTS_SEQUENCE;
+CREATE SEQUENCE COMMENTS_SEQUENCE START WITH 1 INCREMENT BY 1;
 
 drop table if exists comments;
 create table comments
