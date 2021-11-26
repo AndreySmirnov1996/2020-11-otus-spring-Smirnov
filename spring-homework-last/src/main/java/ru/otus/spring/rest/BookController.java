@@ -24,8 +24,6 @@ public class BookController {
     @GetMapping("/")
     public String indexPage(Map<String, Object> model) {
         List<Book> books = bookCrudService.findAll();
-        // model.put("message", "Can not open edit page. Please try again");
-        log.info("123123123");
         List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
         model.put("books", booksDto);
         return "index";
