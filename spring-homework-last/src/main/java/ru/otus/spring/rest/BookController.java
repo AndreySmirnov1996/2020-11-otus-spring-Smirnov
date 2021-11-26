@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.rest.dto.BookDto;
 import ru.otus.spring.service.crud.BookCrudService;
@@ -22,8 +22,11 @@ public class BookController {
     private final BookCrudService bookCrudService;
 
     @GetMapping("/")
-    public String indexPage(Map<String, Object> model) {
+    public String indexPage(Map<String, Object> model, @ModelAttribute("errorMessage") final Object message) {
         List<Book> books = bookCrudService.findAll();
+        if (message instanceof String) {
+            model.put("message", message);
+        }
         List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
         model.put("books", booksDto);
         return "index";
@@ -39,15 +42,16 @@ public class BookController {
 
     // Форма для редактирования книги
     @GetMapping("/book/{id}/edit")
-    public ModelAndView editBook(@PathVariable("id") long id, Map<String, Object> model) {
+    public String editBook(@PathVariable("id") long id, Map<String, Object> model,
+                           final RedirectAttributes redirectAttributes) {
         Optional<Book> bookOptional = bookCrudService.findById(id);
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
             model.put("book", BookDto.toDto(book));
-            return new ModelAndView("edit_book");
+            return "edit_book";
         }
-        model.put("message", "Can not open edit page. Please try again");
-        return new ModelAndView("redirect:/", model);
+        redirectAttributes.addFlashAttribute("errorMessage", "Can not open edit page. Please try again");
+        return "redirect:/";
     }
 
 
