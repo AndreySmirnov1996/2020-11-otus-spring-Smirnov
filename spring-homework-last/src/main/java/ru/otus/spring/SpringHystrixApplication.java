@@ -10,5 +10,6 @@ public class SpringHystrixApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SpringHystrixApplication.class, args);
+        System.out.println(11111);
     }
 }
