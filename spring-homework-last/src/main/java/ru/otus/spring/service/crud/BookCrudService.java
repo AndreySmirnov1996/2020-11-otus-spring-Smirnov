@@ -15,6 +15,6 @@ public interface BookCrudService {
 
     void updateBookTitleById(long bookId, String newTitle);
 
-    void deleteBookById(long bookId);
+    boolean deleteBookById(long bookId);
 
 }

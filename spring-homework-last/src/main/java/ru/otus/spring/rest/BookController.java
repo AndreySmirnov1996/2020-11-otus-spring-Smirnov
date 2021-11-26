@@ -50,14 +50,16 @@ public class BookController {
             model.put("book", BookDto.toDto(book));
             return "edit_book";
         }
-        redirectAttributes.addFlashAttribute("errorMessage", "Can not open edit page. Please try again");
+        redirectAttributes.addFlashAttribute("errorMessage", "Can not open edit page. Please try again later");
         return "redirect:/";
     }
 
 
     @PostMapping("/book/delete")
-    public String deleteBook(@RequestParam long id) {
-        bookCrudService.deleteBookById(id);
+    public String deleteBook(@RequestParam long id, final RedirectAttributes redirectAttributes) {
+        if (!bookCrudService.deleteBookById(id)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Can not delete this book. Please try again later");
+        }
         return "redirect:/";
     }
 

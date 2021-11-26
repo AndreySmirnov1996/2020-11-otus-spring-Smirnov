@@ -37,7 +37,7 @@ public class BookCrudServiceImpl implements BookCrudService {
     @Transactional(readOnly = true)
     @Override
     public Optional<Book> findById(long id) {
-        ThreadUtils.sleepRandomly(5000);
+        //ThreadUtils.sleepRandomly(5000);
         return bookRepository.findById(id);
     }
 
@@ -55,11 +55,14 @@ public class BookCrudServiceImpl implements BookCrudService {
         bookRepository.updateTitleById(bookId, newTitle);
     }
 
+    // TODO Doesn't work. why?
+    //@HystrixCommand(commandKey = "books", fallbackMethod = "deleteBookByIdFallback")
     @Transactional
     @Override
-    public void deleteBookById(long bookId) {
+    public boolean deleteBookById(long bookId) {
         commentRepository.deleteAllByBookId(bookId);
         bookRepository.deleteById(bookId);
+        return true;
     }
 
     public List<Book> findAllFallback() {
@@ -68,6 +71,10 @@ public class BookCrudServiceImpl implements BookCrudService {
 
     public Optional<Book> findByIdFallback(long id) {
         return Optional.empty();
+    }
+
+    public boolean deleteBookByIdFallback(long id) {
+        return false;
     }
 
 }
