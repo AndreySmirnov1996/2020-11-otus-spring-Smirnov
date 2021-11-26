@@ -2,16 +2,16 @@ package ru.otus.spring.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.rest.dto.BookDto;
 import ru.otus.spring.service.crud.BookCrudService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -22,10 +22,12 @@ public class BookController {
     private final BookCrudService bookCrudService;
 
     @GetMapping("/")
-    public String indexPage(Model model) {
+    public String indexPage(Map<String, Object> model) {
         List<Book> books = bookCrudService.findAll();
+        // model.put("message", "Can not open edit page. Please try again");
+        log.info("777777777777777");
         List<BookDto> booksDto = books.stream().map(BookDto::toDto).collect(Collectors.toList());
-        model.addAttribute("books", booksDto);
+        model.put("books", booksDto);
         return "index";
     }
 
@@ -39,10 +41,15 @@ public class BookController {
 
     // Форма для редактирования книги
     @GetMapping("/book/{id}/edit")
-    public String editBook(@PathVariable("id") long id, Model model) throws NotFoundException {
-        Book book = bookCrudService.findById(id).orElseThrow(NotFoundException::new);
-        model.addAttribute("book", BookDto.toDto(book));
-        return "edit_book";
+    public ModelAndView editBook(@PathVariable("id") long id, Map<String, Object> model) {
+        Optional<Book> bookOptional = bookCrudService.findById(id);
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
+            model.put("book", BookDto.toDto(book));
+            return new ModelAndView("edit_book");
+        }
+        model.put("message", "Can not open edit page. Please try again");
+        return new ModelAndView("redirect:/", model);
     }
 
 

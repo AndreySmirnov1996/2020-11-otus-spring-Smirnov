@@ -1,5 +1,6 @@
 package ru.otus.spring.service.crud;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,7 +8,9 @@ import ru.otus.spring.domain.Book;
 import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.repositories.CommentRepository;
+import ru.otus.spring.utils.ThreadUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,15 +33,19 @@ public class BookCrudServiceImpl implements BookCrudService {
         bookRepository.save(book);
     }
 
+    @HystrixCommand(commandKey = "books", fallbackMethod = "findByIdFallback")
     @Transactional(readOnly = true)
     @Override
     public Optional<Book> findById(long id) {
+        ThreadUtils.sleepRandomly(5000);
         return bookRepository.findById(id);
     }
 
+    @HystrixCommand(commandKey = "books", fallbackMethod = "findAllFallback")
     @Transactional(readOnly = true)
     @Override
     public List<Book> findAll() {
+        //ThreadUtils.sleepRandomly(5000);
         return bookRepository.findAllWithAllInfo();
     }
 
@@ -54,4 +61,13 @@ public class BookCrudServiceImpl implements BookCrudService {
         commentRepository.deleteAllByBookId(bookId);
         bookRepository.deleteById(bookId);
     }
+
+    public List<Book> findAllFallback() {
+        return new ArrayList<>();
+    }
+
+    public Optional<Book> findByIdFallback(long id) {
+        return Optional.empty();
+    }
+
 }

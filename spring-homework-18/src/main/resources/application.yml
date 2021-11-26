@@ -13,3 +13,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  # Spring Cloud
+  cloud:
+    config:
+      enabled: false
+
+# Hystrix timeouts
+hystrix:
+  command:
+    books:
+      execution.isolation.thread.timeoutInMilliseconds: 3000
