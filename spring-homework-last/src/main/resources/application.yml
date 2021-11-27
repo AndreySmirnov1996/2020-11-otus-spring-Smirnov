@@ -24,3 +24,5 @@ hystrix:
   command:
     books:
       execution.isolation.thread.timeoutInMilliseconds: 3000
+
+debug: on

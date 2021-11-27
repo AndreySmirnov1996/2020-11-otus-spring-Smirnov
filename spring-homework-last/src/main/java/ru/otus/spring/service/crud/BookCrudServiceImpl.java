@@ -56,11 +56,12 @@ public class BookCrudServiceImpl implements BookCrudService {
     }
 
     // TODO Doesn't work. why?
-    //@HystrixCommand(commandKey = "books", fallbackMethod = "deleteBookByIdFallback")
-    @Transactional
+    @HystrixCommand(commandKey = "books", fallbackMethod = "deleteBookByIdFallback")
+    //@Transactional
     @Override
     public boolean deleteBookById(long bookId) {
-        commentRepository.deleteAllByBookId(bookId);
+        ThreadUtils.sleepRandomly(10000);
+//        commentRepository.deleteAllByBookId(bookId);
         bookRepository.deleteById(bookId);
         return true;
     }

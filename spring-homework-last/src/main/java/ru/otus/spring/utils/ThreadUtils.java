@@ -9,7 +9,8 @@ public class ThreadUtils {
 
     public static void sleepRandomly(int ms) {
         Random rand = new Random();
-        int randomNum = rand.nextInt(3) + 1;
+        //int randomNum = rand.nextInt(3) + 1;
+        int randomNum = 3;
         if (randomNum == 3) {
             log.info("It is a chance for demonstrating Hystrix action");
             try {
