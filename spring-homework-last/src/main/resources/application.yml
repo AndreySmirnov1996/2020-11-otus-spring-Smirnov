@@ -23,6 +23,4 @@ spring:
 hystrix:
   command:
     books:
-      execution.isolation.thread.timeoutInMilliseconds: 3000
-
-debug: on
+      execution.isolation.thread.timeoutInMilliseconds: 2000

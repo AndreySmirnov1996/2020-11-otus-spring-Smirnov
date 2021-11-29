@@ -2,19 +2,20 @@ package ru.otus.spring.service.crud;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.repositories.CommentRepository;
-import ru.otus.spring.utils.ThreadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BookCrudServiceImpl implements BookCrudService {
 
@@ -55,13 +56,10 @@ public class BookCrudServiceImpl implements BookCrudService {
         bookRepository.updateTitleById(bookId, newTitle);
     }
 
-    // TODO Doesn't work. why?
-    @HystrixCommand(commandKey = "books", fallbackMethod = "deleteBookByIdFallback")
-    //@Transactional
-    @Override
+    @Transactional
     public boolean deleteBookById(long bookId) {
-        ThreadUtils.sleepRandomly(10000);
-//        commentRepository.deleteAllByBookId(bookId);
+        log.info("I'm here but I shouldn't be here...");
+        commentRepository.deleteAllByBookId(bookId);
         bookRepository.deleteById(bookId);
         return true;
     }
@@ -74,8 +72,5 @@ public class BookCrudServiceImpl implements BookCrudService {
         return Optional.empty();
     }
 
-    public boolean deleteBookByIdFallback(long id) {
-        return false;
-    }
 
 }

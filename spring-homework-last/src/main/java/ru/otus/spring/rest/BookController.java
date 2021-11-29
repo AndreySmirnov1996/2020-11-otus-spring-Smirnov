@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.rest.dto.BookDto;
+import ru.otus.spring.service.crud.BookCrudHystrixProxy;
 import ru.otus.spring.service.crud.BookCrudService;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class BookController {
 
     private final BookCrudService bookCrudService;
+    private final BookCrudHystrixProxy bookCrudHystrixProxy;
 
     @GetMapping("/")
     public String indexPage(Map<String, Object> model, @ModelAttribute("errorMessage") final Object message) {
@@ -57,7 +59,7 @@ public class BookController {
 
     @PostMapping("/book/delete")
     public String deleteBook(@RequestParam long id, final RedirectAttributes redirectAttributes) {
-        if (!bookCrudService.deleteBookById(id)) {
+        if (!bookCrudHystrixProxy.deleteBookById(id)) {
             redirectAttributes.addFlashAttribute("errorMessage", "Can not delete this book. Please try again later");
         }
         return "redirect:/";
